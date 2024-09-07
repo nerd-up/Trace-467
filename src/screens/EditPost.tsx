@@ -29,7 +29,7 @@ const EditPost = ({navigation}:any) => {
     const [isPrivate, setIsPrivate] = useState(false);
     const route=useRoute();
     const {postID}=route?.params;
-    console.log(postID,"oooo");
+   
     
 
 
@@ -59,12 +59,12 @@ const EditPost = ({navigation}:any) => {
                 const path = `images/users/${adminId}/Posts/${fName}`.toString();
                 setFilePath(path);
                 setPicName(uri);
-                console.log("pick name is :", uri)
+               
             }
         });
     }
   const updatePost=async(post:any)=>{
-    console.log("posssst",post);
+  
     
     setLoading(true);
         firestore()
@@ -92,7 +92,7 @@ const EditPost = ({navigation}:any) => {
         if ((selectedImage.length == 0 || selectedImage == null) && (currentPost?.description?.length == 0 || currentPost?.description == null)) {
            showError('Failed','You cannot share an empty post');
         } else if (picName?.length > 0) {
-            console.log("entry grantd");
+          
             
             uploadImage(picName, filePath)
                 .then((imgUrl: any) => {
@@ -115,7 +115,7 @@ const EditPost = ({navigation}:any) => {
                 })
           
         } else {
-            console.log("Without img");
+          
             
             if (isPrivate) {
                 setPost((prev:any)=>({...prev,status:'private'}))
@@ -149,7 +149,7 @@ const EditPost = ({navigation}:any) => {
         Alert.alert('Error',err?.code)
     })
 }
-console.log("getpost",currentPost);
+
 useEffect(()=>{
     getPost();
 },[])

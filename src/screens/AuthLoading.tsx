@@ -8,7 +8,7 @@ const AuthLoading = () => {
     const navigation:any=useNavigation();
     const checkUser = async () => {
         // const userID = await ;
-        console.log("here is userId",await AsyncStorage.getItem('userID'));
+      
         if (await AsyncStorage.getItem('userID')) {
             navigation.navigate('Splash');
         } else {

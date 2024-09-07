@@ -140,8 +140,8 @@ export function setInProfile(
     usrName: string,
     signed: string
 ) {
-    console.log(getUserId())
-   console.log("herehere",{bio,profilePic,coverPic,residency,usrName,signed})
+   
+  
     firestore()
         .collection('Users')
         .doc(getUserId())
@@ -194,7 +194,7 @@ export function fetchSignedUsers(callback:any) {
                         id: documentSnapshot.id
                     });
                 });
-                console.log("first:",users)
+               
                 callback(users);
             },
             error => {
@@ -216,14 +216,12 @@ export function saveSignatures(
             },
         )
         .then(() => {
-            console.log('success!');
             Toast.show({
                 text1:"Congrats🥳!!",
                 text2:"You are a Sportsman!"
             })
         })
         .catch(err => {
-            console.log("i got an error");
         });
 }
 
@@ -247,11 +245,9 @@ export function setInPost(userID: string, image: string, description: string, ti
             status,
         })
         .then(() => {
-            console.log('success!');
             showSucess('Success','Uploaded successfully');
         })
         .catch(err => {
-            console.log(err);
             showError('Failed to upload', err);
         });
 }
@@ -264,11 +260,9 @@ export function deletePost(userID: string, postId:string) {
         .doc(postId)
         .delete()
         .then(() => {
-            console.log('success!');
             showSucess('Success','Post Deleted successfully');
         })
         .catch(err => {
-            console.log(err);
             showError('Failed to upload', err);
         });
 }
@@ -289,7 +283,6 @@ export const getProfile = (userID: string) => {
                 if (documentSnapshot.exists) {
                     resolve(documentSnapshot.data());
                 } else {
-                    console.log('Profile not exists');
                     return undefined;
                 }
 
@@ -310,7 +303,6 @@ export const deletePostLike = async (postID: string, userID: string) => {
             querySnapshot.forEach((doc) => {
                 doc.ref.delete()
                     .then(() => {
-                        console.log("post Disliked");
                     })
                     .catch((error) => {
                         console.error('Error removing like:', error);
@@ -339,7 +331,6 @@ export const setPostLike = async (postID: string, userID: string) => {
             likeID: likeId
         })
         .then(() => {
-            console.log('success!');
         })
         .catch(err => {
             console.log(err);
@@ -350,7 +341,6 @@ export const deletePostComment = async (postID: string, userID: string, commentI
     const currentUser: any = auth().currentUser?.uid;
 
     if (!currentUser) {
-        console.log("No authenticated user.");
         return;
     }
 
@@ -378,10 +368,8 @@ export const deletePostComment = async (postID: string, userID: string, commentI
                     commentDocRef
                         .delete()
                         .then(() => {
-                            console.log('Comment deleted successfully!');
                         })
                         .catch(err => {
-                            console.log('Error deleting comment:', err);
                         });
                 }
             }
@@ -394,9 +382,6 @@ export const setPostComment = async (postID: string, userID: string, comment: an
     const commentCollection = firestore().collection('AllPosts').doc(userID).collection("Posts").doc(postID).collection('Comments');
     const newCommentDoc = commentCollection.doc(); // This creates a new document reference with an auto-generated ID
     const commentId = newCommentDoc.id;
-    console.log("commentId:" + commentId);
-    console.log("userID:" + userID);
-    console.log("postID:" + postID);
     firestore()
         .collection('AllPosts')
         .doc(userID)
@@ -414,10 +399,9 @@ export const setPostComment = async (postID: string, userID: string, comment: an
             date:new Date().toLocaleDateString()
         })
         .then(() => {
-            console.log('success!');
         })
         .catch(err => {
-            console.log(err);
+            // console.log(err);
         });
 }
 

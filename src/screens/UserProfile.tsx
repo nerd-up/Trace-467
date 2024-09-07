@@ -54,7 +54,7 @@ const UserProfile = ({ navigation }: any) => {
     const fetchAllFriends = async () => {
         const userId = auth().currentUser?.uid;
         if (!userId) {
-            console.log("No user ID found");
+           
             return;
         }
         try {
@@ -152,8 +152,7 @@ const UserProfile = ({ navigation }: any) => {
 
         }).catch((err: any) => { console.log("No posts"); setRefresh(false); })
     }
-    console.log("all posts",posts);
-    
+  
     return (
         <ScrollView style={{
 
@@ -342,7 +341,7 @@ const UserProfile = ({ navigation }: any) => {
                         {/* <Feed /> */}
                         <View style={{ backgroundColor: Colors.feedBackground, flexDirection: 'row' }}>
                             {allPosts.map((item: any, index: number) => // FIXME make sure can be indexed
-                               { console.log(item);
+                               { 
                                 return <FeedBox key={index}  admin={item?.userProfile?.usrName} avatar={item?.userProfile?.profilePic}
                                     time={item?.time}
                                     picture={item.image}

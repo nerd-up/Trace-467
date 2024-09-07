@@ -20,7 +20,7 @@ const BlockedUsers = ({ navigation }: any) => {
             .then((snapshoot) => {
                 let users: any = [];
                 snapshoot?.docs.map(doc =>
-                    // console.log("first:",doc.data());
+                   
                     users.push(doc.data())
                 );
                 setAllUsers(users);
@@ -36,7 +36,7 @@ const BlockedUsers = ({ navigation }: any) => {
         getBlockedUsers();
     }, [])
 
-    console.log('all', allUsers);
+    
 
     const unBlock = async (userID: string) => {
         const blockRef = await firestore()

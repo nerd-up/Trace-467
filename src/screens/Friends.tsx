@@ -23,7 +23,7 @@ import Toast from 'react-native-toast-message';
 const Friends = ({ navigation}: any,props:any ) => {
     const router:any=useRoute();
     
-    console.log("first:",router.params?.selectedOption);
+  
     const userProfile: any = useUserProfileStore(store => store)
     const [selectedOption,setSelectedOption] =useState(router.params?.selectedOption==="Your Buddies"?router.params?.selectedOption:"Suggestions");
     const [search, setSearch] = useState('');
@@ -60,8 +60,7 @@ const Friends = ({ navigation}: any,props:any ) => {
         
       },[])
     useEffect(() => {
-        
-        console.log("Search is now ", search);
+      
     }, [popUpVisibility, search,selectedOption]);
 
     return (

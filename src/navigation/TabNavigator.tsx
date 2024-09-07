@@ -59,7 +59,7 @@ function ScholarTabs() {
             [
                 {
                     text: "Cancel",
-                    onPress: () => console.log("Cancel Pressed"),
+                   
                     style: "cancel"
                 },
                 {
@@ -87,7 +87,7 @@ function ScholarTabs() {
             [
                 {
                     text: "Cancel",
-                    onPress: () => console.log("Cancel Pressed"),
+                   
                     style: "cancel"
                 },
                 {

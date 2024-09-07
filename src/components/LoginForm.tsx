@@ -20,6 +20,7 @@ import Toast from 'react-native-toast-message';
 import useLoadingStore from '../zustand/UseLoadingStore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { showError, showSucess } from '../utils/utitlity';
 
 type LoginFormProps = {
     nav: any
@@ -56,11 +57,11 @@ export default function LoginForm(props: LoginFormProps) {
                     getProfile(userId)
                         .then(async (profile: any) => {
 
-                            console.log(profile);
+                         
 
                             // if could not find a profile for anonomous
                             if (profile === undefined) {
-                                console.log("Added profile");
+                                
                                 setInProfile(userId, 'no bio', ' ', 'no Residency', ' ',' ')
                             }
 
@@ -115,19 +116,37 @@ export default function LoginForm(props: LoginFormProps) {
           allowLoading();
         auth().signInWithEmailAndPassword(usrEmail, usrPassword)
             .then(user => {
+                if(user?.user?.emailVerified===false){
+                    showError('Failed, Email is not verified')
+                    user.user.sendEmailVerification()
+                    .then(() => {
+                        setTimeout(() => {
+                            
+                            showSucess('Verification email has been sent. Please check your inbox.');
+                        }, 1000);
+                    })
+                    .catch((error) => {
+                        setTimeout(() => {
+                        
+                            showError('Error sending verification email: ' + error.message);
+                        }, 1000);
+                    });
+                    return;
+                }
                 if (auth().currentUser?.uid) {
+                    
                     const userId = user.user.uid.toString();
                     props.nav.navigate('Splash', { userId });
                     disableLoading();
                     getProfile(userId)
                         .then(async (profile) => {
-                            console.log(profile);
+                           
                             await AsyncStorage.setItem('userID',auth().currentUser?.uid);
                             setUserEmail('');
                             setUserPassword('');
                         })
                         .catch((error) => {
-                            console.log(error);
+                           
 
                         })
                 } else {

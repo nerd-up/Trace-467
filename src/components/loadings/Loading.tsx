@@ -10,10 +10,10 @@ interface Props{
 const Loading = ({loading}:Props) => {
     const { isLoading} = useLoadingStore();
   return (
-    <>{ loading || isLoading&&
+    <>{ (loading===true || isLoading===true)&&
     <View style={styles.loadingContainer}>
         <ActivityIndicator style={styles.loader} animating color={Colors.primary}  size={65} />
-      <Image style={styles.loadingImage} source={require('../../assets/unifySmall.png')} />
+      <Image style={styles.loadingImage} source={require('../../assets/Trace467.jpg')} />
     </View>
 }
     </>

@@ -16,10 +16,7 @@ import ScholarBanner from '../components/UnifyBanner';
 import formStyles from '../styles/FormStyles';
 import auth from '@react-native-firebase/auth';
 import styles from '../styles/Styles';
-import { AccessToken, LoginButton } from 'react-native-fbsdk-next'
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { LoginManager, } from 'react-native-fbsdk-next';
-import { WEB_CLIENT_ID } from '@env';
 import useUserProfileStore from '../zustand/UserProfileStore';
 import { getProfile, setInProfile } from '../services/DataService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -43,29 +40,29 @@ function Login({ navigation }: any) {
         // Sign-in the user with the credential
         return auth().signInWithCredential(googleCredential);
     }
-    async function onFacebookButtonPress() {
+    // async function onFacebookButtonPress() {
 
-        // Attempt login with permissions
-        const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+    //     // Attempt login with permissions
+    //     const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
 
-        if (result.isCancelled) {
-            throw 'User cancelled the login process';
-        }
-        console.log("result:", result);
-        // Once signed in, get the users AccessToken
-        const data = await AccessToken.getCurrentAccessToken();
+    //     if (result.isCancelled) {
+    //         throw 'User cancelled the login process';
+    //     }
+    //     console.log("result:", result);
+    //     // Once signed in, get the users AccessToken
+    //     const data = await AccessToken.getCurrentAccessToken();
 
-        if (!data) {
-            throw 'Something went wrong obtaining access token';
-        }
-        console.log("data:", data);
-        // Create a Firebase credential with the AccessToken
-        const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
-        console.log("facebookCredential:", facebookCredential);
+    //     if (!data) {
+    //         throw 'Something went wrong obtaining access token';
+    //     }
+    //     console.log("data:", data);
+    //     // Create a Firebase credential with the AccessToken
+    //     const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
+    //     console.log("facebookCredential:", facebookCredential);
 
-        // Sign-in the user with the credential
-        return auth().signInWithCredential(facebookCredential);
-    }
+    //     // Sign-in the user with the credential
+    //     return auth().signInWithCredential(facebookCredential);
+    // }
 
     return (
         <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
@@ -92,7 +89,7 @@ function Login({ navigation }: any) {
 
                         //     console.error(error);
                         // })
-                        console.log("res:", res);
+                        
                         await firestore().collection('Users').doc(res?.user?.uid).set({
                             userID: res?.user?.uid,
                             bio: 'no bio',
@@ -102,17 +99,17 @@ function Login({ navigation }: any) {
                             usrName: res?.additionalUserInfo?.profile?.name,
                             signed: ' '
                         }).then(async (response: any) => {
-                            console.log('Success', 'Successfully Signed In!');
+                           
                             // setProfileData(res?.additionalUserInfo?.profile);
                             await AsyncStorage.setItem('userID', res?.user?.uid);
                             navigation.navigate('Splash');
                         }).catch((e: any) => {
-                            console.log(e);
+                           
                         });
 
                         // setProfileData(res?.additionalUserInfo?.profile);
                         // setInProfile(res?.additionalUserInfo?.uid, 'no bio', ' ','', 'Sportsman', res?.additionalUserInfo?.profile?.name,' ')
-                        console.log("response", res?.additionalUserInfo?.profile);
+                      
                     })} style={[formStyles.submitBtn, { backgroundColor: '#d00000', flexDirection: "row", justifyContent: "center", columnGap: 10 }]}>
                         <Image source={require('../assets/icons/google.png')} style={{ height: 30, width: 30 }} />
                         <Text style={styles.btnText}>Sign In with Google</Text>

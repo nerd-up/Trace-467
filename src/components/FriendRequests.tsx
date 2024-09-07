@@ -16,7 +16,7 @@ const FriendRequests = ({blockedUsers}:any) => {
         setRefresh(true);
         const userId = auth().currentUser?.uid;
         if (!userId) {
-            console.log("No user ID found");
+          
             return;
         }
 
@@ -28,7 +28,7 @@ const FriendRequests = ({blockedUsers}:any) => {
                 .get();
 
             const friendRequests = friendRequestsSnapshot.docs.map(doc => doc.data());
-            console.log("friendRequests", friendRequests);
+           
             setRefresh(false);
             if (friendRequests.length > 0) {
                 const friendRequestsPromises = friendRequests.map(async (request: any) => {
@@ -37,11 +37,11 @@ const FriendRequests = ({blockedUsers}:any) => {
                 });
 
                 const requests = await Promise.all(friendRequestsPromises);
-                console.log("Friend requests:", requests);
+               
                 setRequests(requests); // Assuming setRequests is a state setter function
             } 
         } catch (error) {
-            console.log("An error occurred", error);
+            // console.log("An error occurred", error);
             setRefresh(false);
 
         }
@@ -98,7 +98,7 @@ const FriendRequests = ({blockedUsers}:any) => {
             
             Alert.alert("Friend request accepted and saved successfully for both users.");
         } catch (err) {
-            console.log(err);
+            // console.log(err);
         }
     }
     const moveNext = (userID: any) => {

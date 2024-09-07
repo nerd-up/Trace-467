@@ -13,7 +13,7 @@ type FriendBoxProps = {
 }
 
 const FriendBox = ({data,profilePic}: FriendBoxProps) => {
-    console.log("dfried",data);
+   
     
 	const navigation:any=useNavigation();
     return (

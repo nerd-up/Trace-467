@@ -12,7 +12,7 @@ const Report = ({navigation}:any) => {
    const route=useRoute();
 	const userProfile: any = useUserProfileStore(store => store)
    const {postDetails}=route?.params;
-   console.log(userProfile);
+  
    
     const reportReasons = [
         { id: 1, text: 'Spam' },

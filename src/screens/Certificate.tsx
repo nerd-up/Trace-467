@@ -3,7 +3,7 @@ import { Alert, Image, PermissionsAndroid, Platform, Text, TextInput, TouchableO
 import Colors from '../theme/ScholarColors';
 import useUserProfileStore from '../zustand/UserProfileStore';
 import { useNavigation } from '@react-navigation/native';
-import RNHTMLtoPDF from 'react-native-html-to-pdf';
+// import RNHTMLtoPDF from 'react-native-html-to-pdf';
 
 const Certificate = () => {
     const navigation: any = useNavigation();
@@ -79,9 +79,9 @@ const Certificate = () => {
                 fileName: 'CertificateOfPeace',
                 directory: 'Documents',
             };
-            const file = await RNHTMLtoPDF.convert(options);
-            console.log('PDF generated:', file.filePath);
-            Alert.alert('PDF saved to:', file.filePath);
+            // const file = await RNHTMLtoPDF.convert(options);
+            // console.log('PDF generated:', file.filePath);
+            // Alert.alert('PDF saved to:', file.filePath);
         } catch (error) {
             console.error('Error generating PDF:', error);
         }

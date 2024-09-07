@@ -26,7 +26,7 @@ const ChatRoom = () => {
   const navigation: any = useNavigation();
   const [messages, setMessages]: any = useState([])
   const userProfile: any = router.params?.friend;
-  console.log("first:", userProfile);
+  
   useEffect(() => {
     const unsubscribe = firestore()
       .collection('ChatRooms')
@@ -45,7 +45,7 @@ const ChatRoom = () => {
           data.createdAt = eval(data.createdAt).toDate();
           return data;
         });
-        console.log("messagesFirestore", messagesFirestore);
+      
         setMessages(messagesFirestore);
       });
     return () => unsubscribe();

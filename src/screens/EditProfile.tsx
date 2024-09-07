@@ -86,15 +86,13 @@ const EditProfile = (navigation: any) => {
 
                 const fileName = response.assets[0].fileName;
                 const path = `images/users/${userId}/profilePictures/${fileName}`.toString();
-                console.log("uri: " + uri);
-                console.log("fileName: " + fileName);
-
+               
                 uploadImage(uri, path)
                     .then((imgUrl: any) => {
                         setUserProfilePic(imgUrl);
                     })
                     .catch(err => {
-                        console.log("something went wrong!");
+                        
                     })
             }
         });

@@ -54,7 +54,7 @@ export default function Post(navigation: any) {
                 const path = `images/users/${adminId}/Posts/${fName}`.toString();
                 setFilePath(path);
                 setPicName(uri);
-                console.log("pick name is :", uri)
+               
             }
         });
     }
@@ -65,7 +65,7 @@ export default function Post(navigation: any) {
     };
 
     const postData = () => {
-        console.log("coming");
+       
         
         if(checkAbusive(postDesc)===true) {
             showError('Error','You cannot use these kind of abusive words!');
@@ -87,7 +87,7 @@ export default function Post(navigation: any) {
                     setInPost(adminId, imgUrl, postDesc, time, postStatus);
                 })
                 .catch(err => {
-                    console.log("something went wrong!");
+                    // console.log("something went wrong!");
                 })
             navigation.goBack();
         } else {

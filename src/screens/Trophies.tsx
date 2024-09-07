@@ -59,7 +59,7 @@ const Trophies = () => {
             }
             setRefresh(false);
         } catch (error) {
-            console.log("An error occurred", error);
+            // console.log("An error occurred", error);
             setRefresh(false);
         }
     }, [limit]);

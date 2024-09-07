@@ -34,7 +34,7 @@ const Feed = (props: FeedProps) => {
         setLoading(true);
         const userId = auth().currentUser?.uid;
         if (!userId) {
-            console.log("No user ID found");
+           
             return;
         }
 
@@ -72,7 +72,7 @@ const Feed = (props: FeedProps) => {
 
             setFeed(allPosts);
         } catch (error) {
-            console.log("An error occurred", error);
+            // console.log("An error occurred", error);
         } finally {
             setLoading(false);
         }

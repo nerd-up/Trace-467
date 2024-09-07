@@ -17,6 +17,7 @@ import styles from '../styles/Styles';
 import SButton from './SButton';
 import useLoadingStore from '../zustand/UseLoadingStore';
 import Colors from '../theme/ScholarColors';
+import { showError, showSucess } from '../utils/utitlity';
 
 type SignUpFormProps = {
     nav?: any,
@@ -76,9 +77,14 @@ export default function SignUpForm(props: SignUpFormProps) {
         auth().createUserWithEmailAndPassword(usrEmail, usrPassword1)
             .then(async result => {
                 const user = auth().currentUser;
-                await user?.sendEmailVerification();
+                await user?.sendEmailVerification().then(() => {
+                    showSucess('Verification email has been sent. Please check your inbox.');
+                  })
+                  .catch((error) => {
+                    showError('Error sending verification email: ' + error.message);
+                  });
                 const userId:any = user?.uid;
-                //console.log(userId)
+               
                 // adds the new user to the Users firestore database collection
                 setInProfile(userId, 'no bio', ' ','', 'Sportsman', usrName,' ')
               disableLoading();
@@ -86,7 +92,7 @@ export default function SignUpForm(props: SignUpFormProps) {
             .catch(error => {
                 // Alert.alert("Error creating account!");
                 setErrorMsg(error?.code);
-                console.log(error);
+               
                 disableLoading();
                 setIsSubmitDisabled(false);
             });

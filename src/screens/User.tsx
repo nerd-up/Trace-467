@@ -37,7 +37,7 @@ const User = ({ navigation }: any) => {
     const fetchRequests = async (userID: string) => {
         const userId = userID;
         if (!userId) {
-            console.log("No user ID found");
+            
             return;
         }
         try {

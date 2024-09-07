@@ -29,7 +29,7 @@ const Chats = () => {
   const fetchAllFriends = async () => {
     const userId = auth().currentUser?.uid;
     if (!userId) {
-      console.log("No user ID found");
+   
       return;
     }
     try {
@@ -38,23 +38,23 @@ const Chats = () => {
         .doc(userId)
         .collection("Friends")
         .get();
-      console.log("here is friend snapshot:", friendSnapshot.docs);
+    
       const frnds = friendSnapshot.docs.map(doc =>
        
         doc.data()
       );
-      console.log("here is frnd:", frnds);
+     
       if (frnds.length > 0) {
         const friendRequestsPromises = frnds.map(async (frnd: any) => {
           const senderDoc = await firestore().collection("Users").doc(frnd.friend).get();
           return {...senderDoc.data(),chatRoomId:frnd.chatRoomId};
         });
         const requests = await Promise.all(friendRequestsPromises);
-        console.log("Friend :", requests);
+        
         setFriends(requests);
       }
     } catch (error) {
-      console.log("An error occurred", error);
+    //   console.log("An error occurred", error);
     }
   }
   const moveNext = (friend: any) => {
