@@ -26,7 +26,7 @@ const ChatRoom = () => {
   const navigation: any = useNavigation();
   const [messages, setMessages]: any = useState([])
   const userProfile: any = router.params?.friend;
-  
+
   useEffect(() => {
     const unsubscribe = firestore()
       .collection('ChatRooms')
@@ -45,7 +45,7 @@ const ChatRoom = () => {
           data.createdAt = eval(data.createdAt).toDate();
           return data;
         });
-      
+
         setMessages(messagesFirestore);
       });
     return () => unsubscribe();
@@ -61,7 +61,7 @@ const ChatRoom = () => {
     const { _id, createdAt, text, user } = messages[0];
     firestore()
       .collection('ChatRooms')
-      .doc(userProfile.chatRoomId) 
+      .doc(userProfile.chatRoomId)
       .collection('messages')
       .add({
         _id,
@@ -73,27 +73,23 @@ const ChatRoom = () => {
   useEffect(() => {
     navigation.setOptions({
       headerLeft: () => (
-        <View style={{ flexDirection: 'row',alignItems:'center' }}>
-          <TouchableOpacity onPressIn={()=>navigation.goBack()} style={{marginRight:10}}
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <TouchableOpacity onPressIn={() => navigation.goBack()} style={{ marginRight: 10 }}
             onPress={() => navigation.goBack()}>
-            <Image source={require('../assets/icons/back.png')} style={{
-              height: 20, width
-                : 20,
-              tintColor: 'black',
-
-            }} />
           </TouchableOpacity>
-          <Image source={{ uri: userProfile.profilePic }} style={style.avatar} />
+          {userProfile.profilePic?.length>1?
+          <Image source={{ uri: userProfile.profilePic }} style={style.avatar} />:
+          <Image source={ require('../assets/icons/user.png')} style={style.avatar} />}
         </View>
       ),
       headerTitle: () => <Text style={style.username}>{userProfile.usrName}</Text>,
       headerRight: () => (
         <TouchableOpacity >
-          <Image source={require('../assets/icons/dots.png')} style={{height:30,width:30}} />
+          <Image source={require('../assets/icons/dots.png')} style={{ height: 30, width: 30 }} />
         </TouchableOpacity>
       ),
     });
-  }, [navigation, userProfile,messages]);
+  }, [navigation, userProfile, messages]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.background }}>
@@ -151,7 +147,7 @@ const style = StyleSheet.create({
     width: 40,
     height: 40,
     borderRadius: 20,
-    marginRight: 10,
+    
   },
   chatAvatar: {
     width: 25,

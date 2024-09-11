@@ -145,10 +145,9 @@ const FriendRequests = ({blockedUsers}:any) => {
                                             <View style={{ flexDirection: 'row' }}>
                                                 <View style={stylings.classmateIcon}>
                                                     {
-                                                        friend?.profilePic !== ' ' || friend?.profilePic !== '' ?
+                                                        friend?.profilePic.length>1 ?
                                                             <Image source={{ uri: friend?.profilePic }} style={{ height: 60, width: 60, borderRadius: 50 }}></Image> :                             <Image style={{ height: 60, width: 60, borderRadius: 50 }} source={require('../assets/icons/user.png')}  /> 
                                                     }
-
                                                 </View>
                                                 <View style={stylings.classmateTexts}>
                                                     <Text style={stylings.classmateName}>
@@ -163,17 +162,20 @@ const FriendRequests = ({blockedUsers}:any) => {
                                                 </View>
                                             </View>
                                         </TouchableOpacity>
-                                        <View style={{}}>
+                                        <View>
                                             <TouchableOpacity onPress={() => acceptRequest(friend?.userID)}>
                                                 <View style={stylings.acceptButton}>
-                                                    <Text style={stylings.acceptButtonText}>Accept</Text>
+                                                    <Image source={require('../assets/icons/accept.png')} style={{height:30,width:30}}></Image>
+                                                    {/* <Text style={stylings.acceptButtonText}>Accept</Text> */}
                                                 </View>
                                             </TouchableOpacity>
                                         </View>
-                                        <View style={{}}>
+                                        <View>
                                             <TouchableOpacity onPress={() => acceptRequest(friend?.userID)}>
                                                 <View style={stylings.acceptButton}>
-                                                    <Text style={stylings.acceptButtonText}>Remove</Text>
+                                                    <Image source={require('../assets/icons/reject.png')} style={{height:30,width:30}}></Image>
+
+                                                    {/* <Text style={stylings.acceptButtonText}>Remove</Text> */}
                                                 </View>
                                             </TouchableOpacity>
                                         </View>

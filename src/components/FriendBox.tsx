@@ -19,7 +19,7 @@ const FriendBox = ({data,profilePic}: FriendBoxProps) => {
     return (
         <TouchableOpacity  onPress={()=>navigation.navigate('User',{userID:data?.userID})} style={styles.friendBoxStyle}>
          
-									<Image source={ data?.profilePic?.length>0?{ uri: data?.profilePic }:
+									<Image source={ data?.profilePic?.length>1?{ uri: data?.profilePic }:
                                  require('../assets/icons/user.png')    
                                 } style={{
 										height: 80, width

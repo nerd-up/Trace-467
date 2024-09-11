@@ -80,7 +80,7 @@ const Chats = () => {
                       <View style={{ flexDirection: 'row' }}>
                         <View style={stylings.classmateIcon}>
                           {
-                            friend.profilePic !== "" ?
+                            friend.profilePic.length>1 ?
                               <Image source={{ uri: friend.profilePic }} style={{ height: 50, width: 50, borderRadius: 50 }}></Image>
                               :
                               <Image source={require('../assets/icons/user.png')} style={{ height: 50, width: 50, borderRadius: 50 }}></Image>

@@ -24,10 +24,12 @@ import { Fonts } from '../theme/Fonts';
 import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu';
 import FriendBox from '../components/FriendBox';
 import Loading from '../components/loadings/Loading';
+import ProfilePic from '../components/ProfilePic';
 
 const UserProfile = ({ navigation }: any) => {
     const [friends, setFriends]: any = useState([]);
     const [refresh, setRefresh] = useState(false);
+    const [showProfile, setShowProfile] = useState(false);
     const userProfile: any = useUserProfileStore(store => store)
     const setProfilePic = useUserProfileStore(store => store.setProfilePic)
     const setProfileData = useUserProfileStore(store => store.setProfileData);
@@ -54,7 +56,7 @@ const UserProfile = ({ navigation }: any) => {
     const fetchAllFriends = async () => {
         const userId = auth().currentUser?.uid;
         if (!userId) {
-           
+
             return;
         }
         try {
@@ -152,7 +154,15 @@ const UserProfile = ({ navigation }: any) => {
 
         }).catch((err: any) => { console.log("No posts"); setRefresh(false); })
     }
-  
+    const toogleShowProfile = () => {
+        console.log("i am here");
+        if (showProfile) {
+            setShowProfile(false);
+        } else {
+            setShowProfile(true);
+        }
+    }
+
     return (
         <ScrollView style={{
 
@@ -162,14 +172,18 @@ const UserProfile = ({ navigation }: any) => {
                 <RefreshControl refreshing={refresh} onRefresh={getDetails} />
             }
         >
+            {
+                showProfile && <ProfilePic profile={userProfile?.profilePic} onPress={toogleShowProfile} />
+            }
             <View>
                 <Loading />
-                {/* Profile header */}
+
                 <View>
                     <View>
-                        {/* Profile header */}
+
                         <View>
                             <View style={{ justifyContent: 'center', width: '100%', position: 'relative' }}>
+
                                 <Image style={styles.coverPhoto} source={userProfile?.coverPic?.length > 1 ? { uri: userProfile?.coverPic } : require('../assets/Trace467.jpg')} />
                                 <TouchableOpacity
                                     style={{ position: 'absolute', top: 0, right: 0, margin: 10 }}
@@ -191,20 +205,30 @@ const UserProfile = ({ navigation }: any) => {
 
                                     {
                                         userProfile.profilePic?.length > 1 ?
-                                            <Image source={{ uri: userProfile.profilePic }} style={{
-                                                height: '100%',
-                                                width: '100%',
-                                                borderRadius: 60,
-                                                borderWidth: 5,
-                                                borderColor: Colors.primary
-                                            }} /> :
-                                            <Image source={require('../assets/icons/user.png')} style={{
-                                                height: 80,
-                                                width: 80,
-                                                tintColor: 'black',
-                                                borderRadius: 50,
-                                                borderWidth: 1,
-                                            }} />
+                                            <TouchableOpacity style={{
+                                                height: 120,
+                                                width: 120,
+                                            }} onPress={toogleShowProfile}>
+                                                <Image source={{ uri: userProfile.profilePic }} style={{
+                                                    height: '100%',
+                                                    width: '100%',
+                                                    borderRadius: 60,
+                                                    borderWidth: 5,
+                                                    borderColor: Colors.primary
+                                                }} />
+                                            </TouchableOpacity> :
+                                            <TouchableOpacity style={{
+                                                height: 120,
+                                                width: 120,
+                                            }} onPress={toogleShowProfile}>
+                                                <Image source={require('../assets/icons/user.png')} style={{
+                                                    height: 80,
+                                                    width: 80,
+                                                    tintColor: 'black',
+                                                    borderRadius: 50,
+                                                    borderWidth: 1,
+                                                }} />
+                                            </TouchableOpacity>
                                     }
 
                                 </View>
@@ -217,6 +241,7 @@ const UserProfile = ({ navigation }: any) => {
 
                                 alignItems: 'flex-start'
                             }}>
+
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     <Menu>
                                         <MenuTrigger>
@@ -231,7 +256,7 @@ const UserProfile = ({ navigation }: any) => {
                                             <MenuOption onSelect={() => navigation.navigate('BlockedUsers')} text='Blocked People' />
                                         </MenuOptions>
                                     </Menu>
-                               
+
                                     <Text style={[styles.headingStyle]}>{userProfile.usrName}</Text>
 
                                     {userProfile.signed &&
@@ -245,9 +270,9 @@ const UserProfile = ({ navigation }: any) => {
                                 </View>
 
                                 <Text style={{
-                                    fontFamily: Fonts.regular, 
+                                    fontFamily: Fonts.regular,
                                     fontSize: 18,
-                                      marginLeft:'7.5%',
+                                    marginLeft: '7.5%',
                                     color: 'black',
                                     // textAlign: 'right', // Ensure text alignment is to the right
                                 }}>
@@ -269,7 +294,7 @@ const UserProfile = ({ navigation }: any) => {
 
                         {/* Other UI elements */}
                         <Divider />
-                        <View style={{marginLeft:10}}>
+                        <View style={{ marginLeft: 10 }}>
                             <Text style={styles.headingStyle}>Game Types</Text>
                             <View style={{ margin: 0 }}>
                                 <Text style={{ color: 'black' }}>{userProfile && userProfile.bio}</Text>
@@ -281,7 +306,7 @@ const UserProfile = ({ navigation }: any) => {
                 <Divider />
 
                 {/* Friends List */}
-                <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between', padding:10}}>
+                <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between', padding: 10 }}>
                     <Text style={styles.headingStyle}>Buddies</Text>
                     <TouchableOpacity onPress={() => navigation.navigate('Friends', { selectedOption: "Your Friends" })}>
                         <Text style={styles.linkStle}>See All</Text>
@@ -290,18 +315,18 @@ const UserProfile = ({ navigation }: any) => {
                 <View style={styles.friendBoxContainer}>
                     <ScrollView horizontal={true} nestedScrollEnabled={true}>
                         <View style={styles.friendBoxes}>
-							{
-								friends.map((friend: any, index: any) => {
-									return (
-										<FriendBox key={index} data={friend} />
-									);
-								})
-							}
-						</View>
+                            {
+                                friends.map((friend: any, index: any) => {
+                                    return (
+                                        <FriendBox key={index} data={friend} />
+                                    );
+                                })
+                            }
+                        </View>
                     </ScrollView>
 
                 </View>
-                <View  style={{marginLeft:10}}>
+                <View style={{ marginLeft: 10 }}>
                     <Text style={styles.headingStyle}>Posts</Text>
                 </View>
                 <View>
@@ -341,8 +366,8 @@ const UserProfile = ({ navigation }: any) => {
                         {/* <Feed /> */}
                         <View style={{ backgroundColor: Colors.feedBackground, flexDirection: 'row' }}>
                             {allPosts.map((item: any, index: number) => // FIXME make sure can be indexed
-                               { 
-                                return <FeedBox key={index}  admin={item?.userProfile?.usrName} avatar={item?.userProfile?.profilePic}
+                            {
+                                return <FeedBox key={index} admin={item?.userProfile?.usrName} avatar={item?.userProfile?.profilePic}
                                     time={item?.time}
                                     picture={item.image}
                                     likes={allLikes.length}
