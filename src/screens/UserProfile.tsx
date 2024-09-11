@@ -170,7 +170,7 @@ const UserProfile = ({ navigation }: any) => {
                         {/* Profile header */}
                         <View>
                             <View style={{ justifyContent: 'center', width: '100%', position: 'relative' }}>
-                                <Image style={styles.coverPhoto} source={userProfile?.coverPic?.length > 0 ? { uri: userProfile?.coverPic } : require('../assets/Trace467.jpg')} />
+                                <Image style={styles.coverPhoto} source={userProfile?.coverPic?.length > 1 ? { uri: userProfile?.coverPic } : require('../assets/Trace467.jpg')} />
                                 <TouchableOpacity
                                     style={{ position: 'absolute', top: 0, right: 0, margin: 10 }}
                                     onPress={() => navigation.push('EditProfile', { userProfile })}>
@@ -190,7 +190,7 @@ const UserProfile = ({ navigation }: any) => {
                                 }}>
 
                                     {
-                                        userProfile.profilePic !== " " ?
+                                        userProfile.profilePic?.length > 1 ?
                                             <Image source={{ uri: userProfile.profilePic }} style={{
                                                 height: '100%',
                                                 width: '100%',
@@ -356,19 +356,6 @@ const UserProfile = ({ navigation }: any) => {
                             })
 
                             }
-                            <Menu>
-                                <MenuTrigger>
-                                    <Image source={require('../assets/icons/dots.png')} style={{
-                                        height: 20,
-                                        width: 20,
-                                        tintColor: Colors.linkColor,
-                                        marginLeft: 10,
-                                    }} />
-                                </MenuTrigger>
-                                <MenuOptions>
-                                    <MenuOption onSelect={() => handleRemovePost(item?.postId)} text='Remove Post' />
-                                </MenuOptions>
-                            </Menu>
                         </View>
                     </View>
                 </View>

@@ -88,7 +88,7 @@ export default function SignUpForm(props: SignUpFormProps) {
                 const userId:any = user?.uid;
                
                 // adds the new user to the Users firestore database collection
-                setInProfile(userId, 'no bio', ' ','', 'Sportsman', usrName,' ')
+                setInProfile(userId, 'no bio', '','', 'Sportsman', usrName,'')
               disableLoading();
             })
             .catch(error => {

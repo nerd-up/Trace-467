@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "739431608336",
+    "project_id": "trace467-d4f13",
+    "storage_bucket": "trace467-d4f13.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:739431608336:android:7730411e13a28e59911a95",
+        "android_client_info": {
+          "package_name": "com.trace467"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "739431608336-cdrl73u49f147ukbdutj21h3i72j4ler.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.trace467",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "739431608336-shl6v9uadplgsmg404oj29u6b34ee6s9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARP3gruNZB2K8b237pIGUQNgU5vFxDZHw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "739431608336-shl6v9uadplgsmg404oj29u6b34ee6s9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "739431608336-i9rmr7lvl9q1b6bmafak1l53gesjsb24.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.Trace467"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

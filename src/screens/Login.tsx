@@ -5,7 +5,7 @@
  * @last modified 9/20/2023
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 
@@ -22,21 +22,31 @@ import { getProfile, setInProfile } from '../services/DataService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
 import { showSucess } from '../utils/utitlity';
-GoogleSignin.configure({
-    webClientId: '1047966594516-ta9816sp0tk1423cks3e10npsaq9ec4r.apps.googleusercontent.com',
-});
+
 function Login({ navigation }: any) {
+    
     const setProfileData = useUserProfileStore(store => store.setProfileData);
     async function onGoogleButtonPress() {
         // Check if your device supports Google Play
         await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
         // Get the users ID token
-        const { idToken } = await GoogleSignin.signIn();
+        const userInfo = await GoogleSignin.signIn();
+        console.log("userInfo",userInfo);
+    const { idToken } = userInfo?.data;
 
+    if (!idToken) {
+      throw new Error("No idToken found");
+    }
         // Create a Google credential with the token
         const googleCredential = auth.GoogleAuthProvider.credential(idToken);
         return auth().signInWithCredential(googleCredential);
     }
+
+    useEffect(()=>{
+        GoogleSignin.configure({
+            webClientId: '739431608336-shl6v9uadplgsmg404oj29u6b34ee6s9.apps.googleusercontent.com',
+        });
+    },[])
     // async function onFacebookButtonPress() {
 
     //     // Attempt login with permissions
@@ -90,11 +100,11 @@ function Login({ navigation }: any) {
                         await firestore().collection('Users').doc(res?.user?.uid).set({
                             userID: res?.user?.uid,
                             bio: 'no bio',
-                            profilePic: ' ',
-                            coverPic: ' ',
+                            profilePic: '',
+                            coverPic: '',
                             residency: 'Sportsman',
                             usrName: res?.additionalUserInfo?.profile?.name,
-                            signed: ' '
+                            signed: ''
                         }).then(async (response: any) => {
                             console.log(response);
                             await AsyncStorage.setItem('userID', res?.user?.uid);
