@@ -29,8 +29,6 @@ const FriendBox = ({data,profilePic}: FriendBoxProps) => {
 										borderColor: Colors.primary
 
 									}} /> 
-								
-							
             <TouchableOpacity onPress={()=>navigation.navigate('User',{userID:data?.userID})}> 
 			 <Text style={styles.friendBoxTextStyle}>
                 {limitText(data?.usrName)}
