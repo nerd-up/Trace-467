@@ -25,6 +25,7 @@ import Report from '../screens/Report';
 import ReportUser from '../screens/ReportUser';
 import BlockedUsers from '../screens/BlockedUsers';
 import EditPost from '../screens/EditPost';
+import Terms from '../screens/Terms';
 
 const Stack = createNativeStackNavigator();
 
@@ -54,6 +55,7 @@ function ScholarStack() {
            <Stack.Screen name="ReportPost" component={Report}  />
            <Stack.Screen name="DownloadCertificate" component={Certificate}  />
            <Stack.Screen name="ReportUser" component={ReportUser}  />
+           <Stack.Screen name="Terms" component={Terms} />
             {/* <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Settings" component={Settings} /> */}
         </Stack.Navigator>

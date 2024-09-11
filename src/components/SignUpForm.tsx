@@ -6,7 +6,7 @@
  */
 
 import React, { useState } from 'react';
-import { Alert, BackHandler, Text, TextInput, View } from 'react-native';
+import { Alert, BackHandler, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
@@ -18,6 +18,7 @@ import SButton from './SButton';
 import useLoadingStore from '../zustand/UseLoadingStore';
 import Colors from '../theme/ScholarColors';
 import { showError, showSucess } from '../utils/utitlity';
+import CheckBox from './CheckBox';
 
 type SignUpFormProps = {
     nav?: any,
@@ -38,6 +39,7 @@ export default function SignUpForm(props: SignUpFormProps) {
     const [errorMsg, setErrorMsg] = useState("");
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
     const {allowLoading, disableLoading } = useLoadingStore();
+    const [termsAccepted,setIsTermsAccepted]=useState(false);
 
     async function tryAndSignIn() {
 
@@ -109,7 +111,14 @@ export default function SignUpForm(props: SignUpFormProps) {
             </View>
 
             <Text style={{ color: "red" }}>{errorMsg.toString()}</Text>
-
+            <CheckBox
+                isChecked={termsAccepted}
+                onPress={() => setIsTermsAccepted(!termsAccepted)}
+                label="I agree to the Terms and Conditions"
+            />
+            <TouchableOpacity onPress={() => props.nav.navigate('Terms')}>
+                <Text style={{color:'blue'}}>Terms and Conditions</Text>
+            </TouchableOpacity>
             {/* Submit Button */}
             <View style={formStyles.submitBtnContainer}>
                 <SButton text="Sign Up" action={() => tryAndSignIn()}></SButton>

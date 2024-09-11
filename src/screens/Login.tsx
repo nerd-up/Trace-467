@@ -16,7 +16,7 @@ import ScholarBanner from '../components/UnifyBanner';
 import formStyles from '../styles/FormStyles';
 import auth from '@react-native-firebase/auth';
 import styles from '../styles/Styles';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import useUserProfileStore from '../zustand/UserProfileStore';
 import { getProfile, setInProfile } from '../services/DataService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -35,9 +35,6 @@ function Login({ navigation }: any) {
 
         // Create a Google credential with the token
         const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-        //    console.log(googleCredential,"credentials");
-
-        // Sign-in the user with the credential
         return auth().signInWithCredential(googleCredential);
     }
     // async function onFacebookButtonPress() {
@@ -89,7 +86,7 @@ function Login({ navigation }: any) {
 
                         //     console.error(error);
                         // })
-                        
+                        console.log("here")
                         await firestore().collection('Users').doc(res?.user?.uid).set({
                             userID: res?.user?.uid,
                             bio: 'no bio',
@@ -99,12 +96,26 @@ function Login({ navigation }: any) {
                             usrName: res?.additionalUserInfo?.profile?.name,
                             signed: ' '
                         }).then(async (response: any) => {
-                           
-                            // setProfileData(res?.additionalUserInfo?.profile);
+                            console.log(response);
                             await AsyncStorage.setItem('userID', res?.user?.uid);
                             navigation.navigate('Splash');
-                        }).catch((e: any) => {
+                        }).catch((error: any) => {
                            
+                                // Handle errors (including cancellation)
+                                if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+                                    // The user canceled the sign-in
+                                    console.log('Sign-in canceled by user');
+                                } else if (error.code === statusCodes.IN_PROGRESS) {
+                                    // Operation (e.g., sign-in) is in progress
+                                    console.log('Sign-in operation already in progress');
+                                } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+                                    // Play Services not available or outdated
+                                    console.log('Play Services not available or outdated');
+                                } else {
+                                    // Other errors
+                                    console.error('An error occurred during Google Sign-In:', error);
+                                }
+                            
                         });
 
                         // setProfileData(res?.additionalUserInfo?.profile);
