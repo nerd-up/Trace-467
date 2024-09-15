@@ -8,7 +8,7 @@
 import React, { useState } from 'react';
 import { Alert, Text, TextInput, View } from 'react-native';
 
-import auth from '@react-native-firebase/auth';
+import auth, { sendPasswordResetEmail } from '@react-native-firebase/auth';
 
 import { getProfile, setInProfile } from '../services/DataService';
 import formStyles from '../styles/FormStyles';
@@ -21,6 +21,7 @@ import useLoadingStore from '../zustand/UseLoadingStore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { showError, showSucess } from '../utils/utitlity';
+import PopUpMessage from './PopUpMessage';
 
 type LoginFormProps = {
     nav: any
@@ -35,6 +36,7 @@ export default function LoginForm(props: LoginFormProps) {
     const [usrEmail, setUserEmail] = useState("");
     const [usrPassword, setUserPassword] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
+    const [visiblMsg,setvisibleMsg]=useState(false);
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
     const {allowLoading, disableLoading } = useLoadingStore();
     const userProfile = useUserProfileStore(store => store)
@@ -78,9 +80,7 @@ export default function LoginForm(props: LoginFormProps) {
                         type: 'info',
                         text1: 'Please Verify Your Email'
                     });
-
                 }
-
             })
             .catch(error => {
                 disableLoading();
@@ -164,12 +164,32 @@ export default function LoginForm(props: LoginFormProps) {
                 console.log(error);
                 setIsSubmitDisabled(false);
             });
-            
+    }
+
+    const forgotPassword=async()=>{
+        if (usrEmail.length === 0) {
+            Toast.show({
+                type: 'error',
+                text1: "Error!",
+                text2: "Email is Required!"
+            });
+            return;
+        }
+        auth().sendPasswordResetEmail(usrEmail)
+        .then((res)=>{
+            setvisibleMsg(true);
+setTimeout(() => {
+     setvisibleMsg(false);
+}, 2500);
+        })
+        .catch((error) => {
+            showError('Error sending email: '+error?.code);
+        })
     }
 
     return (
         <View style={formStyles.submitContainer}>
-            
+        <PopUpMessage visible={visiblMsg} title='Email Sent' text='Reset password email sent successfully. Please check your inbox.' />
             <View>
                 <TextInput autoCapitalize='none' keyboardType='default' style={styles.formField} placeholder='Enter email...' onChangeText={text => setUserEmail(text)}></TextInput>
                 <TextInput style={styles.formField} placeholder='Enter Password...' onChangeText={text => setUserPassword(text)} secureTextEntry={true}></TextInput>
@@ -180,6 +200,7 @@ export default function LoginForm(props: LoginFormProps) {
             {/* Submit Button */}
             <View style={formStyles.submitBtnContainer}>
                 <SButton text="Log in" action={() => tryAndLogIn()}></SButton>
+                <SButton styleType="Sentence" text="Forgot password" action={forgotPassword}></SButton>
                 <SButton styleType="Sentence" text="Don't have an account? SignUp" action={() => props.nav.navigate('SignUp')}></SButton>
             </View>
 

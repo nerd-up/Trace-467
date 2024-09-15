@@ -157,6 +157,7 @@ const FindFriends = ({ blockedUsers }: any) => {
                 />
             </View>
             <ScrollView showsVerticalScrollIndicator={false}
+            contentContainerStyle={{paddingBottom:170,}}
             refreshControl={
                 <RefreshControl refreshing={refresh} onRefresh={fetchUsers} />
             }
@@ -166,13 +167,13 @@ const FindFriends = ({ blockedUsers }: any) => {
                         .map((user: any, index: any) => {
                             return blockedUsers?.find((item: any) => item?.userID !== user?.userID) &&
                                 user.usrName.toLowerCase().includes(search.toLowerCase()) ? (
-                                <View style={stylings.classmate} key={index}>
+                                <View style={stylings.classmate} key={index+user?.userID}>
                                     <TouchableOpacity onPress={() => moveNext(user.userID)}>
                                         <View style={{ flexDirection: 'row' }}>
                                             <View style={stylings.classmateIcon}>
-                                                {user.profilePic && user.profilePic !== ' ' ? (
+                                                {user.profilePic?.length>1 ? (
                                                     <Image
-                                                        source={{ uri: user.profilePic }}
+                                                        source={{ uri: user?.profilePic }}
                                                         style={{ height: 60, width: 60, borderRadius: 50 }}
                                                     />
                                                 ) : (

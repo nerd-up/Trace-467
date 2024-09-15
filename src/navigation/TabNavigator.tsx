@@ -51,123 +51,6 @@ function ScholarTabs() {
     const navigation: any = useNavigation();
     const { allowLoading,disableLoading} = useLoadingStore();
 
-
-    const signOut = () => {
-        Alert.alert(
-            "Logout Confirmation",
-            "Are you sure you want to logout?",
-            [
-                {
-                    text: "Cancel",
-                   
-                    style: "cancel"
-                },
-                {
-                    text: "Yes",
-                    onPress: () => {
-                        auth().signOut().then(() => {
-                            AsyncStorage.removeItem('userID');
-                            navigation.navigate('Login');
-                        }).catch(error => {
-                            console.error("Sign out error: ", error);
-                        });
-                    }
-                }
-            ],
-            { cancelable: false }
-        );
-    }
-
-    const deleteUser = async() => {
-        allowLoading();
-        const userId=getUserId();
-        Alert.alert(
-            "Account Deletion Confirmation",
-            "Are you sure you want to Delete your account? You will not be able to login again...",
-            [
-                {
-                    text: "Cancel",
-                   
-                    style: "cancel"
-                },
-                {
-                    text: "Yes",
-                    onPress: () => {
-                        auth().currentUser?.delete().then(() => {
-                            firestore().collection('Users')
-                            .doc(userId).get()
-                            .then(()=>{
-                                const userRef=firestore()
-                                .collection("Users");
-                                const friendRef=firestore()
-                                .collection("Users")
-                                .doc(userId)
-                                .collection("Friends")
-                                const friendSnapshot = friendRef
-                                .get()
-                                .then((snapshot:any)=>{
-                                    disableLoading();
-                                     AsyncStorage.removeItem('userID');
-                            navigation.navigate('Login');
-                            showSucess('Account Deleted!');
-                                    snapshot?._docs?.map((friend:any)=>{
-                                   userRef.doc(friend?._data?.friend)
-                                   .collection('Friends')
-                                   .doc(userId)
-                                   .delete();
-                                    })
-                                    try {
-                                        const querySnapshot:any =  friendRef.get();
-                                        const batch = firestore().batch();
-                                        querySnapshot?.forEach((doc :any)=> {
-                                            batch.delete(doc.ref);
-                                        });
-                                
-                                         batch.commit();
-                                       
-                                    } catch (error) {
-                                    disableLoading();
-
-                                  
-                                    }
-                                    try {
-                                        const querySnapshot:any =  firestore()
-                                        .collection('AllPosts')
-                                        .doc(userId)
-                                        .collection('Posts').get();
-                                        const batch = firestore().batch();
-                                        querySnapshot?.forEach((doc :any)=> {
-                                            batch.delete(doc.ref);
-                                        });
-                                
-                                         batch.commit();
-                                       
-                                    } catch (error) {
-                                    disableLoading();
-                                     
-                                    }
-                                    
-                                })
-                           
-                            })
-                            .catch((error:any)=>{
-                                disableLoading();
-
-                        Alert.alert("Account Deletion Error error: ", error?.code);
-                            })
-                            // AsyncStorage.removeItem('userID');
-                            // navigation.navigate('Login');
-                        }).catch(error => {
-                            disableLoading();
-                        Alert.alert("Account Deletion Error error: ", error?.code);
-                        });
-                    }
-                }
-            ],
-            { cancelable: false }
-        );
-    }
-
     return (
         <Tab.Navigator
             screenOptions={({ route }) => ({
@@ -214,21 +97,8 @@ function ScholarTabs() {
                             style={{ marginRight: 15, height: 20, width: 20, tintColor: Colors.primary }}
                         />
                         </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Menu>
-                                <MenuTrigger>
-                                    <View style={{flexDirection:'row'}}>
-                                        <Image
-                                            source={require('../assets/icons/logout.png')}
-                                            style={{ marginRight: 15, height: 20, width: 20, tintColor: Colors.primary }}
-                                        />
-                                    </View>
-                                </MenuTrigger>
-                                <MenuOptions>
-                                    <MenuOption onSelect={() => signOut()} text='Logout' />
-                                    <MenuOption onSelect={() => deleteUser()} text='Delete My Account' />
-                                </MenuOptions>
-                            </Menu>
+                        <TouchableOpacity onPress={()=>navigation.navigate('Settings')}>
+                            <Image style={{height:20,width:20,tintColor:Colors.primary,marginRight:'5%'}} source={require('../assets/icons/settings.png')} />
                         </TouchableOpacity>
                     </View>
                     )

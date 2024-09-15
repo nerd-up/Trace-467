@@ -19,6 +19,7 @@ import useLoadingStore from '../zustand/UseLoadingStore';
 import Colors from '../theme/ScholarColors';
 import { showError, showSucess } from '../utils/utitlity';
 import CheckBox from './CheckBox';
+import BackBtn from './BackBtn';
 
 type SignUpFormProps = {
     nav?: any,

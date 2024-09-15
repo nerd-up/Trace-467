@@ -93,11 +93,9 @@ export default function FeedBox(props: FeedBoxProps) {
                 <TouchableOpacity onPress={() => navigation.navigate('User', { userID: props.userID })}>
                     <View style={styles.avatarSection}>
                         {
-                            props.avatar?.length>1 ?
-                            <Image source={{ uri: props.avatar }} style={styles.postHeaderProfile} />:
-
-                                <Image style={styles.postHeaderProfile} source={require('../assets/icons/user.png')} /> 
-                                
+                          props.avatar == null ||  props.avatar?.length<1 ?
+                                <Image style={styles.postHeaderProfile} source={require('../assets/icons/user.png')} /> :
+                                <Image source={{ uri: props.avatar }} style={styles.postHeaderProfile} />
                         }
                     </View>
                 </TouchableOpacity>
