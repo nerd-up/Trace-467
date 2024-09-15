@@ -367,7 +367,7 @@ const UserProfile = ({ navigation }: any) => {
                         <View style={{ backgroundColor: Colors.feedBackground, flexDirection: 'row' }}>
                             {allPosts.map((item: any, index: number) => // FIXME make sure can be indexed
                             {
-                                return <FeedBox key={index} admin={item?.userProfile?.usrName} avatar={item?.userProfile?.profilePic}
+                                return <FeedBox key={index} admin={userProfile?.usrName} avatar={userProfile?.profilePic}
                                     time={item?.time}
                                     picture={item.image}
                                     likes={allLikes.length}

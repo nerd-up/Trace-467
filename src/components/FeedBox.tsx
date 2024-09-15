@@ -73,7 +73,7 @@ export default function FeedBox(props: FeedBoxProps) {
     return (
         <View style={styles.post} >
             <View style={styles.postAdmin}>
-                <View style={{ left: 350, top: 10, zIndex: 2, position: 'absolute' }}>
+                <View style={{ top: 10,right:0, zIndex: 2, position: 'absolute' }}>
                     <Menu>
                         <MenuTrigger>
                             <Image source={require('../assets/icons/dots.png')} style={{ height: 20, width: 20, tintColor: 'black' }} />
@@ -93,15 +93,18 @@ export default function FeedBox(props: FeedBoxProps) {
                 <TouchableOpacity onPress={() => navigation.navigate('User', { userID: props.userID })}>
                     <View style={styles.avatarSection}>
                         {
-                            props.avatar === " " || props.avatar == null ?
-                                <Image style={styles.postHeaderProfile} source={require('../assets/icons/user.png')} /> :
-                                <Image source={{ uri: props.avatar }} style={styles.postHeaderProfile} />
+                            props.avatar?.length>1 ?
+                            <Image source={{ uri: props.avatar }} style={styles.postHeaderProfile} />:
+
+                                <Image style={styles.postHeaderProfile} source={require('../assets/icons/user.png')} /> 
+                                
                         }
                     </View>
                 </TouchableOpacity>
                 <View style={styles.adminSection}>
                     <Text style={styles.postAdminName}>{props.admin}</Text>
                     <Text style={{ color: 'gray' }}>
+
                         {new Date(props.time).toLocaleDateString()}
                     </Text>
                 </View>

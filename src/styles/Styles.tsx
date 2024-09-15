@@ -173,9 +173,7 @@ const styles = StyleSheet.create({
         width: '100%',
         overflow: 'hidden',
         backgroundColor: Colors.background,
-        padding: 6,
-        marginTop: 6,
-
+        marginTop: 2,
     },
 
     postHolder: {

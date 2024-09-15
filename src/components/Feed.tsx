@@ -17,7 +17,7 @@ type FeedProps = {
 const Feed = (props: FeedProps) => {
     const [feed, setFeed]:any = useState([]);
     const [loading, setLoading] = useState(true);
-    const [limit,setLimit]=useState(5);
+    const [limit,setLimit]=useState(20);
     const [refresh,setRefresh]=useState(false);
 
     function onStartReachedCallback() {
@@ -79,7 +79,7 @@ const Feed = (props: FeedProps) => {
     };
     const increaseLimit=()=>{
         setRefresh(true);
-        setLimit(limit+5);
+        setLimit(limit+limit);
         setRefresh(false);
     }
     useEffect(() => {

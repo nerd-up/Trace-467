@@ -61,7 +61,6 @@ const Home = ({ navigation }: any) => {
                         </Text>
                     </View>
                     </TouchableOpacity>
-
 					<View style={{ marginLeft: 5 }}>
 						<TouchableOpacity>
                         <Image source={require('../assets/icons/images.png')} style={{

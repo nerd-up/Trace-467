@@ -199,11 +199,11 @@ const User = ({ navigation }: any) => {
                             </Menu>
                         </View>
                         <Text style={styles.residencyText}>{currentUser.residency}</Text>
-                        {requests.length > 0 && requests.find((user: any) => (user?.userID === auth().currentUser?.uid)) ?
-                            <View style={{ flex: 1, width: '90%', borderRadius: 20, justifyContent: 'center', flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.primary }}>
-                                <Text style={styles.residencyText}>Friend Request Sent</Text>
+                        {requests.length > 0 && requests.find((user: any) => (user?.userID === auth().currentUser?.uid)) &&
+                            // <View style={{ flex: 1, width: '90%', borderRadius: 20, justifyContent: 'center', flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.primary }}>
+                            //     <Text style={styles.residencyText}>Friend Request Sent</Text>
                                 
-                            </View> :
+                            // </View> :
                             (
                                 <View style={{ flex: 1, width: '90%', borderRadius: 20, justifyContent: 'center', flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.primary }}>
                                     <Text style={styles.residencyText}>Send Request</Text>

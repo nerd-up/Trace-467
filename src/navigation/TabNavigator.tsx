@@ -189,11 +189,13 @@ function ScholarTabs() {
                 }, headerStyle: {
                     backgroundColor: Colors.lightBackground
                 }
-                , headerRight: () =>
+                , 
+                headerRight: () =>
                     <TouchableOpacity onPress={() => navigation.navigate('Chats')}>
                         <Image style={{ height: 40, width: 40, marginRight: 10, tintColor: Colors.primary }} source={require('../assets/icons/chat.png')}></Image>
                     </TouchableOpacity>
-            }} />
+            }} 
+            />
             
             <Tab.Screen name="Trophies" component={Trophies} options={{ title: "Trophies", headerShown: false }} />
             <Tab.Screen name="Friends" component={Friends} options={{ title: "Buddies", headerShown: false }} />

@@ -171,7 +171,7 @@ export default function LoginForm(props: LoginFormProps) {
         <View style={formStyles.submitContainer}>
             
             <View>
-                <TextInput style={styles.formField} placeholder='Enter email...' onChangeText={text => setUserEmail(text)}></TextInput>
+                <TextInput autoCapitalize='none' keyboardType='default' style={styles.formField} placeholder='Enter email...' onChangeText={text => setUserEmail(text)}></TextInput>
                 <TextInput style={styles.formField} placeholder='Enter Password...' onChangeText={text => setUserPassword(text)} secureTextEntry={true}></TextInput>
             </View>
 

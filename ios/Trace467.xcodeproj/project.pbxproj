@@ -41,6 +41,7 @@
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = Trace467/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-Trace467.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trace467.debug.xcconfig"; path = "Target Support Files/Pods-Trace467/Pods-Trace467.debug.xcconfig"; sourceTree = "<group>"; };
 		3C4087CE2C8AA9B80015DF28 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		3C6A96592C9352DE003BDE44 /* Trace467.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Trace467.entitlements; path = Trace467/Trace467.entitlements; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-Trace467.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trace467.release.xcconfig"; path = "Target Support Files/Pods-Trace467/Pods-Trace467.release.xcconfig"; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-Trace467-Trace467Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Trace467-Trace467Tests.debug.xcconfig"; path = "Target Support Files/Pods-Trace467-Trace467Tests/Pods-Trace467-Trace467Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		75D7089FCE7506212CCCE53A /* Pods_Trace467.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Trace467.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -91,6 +92,7 @@
 		13B07FAE1A68108700A75B9A /* Trace467 */ = {
 			isa = PBXGroup;
 			children = (
+				3C6A96592C9352DE003BDE44 /* Trace467.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -489,6 +491,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Trace467/Trace467.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = S4V356DQQ3;
 				ENABLE_BITCODE = NO;
@@ -504,7 +507,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.Trace467;
 				PRODUCT_NAME = Trace467;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -518,6 +521,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = Trace467/Trace467.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = S4V356DQQ3;
 				INFOPLIST_FILE = Trace467/Info.plist;
@@ -532,7 +536,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.Trace467;
 				PRODUCT_NAME = Trace467;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

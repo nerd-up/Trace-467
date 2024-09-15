@@ -105,7 +105,7 @@ export default function SignUpForm(props: SignUpFormProps) {
             {/* Input Fields */}
             <View>
                 <TextInput placeholderTextColor={'grey'} style={styles.formField} placeholder='Enter Full Name...' onChangeText={text => setUserName(text)}></TextInput>
-                <TextInput placeholderTextColor={'grey'}  style={styles.formField} placeholder='Enter Email...' onChangeText={text => setUserEmail(text)}></TextInput>
+                <TextInput autoCapitalize='none'  placeholderTextColor={'grey'}  style={styles.formField} placeholder='Enter Email...' onChangeText={text => setUserEmail(text)}></TextInput>
                 <TextInput placeholderTextColor={'grey'}  style={styles.formField} placeholder='Enter Password...' onChangeText={text => setUserPassword1(text)} secureTextEntry={true}></TextInput>
                 <TextInput placeholderTextColor={'grey'}  style={styles.formField} placeholder='Confirm Password...' onChangeText={text => setUserPassword2(text)} secureTextEntry={true}></TextInput>
             </View>
