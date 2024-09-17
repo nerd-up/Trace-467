@@ -31,7 +31,7 @@ export default function FeedBox(props: FeedBoxProps) {
     const [likes, setLikes] = useState<any[]>([]);
     const [comments, setComments] = useState<any[]>([]);
     const [LikeIcon, setLikeIcon] = useState(require('../assets/icons/like.png'));
-    
+
     const fetchAllLikes = () => {
         firestore()
             .collection("AllPosts")
@@ -68,12 +68,11 @@ export default function FeedBox(props: FeedBoxProps) {
     useEffect(() => {
         fetchAllComments();
         fetchAllLikes();
-    }, [likes]);
-
+    }, []);
     return (
         <View style={styles.post} >
             <View style={styles.postAdmin}>
-                <View style={{ top: 10,right:0, zIndex: 2, position: 'absolute' }}>
+                <View style={{ top: 10, right: 0, zIndex: 2, position: 'absolute' }}>
                     <Menu>
                         <MenuTrigger>
                             <Image source={require('../assets/icons/dots.png')} style={{ height: 20, width: 20, tintColor: 'black' }} />
@@ -81,8 +80,8 @@ export default function FeedBox(props: FeedBoxProps) {
                         <MenuOptions>
                             {auth().currentUser?.uid === props?.userID ?
                                 <>
-                                    <MenuOption onSelect={() => navigation.navigate('EditPost',{postID:props.postID})} text='Edit Post' />
-                                    <MenuOption onSelect={() => deletePost(props?.userID,props?.postID)} text='Delete Post' />
+                                    <MenuOption onSelect={() => navigation.navigate('EditPost', { postID: props.postID })} text='Edit Post' />
+                                    <MenuOption onSelect={() => deletePost(props?.userID, props?.postID)} text='Delete Post' />
                                 </>
                                 : <MenuOption onSelect={() => navigation.navigate('ReportPost', { postDetails: props })} text='Report Post' />
                             }
@@ -93,7 +92,7 @@ export default function FeedBox(props: FeedBoxProps) {
                 <TouchableOpacity onPress={() => navigation.navigate('User', { userID: props.userID })}>
                     <View style={styles.avatarSection}>
                         {
-                          props.avatar == null ||  props.avatar?.length<1 ?
+                            props.avatar == null || props.avatar?.length < 1 ?
                                 <Image style={styles.postHeaderProfile} source={require('../assets/icons/user.png')} /> :
                                 <Image source={{ uri: props.avatar }} style={styles.postHeaderProfile} />
                         }

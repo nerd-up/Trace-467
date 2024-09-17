@@ -39,13 +39,13 @@ export default function SignUpForm(props: SignUpFormProps) {
     const [usrPassword2, setUserPassword2] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
-    const {allowLoading, disableLoading } = useLoadingStore();
-    const [termsAccepted,setIsTermsAccepted]=useState(false);
+    const { allowLoading, disableLoading } = useLoadingStore();
+    const [termsAccepted, setIsTermsAccepted] = useState(false);
 
     async function tryAndSignIn() {
 
         setIsSubmitDisabled(true);
-        
+
         if (usrName.length === 0) {
             setErrorMsg("Name required!");
             setIsSubmitDisabled(false);
@@ -82,20 +82,20 @@ export default function SignUpForm(props: SignUpFormProps) {
                 const user = auth().currentUser;
                 await user?.sendEmailVerification().then(() => {
                     showSucess('Verification email has been sent. Please check your inbox.');
-                  })
-                  .catch((error) => {
-                    showError('Error sending verification email: ' + error.message);
-                  });
-                const userId:any = user?.uid;
-               
+                })
+                    .catch((error) => {
+                        showError('Error sending verification email: ' + error.message);
+                    });
+                const userId: any = user?.uid;
+
                 // adds the new user to the Users firestore database collection
-                setInProfile(userId, 'no bio', '','', 'Sportsman', usrName,'')
-              disableLoading();
+                setInProfile(userId, 'no bio', '', '', 'Sportsman', usrName, '')
+                disableLoading();
             })
             .catch(error => {
                 // Alert.alert("Error creating account!");
                 setErrorMsg(error?.code);
-               
+
                 disableLoading();
                 setIsSubmitDisabled(false);
             });
@@ -106,9 +106,9 @@ export default function SignUpForm(props: SignUpFormProps) {
             {/* Input Fields */}
             <View>
                 <TextInput placeholderTextColor={'grey'} style={styles.formField} placeholder='Enter Full Name...' onChangeText={text => setUserName(text)}></TextInput>
-                <TextInput autoCapitalize='none'  placeholderTextColor={'grey'}  style={styles.formField} placeholder='Enter Email...' onChangeText={text => setUserEmail(text)}></TextInput>
-                <TextInput placeholderTextColor={'grey'}  style={styles.formField} placeholder='Enter Password...' onChangeText={text => setUserPassword1(text)} secureTextEntry={true}></TextInput>
-                <TextInput placeholderTextColor={'grey'}  style={styles.formField} placeholder='Confirm Password...' onChangeText={text => setUserPassword2(text)} secureTextEntry={true}></TextInput>
+                <TextInput autoCapitalize='none' placeholderTextColor={'grey'} style={styles.formField} placeholder='Enter Email...' onChangeText={text => setUserEmail(text)}></TextInput>
+                <TextInput placeholderTextColor={'grey'} style={styles.formField} placeholder='Enter Password...' onChangeText={text => setUserPassword1(text)} secureTextEntry={true}></TextInput>
+                <TextInput placeholderTextColor={'grey'} style={styles.formField} placeholder='Confirm Password...' onChangeText={text => setUserPassword2(text)} secureTextEntry={true}></TextInput>
             </View>
 
             <Text style={{ color: "red" }}>{errorMsg.toString()}</Text>
@@ -118,17 +118,17 @@ export default function SignUpForm(props: SignUpFormProps) {
                 label="I agree to the Terms and Conditions"
             />
             <TouchableOpacity onPress={() => props.nav.navigate('Terms')}>
-                <Text style={{color:'blue'}}>Terms and Conditions</Text>
+                <Text style={{ color: 'blue' }}>Terms and Conditions</Text>
             </TouchableOpacity>
             {/* Submit Button */}
             <View style={formStyles.submitBtnContainer}>
                 <SButton text="Sign Up" action={() => tryAndSignIn()}></SButton>
-                <SButton 
-  styleType="Sentence" 
-  text="Already have an account? Login" 
-  action={() => props.nav.navigate('Login')} 
-  style={{ backgroundColor: '#C4A484' }} // Your custom color
-/>
+                <SButton
+                    styleType="Sentence"
+                    text="Already have an account? Login"
+                    action={() => props.nav.navigate('Login')}
+                    style={{ backgroundColor: '#C4A484' }} // Your custom color
+                />
             </View>
         </View>)
 }

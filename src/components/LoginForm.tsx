@@ -24,7 +24,8 @@ import { showError, showSucess } from '../utils/utitlity';
 import PopUpMessage from './PopUpMessage';
 
 type LoginFormProps = {
-    nav: any
+    nav: any,
+    setVisibleMsg:any,
 }
 
 /**
@@ -36,9 +37,9 @@ export default function LoginForm(props: LoginFormProps) {
     const [usrEmail, setUserEmail] = useState("");
     const [usrPassword, setUserPassword] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
-    const [visiblMsg,setvisibleMsg]=useState(false);
+    const [visiblMsg, setvisibleMsg] = useState(false);
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
-    const {allowLoading, disableLoading } = useLoadingStore();
+    const { allowLoading, disableLoading } = useLoadingStore();
     const userProfile = useUserProfileStore(store => store)
 
     const setProfileData = useUserProfileStore(store => store.setProfileData)
@@ -59,16 +60,16 @@ export default function LoginForm(props: LoginFormProps) {
                     getProfile(userId)
                         .then(async (profile: any) => {
 
-                         
+
 
                             // if could not find a profile for anonomous
                             if (profile === undefined) {
-                                
-                                setInProfile(userId, 'no bio', ' ', 'no Residency', ' ',' ')
+
+                                setInProfile(userId, 'no bio', ' ', 'no Residency', ' ', ' ')
                             }
 
                             setProfileData({ userID: getUserId(), ...profile })
-                            
+
                         })
                         .catch((error) => {
                             disableLoading();
@@ -113,40 +114,42 @@ export default function LoginForm(props: LoginFormProps) {
             setIsSubmitDisabled(false);
             return;
         }
-          allowLoading();
+        allowLoading();
         auth().signInWithEmailAndPassword(usrEmail, usrPassword)
             .then(user => {
-                if(user?.user?.emailVerified===false){
+                if (user?.user?.emailVerified === false) {
                     showError('Failed, Email is not verified')
                     user.user.sendEmailVerification()
-                    .then(() => {
-                        setTimeout(() => {
-                            
-                            showSucess('Verification email has been sent. Please check your inbox.');
-                        }, 1000);
-                    })
-                    .catch((error) => {
-                        setTimeout(() => {
-                        
-                            showError('Error sending verification email: ' + error.message);
-                        }, 1000);
-                    });
+                        .then(() => {
+                            setTimeout(() => {
+                                props.setVisibleMsg(true);
+                                setTimeout(() => {
+                                    props.setVisibleMsg(false);
+                                }, 2000);
+                            }, 1000);
+                        })
+                        .catch((error) => {
+                            setTimeout(() => {
+
+                                showError('Error sending verification email: ' + error.message);
+                            }, 1000);
+                        });
                     return;
                 }
                 if (auth().currentUser?.uid) {
-                    
+
                     const userId = user.user.uid.toString();
                     props.nav.navigate('Splash', { userId });
                     disableLoading();
                     getProfile(userId)
                         .then(async (profile) => {
-                           
-                            await AsyncStorage.setItem('userID',auth().currentUser?.uid);
+
+                            await AsyncStorage.setItem('userID', auth().currentUser?.uid);
                             setUserEmail('');
                             setUserPassword('');
                         })
                         .catch((error) => {
-                           
+
 
                         })
                 } else {
@@ -166,7 +169,7 @@ export default function LoginForm(props: LoginFormProps) {
             });
     }
 
-    const forgotPassword=async()=>{
+    const forgotPassword = async () => {
         if (usrEmail.length === 0) {
             Toast.show({
                 type: 'error',
@@ -176,20 +179,20 @@ export default function LoginForm(props: LoginFormProps) {
             return;
         }
         auth().sendPasswordResetEmail(usrEmail)
-        .then((res)=>{
-            setvisibleMsg(true);
-setTimeout(() => {
-     setvisibleMsg(false);
-}, 2500);
-        })
-        .catch((error) => {
-            showError('Error sending email: '+error?.code);
-        })
+            .then((res) => {
+                setvisibleMsg(true);
+                setTimeout(() => {
+                    setvisibleMsg(false);
+                }, 2500);
+            })
+            .catch((error) => {
+                showError('Error sending email: ' + error?.code);
+            })
     }
 
     return (
         <View style={formStyles.submitContainer}>
-        <PopUpMessage visible={visiblMsg} title='Email Sent' text='Reset password email sent successfully. Please check your inbox.' />
+            <PopUpMessage visible={visiblMsg} title='Email Sent' text='Reset password email sent successfully. Please check your inbox.' />
             <View>
                 <TextInput autoCapitalize='none' keyboardType='default' style={styles.formField} placeholder='Enter email...' onChangeText={text => setUserEmail(text)}></TextInput>
                 <TextInput style={styles.formField} placeholder='Enter Password...' onChangeText={text => setUserPassword(text)} secureTextEntry={true}></TextInput>
@@ -204,6 +207,6 @@ setTimeout(() => {
                 <SButton styleType="Sentence" text="Don't have an account? SignUp" action={() => props.nav.navigate('SignUp')}></SButton>
             </View>
 
-                </View>
+        </View>
     );
 }
