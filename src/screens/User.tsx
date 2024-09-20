@@ -164,7 +164,7 @@ const User = ({ navigation }: any) => {
                 <ScrollView showsVerticalScrollIndicator={false}>
                     {/* Profile header */}
                     <ImageBackground
-                        source={currentUser?.coverPic?.length > 0 ? { uri: currentUser.coverPic } : require('../assets/Trace467.jpg')}
+                        source={currentUser?.coverPic?.length > 1 ? { uri: currentUser.coverPic } : require('../assets/Trace467.jpg')}
                         style={styles.backgroundImage}
                     >
                         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
@@ -231,7 +231,7 @@ const User = ({ navigation }: any) => {
                     {/* Friends List */}
                     <View style={styles.friendsSection}>
                         <Text style={styles.friendsHeading}>Friends</Text>
-                        <Text style={styles.seeAllText}>See All</Text>
+                        {/* <Text style={styles.seeAllText}>See All</Text> */}
                     </View>
                     <View style={styles.friendBoxContainer}>
                         <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>

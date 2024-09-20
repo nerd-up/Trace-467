@@ -8,32 +8,30 @@ import { limitText } from '../utils/utitlity';
 
 type FriendBoxProps = {
     data?: any,
-    profilePic?:any,
-    userID?:any
+    profilePic?: any,
+    userID?: any
 }
 
-const FriendBox = ({data,profilePic}: FriendBoxProps) => {
-   
-    
-	const navigation:any=useNavigation();
+const FriendBox = ({ data, profilePic }: FriendBoxProps) => {
+    const navigation: any = useNavigation();
     return (
-        <TouchableOpacity  onPress={()=>navigation.navigate('User',{userID:data?.userID})} style={styles.friendBoxStyle}>
-         
-									<Image source={ data?.profilePic?.length>1?{ uri: data?.profilePic }:
-                                 require('../assets/icons/user.png')    
-                                } style={{
-										height: 80, width
-											: 80,
-										borderRadius: 60,
-										borderWidth: 5,
-										borderColor: Colors.primary
+        <TouchableOpacity onPress={() => navigation.navigate('User', { userID: data?.userID })} style={styles.friendBoxStyle}>
 
-									}} /> 
-            <TouchableOpacity onPress={()=>navigation.navigate('User',{userID:data?.userID})}> 
-			 <Text style={styles.friendBoxTextStyle}>
-                {limitText(data?.usrName)}
-            </Text>
-			</TouchableOpacity>
+            <Image source={data?.profilePic?.length > 1 ? { uri: data?.profilePic } :
+                require('../assets/icons/user.png')
+            } style={{
+                height: 80, width
+                    : 80,
+                borderRadius: 60,
+                borderWidth: 5,
+                borderColor: Colors.primary
+
+            }} />
+            <TouchableOpacity onPress={() => navigation.navigate('User', { userID: data?.userID })}>
+                <Text style={styles.friendBoxTextStyle}>
+                    {limitText(data?.usrName)}
+                </Text>
+            </TouchableOpacity>
         </TouchableOpacity>
     );
 }

@@ -32,7 +32,7 @@ const Home = ({ navigation }: any) => {
 		displayWelcomeMessage();
 	},[]);
     return (
-        <View style={{ flex: 1,backgroundColor:Colors.lightBackground }}>
+        <View style={{ flex: 1,backgroundColor:Colors.background }}>
             <ImageBackground source={require('../assets/icons/all.png')} style={{ flex: 1,justifyContent:'center' ,}} resizeMode='cover'>
 
             </ImageBackground>

@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Image, TouchableOpacity, View, TextInput, Text, Platform, ActivityIndicator } from 'react-native'; // Import ActivityIndicator
 import styles from '../styles/Styles';
 import Colors from '../theme/ScholarColors';
-import { setPostLike, deletePostLike, setPostComment, deletePostComment } from '../services/DataService'; 
+import { setPostLike, deletePostLike, setPostComment, deletePostComment } from '../services/DataService';
 import useUserProfileStore from '../zustand/UserProfileStore';
 import { Fonts } from '../theme/Fonts';
 import { checkAbusive } from '../utils/utitlity';
 import Toast from 'react-native-toast-message';
+import auth from '@react-native-firebase/auth';
+import { useNavigation } from '@react-navigation/native';
 
 type PostBottomProps = {
     postID: string,
@@ -19,6 +21,7 @@ type PostBottomProps = {
 }
 
 const PostBottom = (props: PostBottomProps) => {
+    const navigation:any=useNavigation();
     const userProfile: any = useUserProfileStore(store => store);
     const [likeDisabled, setLikeDisabled] = useState(false);
     const [comment, setComment] = useState('');
@@ -32,6 +35,7 @@ const PostBottom = (props: PostBottomProps) => {
         setLikes(props.likes);
         setIsLikedByCurrentUser(props.isLikedByCurrentUser);
         setLikeIcon(props.isLikedByCurrentUser ? require('../assets/icons/filled-like.png') : require('../assets/icons/like.png'));
+        console.log("props.comments:", props.comments);
     }, [props.likes, props.isLikedByCurrentUser]);
 
     const handleLikePost = async () => {
@@ -114,11 +118,13 @@ const PostBottom = (props: PostBottomProps) => {
                             return (
                                 <View key={index}>
                                     <View style={{ padding: 5, flexDirection: 'row' }}>
-                                        {comment.profilePic.length > 1 ? (
-                                            <Image source={{ uri: comment.profilePic }} style={{ height: 40, width: 40, borderRadius: 50 }} />
-                                        ) : (
-                                            <Image source={require('../assets/icons/user.png')} style={{ height: 40, width: 40, borderRadius: 50 }} />
-                                        )}
+                                        <TouchableOpacity onPress={()=>navigation.navigate('User',{userID:comment?.userID})}>
+                                            {comment.profilePic.length > 1 ? (
+                                                <Image source={{ uri: comment?.profilePic }} style={{ height: 40, width: 40, borderRadius: 50 }} />
+                                            ) : (
+                                                <Image source={require('../assets/icons/user.png')} style={{ height: 40, width: 40, borderRadius: 50 }} />
+                                            )}
+                                        </TouchableOpacity>
                                         <View style={{ justifyContent: 'flex-start', marginLeft: 10, backgroundColor: Colors.lightBackground, flex: 1, padding: 10, borderRadius: 5 }}>
                                             <Text style={{ fontSize: 18, color: 'black', fontFamily: Fonts.bold }}>
                                                 {comment.usrName}
@@ -133,11 +139,11 @@ const PostBottom = (props: PostBottomProps) => {
                                             <Text>
                                                 {comment.date}
                                             </Text>
-                                            <TouchableOpacity onPress={() => deletePostComment(props.postID, props.userID, comment.commentID)}>
+                                            {comment?.userID === auth().currentUser?.uid && <TouchableOpacity onPress={() => deletePostComment(props.postID, props.userID, comment.commentID)}>
                                                 <Text>
                                                     Delete
                                                 </Text>
-                                            </TouchableOpacity>
+                                            </TouchableOpacity>}
                                         </View>
                                     </View>
                                 </View>

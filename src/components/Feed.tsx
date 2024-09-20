@@ -87,7 +87,7 @@ const Feed = (props: FeedProps) => {
     }, []);
    
     return (
-        <View style={{ marginBottom:'15%',backgroundColor: Colors.lightBackground ,alignItems:'center',justifyContent:'center'}}>
+        <View style={{ marginBottom:'15%' ,alignItems:'center',justifyContent:'center'}}>
             {
                 loading===true?
                 <ActivityIndicator

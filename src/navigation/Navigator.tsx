@@ -44,7 +44,7 @@ function ScholarStack() {
             <Stack.Screen name="WallOfPeace" component={WallOfPeace}  options={{headerShown:false}}/>
             <Stack.Screen name="Chats" component={Chats} options={{headerTitle:() => <Text style={{fontSize:25,color:'black',fontWeight:'bold'}}>Chats</Text>,headerStyle:{backgroundColor:'transparent'}}}/>
             <Stack.Screen name="ChatRoom" component={ChatRoom} options={{headerBackVisible:true}}/>
-            <Stack.Screen name="User" component={User}  options={{headerShown:true}}/>
+            <Stack.Screen name="User" component={User}  options={{headerShown:false}}/>
             <Stack.Screen name="Post" component={Post} options={{title:"Make a post",headerStyle:{
                 backgroundColor:Colors.lightBackground,
             }}}/>

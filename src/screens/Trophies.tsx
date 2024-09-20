@@ -118,7 +118,8 @@ const styles = StyleSheet.create({
         margin: 5,
         padding: 5,
         justifyContent: 'center',
-        marginTop: Platform.OS === 'ios' ? '1%' : 0
+        marginTop: Platform.OS === 'ios' ? '1%' : 0,
+        backgroundColor:Colors.background
     },
     bannerContainer: {
         flexDirection: 'row',

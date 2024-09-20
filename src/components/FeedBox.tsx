@@ -129,9 +129,13 @@ export default function FeedBox(props: FeedBoxProps) {
                 </Text>
             </View>
             {
-                props.picture ?
+                props?.picture?.length>1 ?
                     <View style={styles.postHolder}>
+                        
+                            
                         <Image source={{ uri: props.picture }} style={{ resizeMode: 'cover', width: '100%', height: '100%' }} />
+
+                        
                     </View>
                     : null
             }
