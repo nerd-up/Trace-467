@@ -186,10 +186,31 @@ const UserProfile = ({ navigation }: any) => {
 
                                 <Image style={styles.coverPhoto} source={userProfile?.coverPic?.length > 1 ? { uri: userProfile?.coverPic } : require('../assets/Trace467.jpg')} />
                                 <TouchableOpacity
-                                    style={{ position: 'absolute', top: 0, right: 0, margin: 10 }}
-                                    onPress={() => navigation.push('EditProfile', { userProfile })}>
-                                    <Image source={require('../assets/icons/edit.png')} style={{ tintColor: Colors.primary, height: 25, width: 25 }}></Image>
-                                </TouchableOpacity>
+  style={{ 
+    position: 'absolute', 
+    top: 0, 
+    right: 0, 
+    margin: 10, 
+    backgroundColor: 'white', 
+    borderRadius: 10, // Adjust for square shape with a slight rounding
+    height: 30, // Set a fixed height for the square
+    width: 30, // Set a fixed width for the square
+    alignItems: 'center', // Center the icon horizontally
+    justifyContent: 'center' // Center the icon vertically
+  }}
+  onPress={() => navigation.push('EditProfile', { userProfile })}
+>
+  <Image 
+    source={require('../assets/icons/image-editing.png')} 
+    style={{ 
+      tintColor: Colors.primary, 
+      height: 25, 
+      width: 25 
+    }} 
+  />
+</TouchableOpacity>
+
+
 
                                 <View style={{
                                     justifyContent: 'center',

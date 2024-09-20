@@ -19,21 +19,18 @@ const BackBtn = ({style,onPress}:Props) => {
     </TouchableOpacity>
   )
 }
-
-
 export default BackBtn
-
 const styles = StyleSheet.create({
-    container:{
+    container: {
         position: 'absolute',
         left: 20,
-        top: Platform.OS==='ios'?30 :20,
+        top: Platform.OS === 'ios' ? 60 : 30, // Move down slightly
         zIndex: 999,
     },
-    icon:{
-        width: 25,
-        height: 25,
-        resizeMode:'contain',
+    icon: {
+        width: 35,  // Increase the size of the back arrow
+        height: 35, // Increase the size of the back arrow
+        resizeMode: 'contain',
         tintColor: 'grey',
-    }
-})
+    },
+});
