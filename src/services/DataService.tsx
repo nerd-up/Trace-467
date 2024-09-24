@@ -404,6 +404,53 @@ export const setPostComment = async (postID: string, userID: string, comment: an
             // console.log(err);
         });
 }
+export const unfriend = async (friend: any) => {
+    try {
+        const userId = auth().currentUser?.uid;
+        if (!userId) {
+            throw new Error("User is not authenticated");
+        }
+        const userFriendsRef = firestore()
+            .collection("Users")
+            .doc(userId)
+            .collection("Friends")
+            .doc(friend);
+
+        const friendFriendsRef = firestore()
+            .collection("Users")
+            .doc(friend)
+            .collection("Friends")
+            .doc(userId);
+
+        await firestore().runTransaction(async (transaction) => {
+            // Get the chat room ID from the user's friends collection
+            const userFriendDoc = await transaction.get(userFriendsRef);
+
+            if (!userFriendDoc.exists) {
+                throw new Error("Friend relationship does not exist");
+            }
+
+            const chatRoomId = userFriendDoc.data()?.chatRoomId;
+
+            // Remove the friend from the user's friends collection
+            transaction.delete(userFriendsRef);
+
+            // Remove the user from the friend's friends collection
+            transaction.delete(friendFriendsRef);
+
+            // Optionally, delete the chat room if it exists
+            if (chatRoomId) {
+                const chatRoomRef = firestore().collection("ChatRooms").doc(chatRoomId);
+                transaction.delete(chatRoomRef);
+            }
+        });
+
+        Alert.alert("Friend removed successfully.");
+    } catch (err) {
+        // Handle error appropriately
+        // console.log(err);
+    }
+};
 
 export const getPostLikes = async (postID: string, userID: string) => {
     return new Promise((resolve, reject) => {

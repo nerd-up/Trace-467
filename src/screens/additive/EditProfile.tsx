@@ -148,7 +148,7 @@ const EditProfile = () => {
                                     fontSize: 18,
                                 }}
                                 value={bio}
-                                placeholder="Bio"
+                                placeholder="Outdoor Bio"
                                 onChangeText={text => setBio(text)}
                             />
                         </View>

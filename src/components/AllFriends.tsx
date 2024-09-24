@@ -7,8 +7,8 @@ import firestore from '@react-native-firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu';
 
-const AllFriends = ({blockedUsers}:any) => {
-    const navigation:any=useNavigation();
+const AllFriends = ({ blockedUsers }: any) => {
+    const navigation: any = useNavigation();
     const [search, setSearch] = useState('');
     const [friends, setFriends]: any = useState([]);
 
@@ -32,52 +32,52 @@ const AllFriends = ({blockedUsers}:any) => {
                 .doc(userId)
                 .collection("Friends")
                 .get();
-            
+
             const frnds = friendSnapshot.docs.map(doc =>
                 // console.log("first:",doc.data());
                 doc.data()
             );
-            
+
             if (frnds.length > 0) {
                 const friendRequestsPromises = frnds.map(async (frnd: any) => {
-                   
+
                     const senderDoc = await firestore().collection("Users").doc(frnd.friend).get();
-                    
+
                     return senderDoc.data();
                 });
                 const requests = await Promise.all(friendRequestsPromises);
-                
+
                 setFriends(requests);
             }
         } catch (error) {
             console.log("An error occurred", error);
         }
     }
-    const moveNext=(userID:any)=>{
-        navigation.navigate('User',{userID:userID});
+    const moveNext = (userID: any) => {
+        navigation.navigate('User', { userID: userID });
     }
     useEffect(() => {
         fetchAllFriends();
     }, []);
     return (
-        <View>
+        <View >
             <View style={stylings.searchBar}>
                 <TextInput style={stylings.searchBarInput} value={search} onChangeText={(text) => setSearch(text)} placeholder='Search for Friends'>
                 </TextInput>
             </View>
-            <ScrollView>
+            <ScrollView style={{marginBottom:50}}>
                 <View style={stylings.classmatesList}>
                     {
                         friends.map((friend: any, index: any) => {
                             return (
 
-                               blockedUsers?.find((item:any)=>item?.userID!==friend?.userID)&& friend.usrName.toLowerCase().includes(search.toLowerCase()) ?
+                                blockedUsers?.find((item: any) => item?.userID !== friend?.userID) && friend.usrName.toLowerCase().includes(search.toLowerCase()) ?
                                     <View style={stylings.classmate} key={index}>
-                                        <TouchableOpacity onPress={()=>moveNext(friend.userID)}>
+                                        <TouchableOpacity onPress={() => moveNext(friend.userID)}>
                                             <View style={{ flexDirection: 'row' }}>
                                                 <View style={stylings.classmateIcon}>
                                                     {
-                                                        friend.profilePic?.length>1 ?
+                                                        friend.profilePic?.length > 1 ?
                                                             <Image source={{ uri: friend.profilePic }} style={{ height: 60, width: 60, borderRadius: 50 }}></Image>
                                                             :
                                                             <Image source={require('../assets/icons/user.png')} style={{ height: 60, width: 60, borderRadius: 50 }}></Image>
@@ -97,18 +97,18 @@ const AllFriends = ({blockedUsers}:any) => {
                                             </View>
                                         </TouchableOpacity>
                                         <View style={stylings.dots}>
-        <Menu>
-          <MenuTrigger>
-            {/* <TouchableHighlight> */}
-              {/* <Icon name='ellipsis-vertical-outline' size={25} /> */}
-            {/* </TouchableHighlight> */}
-          </MenuTrigger>
-          <MenuOptions>
-            <MenuOption onSelect={() => Alert.alert(`Option 1 for ${friend.usrName}`)} text='Chat' />
-            <MenuOption onSelect={() => Alert.alert(`Option 2 for ${friend.usrName}`)} text='Unfriend' />
-          </MenuOptions>
-        </Menu>
-      </View>
+                                            <Menu>
+                                                <MenuTrigger>
+                                                    {/* <TouchableHighlight> */}
+                                                    {/* <Icon name='ellipsis-vertical-outline' size={25} /> */}
+                                                    {/* </TouchableHighlight> */}
+                                                </MenuTrigger>
+                                                <MenuOptions>
+                                                    <MenuOption onSelect={() => Alert.alert(`Option 1 for ${friend.usrName}`)} text='Chat' />
+                                                    <MenuOption onSelect={() => Alert.alert(`Option 2 for ${friend.usrName}`)} text='Unfriend' />
+                                                </MenuOptions>
+                                            </Menu>
+                                        </View>
                                     </View>
                                     :
                                     null
@@ -138,7 +138,7 @@ const stylings = StyleSheet.create({
     }
     ,
     classmatesList: {
-        margin: 5,
+        marginBottom: 50,
         padding: 5,
     },
     classmate: {

@@ -115,10 +115,9 @@ const Trophies = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        margin: 5,
-        padding: 5,
+        
         justifyContent: 'center',
-        marginTop: Platform.OS === 'ios' ? '1%' : 0,
+        
         backgroundColor:Colors.background
     },
     bannerContainer: {

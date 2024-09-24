@@ -33,10 +33,7 @@ const UserProfile = ({ navigation }: any) => {
     const userProfile: any = useUserProfileStore(store => store)
     const setProfilePic = useUserProfileStore(store => store.setProfilePic)
     const setProfileData = useUserProfileStore(store => store.setProfileData);
-    // Alert.alert("helo",JSON.stringify(userProfile))
-    /**
-     * useEffect used for loading data from DB
-     */
+
     const allPosts = usePostsStore(store => store.posts)
     const setPostsData = usePostsStore(store => store.setAllPosts)
     const allLikes = useLikesStore(store => store.likes)
@@ -91,21 +88,21 @@ const UserProfile = ({ navigation }: any) => {
             .catch((error) => { console.log("error:" + error); });
         setAllLikes(likesArray);
     }
-    const setAllPosts = (posts: any) => {
-        let allPosts: any = [];
-        posts.forEach((post: any) => {
+    // const setAllPosts = (posts: any) => {
+    //     let allPosts: any = [];
+    //     posts.forEach((post: any) => {
 
-            allPosts.push(post);
-        })
-        const postsWithDateObjects = allPosts.map((post: any) => ({
-            ...post,
-            dateObject: new Date(post.time)
-        }));
-        // Sort the posts in descending order
-        postsWithDateObjects.sort((a: any, b: any) => b.dateObject.getTime() - a.dateObject.getTime());
-        setPostsData(postsWithDateObjects);
+    //         allPosts.push(post);
+    //     })
+    //     const postsWithDateObjects = allPosts.map((post: any) => ({
+    //         ...post,
+    //         dateObject: new Date(post.time)
+    //     }));
+    //     // Sort the posts in descending order
+    //     postsWithDateObjects.sort((a: any, b: any) => b.dateObject.getTime() - a.dateObject.getTime());
+    //     setPostsData(postsWithDateObjects);
 
-    }
+    // }
 
     const extractTime = (time: string) => {
         const timestamp = new Date(time);
@@ -131,9 +128,10 @@ const UserProfile = ({ navigation }: any) => {
 
     useEffect(() => {
         fetchPosts(getUserId()).then((posts: any) => {
-            setAllPosts(posts);
-        }).catch((err: any) => console.log("No posts"))
-    }, [])
+            setPostsData(posts);
+
+        }).catch((err: any) => console.log("No posts"));
+    }, []);
 
     const getDetails = async () => {
         setRefresh(true);
@@ -149,10 +147,14 @@ const UserProfile = ({ navigation }: any) => {
                 console.error('Errffor :', error);
             });
         fetchPosts(getUserId()).then((posts: any) => {
-            setAllPosts(posts);
+            console.log(posts);
             setRefresh(false);
-
-        }).catch((err: any) => { console.log("No posts"); setRefresh(false); })
+            const postsWithDateObjects = posts.map((post: any) => ({
+                ...post,
+                dateObject: new Date(post.time)
+            })).sort((a: any, b: any) => b.dateObject.getTime() - a.dateObject.getTime());
+            setPostsData(postsWithDateObjects);
+        }).catch((err: any) => console.log("No posts"));
     }
     const toogleShowProfile = () => {
         console.log("i am here");
@@ -186,29 +188,29 @@ const UserProfile = ({ navigation }: any) => {
 
                                 <Image style={styles.coverPhoto} source={userProfile?.coverPic?.length > 1 ? { uri: userProfile?.coverPic } : require('../assets/Trace467.jpg')} />
                                 <TouchableOpacity
-  style={{ 
-    position: 'absolute', 
-    top: 0, 
-    right: 0, 
-    margin: 10, 
-    backgroundColor: 'white', 
-    borderRadius: 10, // Adjust for square shape with a slight rounding
-    height: 30, // Set a fixed height for the square
-    width: 30, // Set a fixed width for the square
-    alignItems: 'center', // Center the icon horizontally
-    justifyContent: 'center' // Center the icon vertically
-  }}
-  onPress={() => navigation.push('EditProfile', { userProfile })}
->
-  <Image 
-    source={require('../assets/icons/image-editing.png')} 
-    style={{ 
-      tintColor: Colors.primary, 
-      height: 25, 
-      width: 25 
-    }} 
-  />
-</TouchableOpacity>
+                                    style={{
+                                        position: 'absolute',
+                                        top: 0,
+                                        right: 0,
+                                        margin: 10,
+                                        backgroundColor: 'white',
+                                        borderRadius: 10, // Adjust for square shape with a slight rounding
+                                        height: 30, // Set a fixed height for the square
+                                        width: 30, // Set a fixed width for the square
+                                        alignItems: 'center', // Center the icon horizontally
+                                        justifyContent: 'center' // Center the icon vertically
+                                    }}
+                                    onPress={() => navigation.push('EditProfile', { userProfile })}
+                                >
+                                    <Image
+                                        source={require('../assets/icons/image-editing.png')}
+                                        style={{
+                                            tintColor: Colors.primary,
+                                            height: 25,
+                                            width: 25
+                                        }}
+                                    />
+                                </TouchableOpacity>
 
 
 
@@ -384,25 +386,25 @@ const UserProfile = ({ navigation }: any) => {
                 </View>
                 <View style={styles.container}>
                     <View >
-                        {/* <Feed /> */}
-                        <View style={{ backgroundColor: Colors.feedBackground, flexDirection: 'row' }}>
-                            {allPosts.map((item: any, index: number) => // FIXME make sure can be indexed
-                            {
-                                return <FeedBox key={index} admin={userProfile?.usrName} avatar={userProfile?.profilePic}
-                                    time={item?.time}
-                                    picture={item.image}
-                                    likes={allLikes.length}
-                                    contributes={0}
-                                    description={item.description}
-                                    postID={item.postId}
-                                    userID={userProfile?.userID}
-                                    navigation={navigation}
 
-                                />
-                            })
-
-                            }
-                        </View>
+                            <View style={{backgroundColor: Colors.feedBackground}}>
+                                {allPosts.map((item: any, index: number) => (
+                                    <FeedBox
+                                        key={index}
+                                        admin={userProfile?.usrName}
+                                        avatar={userProfile?.profilePic}
+                                        time={item.time}
+                                        picture={item?.image}
+                                        likes={allLikes?.length}
+                                        contributes={0}
+                                        description={item?.description}
+                                        postID={item?.postId}
+                                        userID={item?.userID}
+                                        navigation={navigation}
+                                    />
+                                ))}
+                            </View>
+                       
                     </View>
                 </View>
             </View>

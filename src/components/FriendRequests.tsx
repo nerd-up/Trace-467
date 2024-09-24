@@ -59,48 +59,52 @@ const FriendRequests = ({blockedUsers}:any) => {
             if (!userId) {
                 throw new Error("User is not authenticated");
             }
+    
             const userFriendsRef = firestore()
                 .collection("Users")
                 .doc(userId)
                 .collection("Friends")
                 .doc(friend);
-
+    
             const friendFriendsRef = firestore()
                 .collection("Users")
                 .doc(friend)
                 .collection("Friends")
                 .doc(userId);
-
+    
             const userFriendRequestsRef = firestore()
                 .collection("Users")
                 .doc(userId)
                 .collection("FriendRequests")
                 .doc(friend);
-
+    
             await firestore().runTransaction(async (transaction) => {
+                // First, remove the friend request from the user's friend requests collection
+                transaction.delete(userFriendRequestsRef);
+    
                 // Create a new chat room
                 const chatRoomRef = firestore().collection("ChatRooms").doc();
                 const chatRoomId = chatRoomRef.id;
-
+    
                 // Add friend to user's friends collection with chat room ID
                 transaction.set(userFriendsRef, { friend, chatRoomId });
-
+    
                 // Add user to friend's friends collection with chat room ID
                 transaction.set(friendFriendsRef, { friend: userId, chatRoomId });
-                // Remove the friend request from user's friend requests collection
-              userFriendRequestsRef.delete();
+    
+                // Set up the chat room with both users
                 transaction.set(chatRoomRef, {
                     users: [userId, friend],
                     createdAt: firestore.FieldValue.serverTimestamp(),
-                  });
-
+                });
             });
-            
-            Alert.alert("Friend request accepted and saved successfully for both users.");
+    
+            Alert.alert("Friend request accepted and both users have been added as friends.");
         } catch (err) {
-            // console.log(err);
+            console.log("An error occurred while accepting the friend request", err);
         }
-    }
+    };
+    
     const moveNext = (userID: any) => {
         navigation.navigate('User', { userID: userID });
     }

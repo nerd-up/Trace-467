@@ -35,7 +35,6 @@ const PostBottom = (props: PostBottomProps) => {
         setLikes(props.likes);
         setIsLikedByCurrentUser(props.isLikedByCurrentUser);
         setLikeIcon(props.isLikedByCurrentUser ? require('../assets/icons/filled-like.png') : require('../assets/icons/like.png'));
-        console.log("props.comments:", props.comments);
     }, [props.likes, props.isLikedByCurrentUser]);
 
     const handleLikePost = async () => {
