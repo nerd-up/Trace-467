@@ -11,7 +11,7 @@ import { getPostLikes, fetchPosts, unfriend } from '../services/DataService';
 import FeedBox from '../components/FeedBox';
 import Colors from '../theme/ScholarColors';
 import Divider from '../components/Divider';
-import { useIsFocused, useRoute } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused, useRoute } from '@react-navigation/native';
 import FriendBox from '../components/FriendBox';
 import MissionLine from '../components/MissionLine';
 import { getProfile } from '../services/DataService';
@@ -26,11 +26,13 @@ const User = ({ navigation }: any) => {
     const [currentUser, setCurrentUser] = useState<any>(null);
     const allPosts = usePostsStore(store => store.posts);
     const setPostsData = usePostsStore(store => store.setAllPosts);
+    const removeAllPosts = usePostsStore(store => store.removeAllPosts);
     const route = useRoute();
     const { userID } = route?.params;
     const [loading, setLoading] = useState(false);
     const allLikes = useLikesStore(store => store.likes);
     const setAllLikes = useLikesStore(store => store.setAllLikes);
+    const removeAllLikes = useLikesStore(store => store.removeAllLikes);
     const [friends, setFriends] = useState<any[]>([]);
     const userProfile = useUserProfileStore(store => store);
     const [requests, setRequests]: any = useState([]);
@@ -143,6 +145,7 @@ const User = ({ navigation }: any) => {
     }, [userID]);
 
     useEffect(() => {
+        if(isFocused===true){
         setLoading(true);
         fetchPosts(userID).then((posts: any) => {
             setLoading(false);
@@ -152,7 +155,19 @@ const User = ({ navigation }: any) => {
             })).sort((a: any, b: any) => b.dateObject.getTime() - a.dateObject.getTime());
             setPostsData(postsWithDateObjects);
         }).catch((err: any) => console.log("No posts"));
+    }
+   
     }, [isFocused]);
+
+    useFocusEffect(()=>{
+
+        return()=>{
+            console.log("is coming");
+        
+            removeAllLikes();
+           removeAllPosts();
+        }
+    })
 
 
     return (

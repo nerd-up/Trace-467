@@ -33,7 +33,7 @@ const UserProfile = ({ navigation }: any) => {
     const userProfile: any = useUserProfileStore(store => store)
     const setProfilePic = useUserProfileStore(store => store.setProfilePic)
     const setProfileData = useUserProfileStore(store => store.setProfileData);
-
+    const [postsData,setPosts]=useState<any>();
     const allPosts = usePostsStore(store => store.posts)
     const setPostsData = usePostsStore(store => store.setAllPosts)
     const allLikes = useLikesStore(store => store.likes)
@@ -128,7 +128,7 @@ const UserProfile = ({ navigation }: any) => {
 
     useEffect(() => {
         fetchPosts(getUserId()).then((posts: any) => {
-            setPostsData(posts);
+            setPosts(posts);
 
         }).catch((err: any) => console.log("No posts"));
     }, []);
@@ -153,7 +153,7 @@ const UserProfile = ({ navigation }: any) => {
                 ...post,
                 dateObject: new Date(post.time)
             })).sort((a: any, b: any) => b.dateObject.getTime() - a.dateObject.getTime());
-            setPostsData(postsWithDateObjects);
+            setPosts(postsWithDateObjects);
         }).catch((err: any) => console.log("No posts"));
     }
     const toogleShowProfile = () => {
@@ -164,8 +164,9 @@ const UserProfile = ({ navigation }: any) => {
             setShowProfile(true);
         }
     }
+console.log(postsData);
 
-    return (
+    return ( 
         <ScrollView style={{
 
             backgroundColor: Colors.background
@@ -388,7 +389,7 @@ const UserProfile = ({ navigation }: any) => {
                     <View >
 
                             <View style={{backgroundColor: Colors.feedBackground}}>
-                                {allPosts.map((item: any, index: number) => (
+                                { postsData?.length>0&& postsData.map((item: any, index: number) => (
                                     <FeedBox
                                         key={index}
                                         admin={userProfile?.usrName}

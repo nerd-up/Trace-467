@@ -9,7 +9,7 @@ import useUserProfileStore from '../zustand/UserProfileStore';
 import { getAllUsers } from '../services/DataService';
 import { getUserId } from '../utils/Auth';
 
-const FindFriends = ({ blockedUsers }: any) => {
+const FindFriends = ({ blockedUsers ,getBlockedUsers}: any) => {
     const navigation: any = useNavigation();
     const [users, setUsers]:any= useState([]);
     const [icon,setIcon]=useState(require('../assets/icons/add-friend.png'));
@@ -125,6 +125,7 @@ const FindFriends = ({ blockedUsers }: any) => {
     const fetchUsers = async () => {
         try {
             setRefresh(true)
+            getBlockedUsers(); 
             await getAllUsers().then((users:any)=>{
                 let usrs:any=[];
                 users.map((usr:any)=>{
@@ -132,7 +133,10 @@ const FindFriends = ({ blockedUsers }: any) => {
                     if(usr?.userID!==getUserId())
                     usrs.push(usr);
                 })
-                setUsers(usrs)
+                const filteredFriends = usrs.filter((friend:any) => 
+                    !blockedUsers.some((user:any) => user.userID === friend.userID)
+                );
+                setUsers(filteredFriends || [])
                 setRefresh(false)
                 
             }).catch((error:any)=>console.log(error))
@@ -140,7 +144,7 @@ const FindFriends = ({ blockedUsers }: any) => {
             console.error('Failed to fetch users:', error);
         }
     };
-    console.log(users,"leh");
+
     
     useEffect(()=>{
         fetchUsers();

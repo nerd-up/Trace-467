@@ -6,7 +6,7 @@ import Colors from '../theme/ScholarColors'
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
-const FriendRequests = ({blockedUsers}:any) => {
+const FriendRequests = ({blockedUsers,getBlockedUsers}:any) => {
     const navigation: any = useNavigation();
     const [requests, setRequests]: any = useState([]);
     const [search, setSearch] = useState('');
@@ -14,12 +14,12 @@ const FriendRequests = ({blockedUsers}:any) => {
     const [popUpVisibility, setPopUpVisibility] = useState(false);
     const fetchRequests = async () => {
         setRefresh(true);
+       getBlockedUsers();
         const userId = auth().currentUser?.uid;
         if (!userId) {
-          
             return;
         }
-
+       
         try {
             const friendRequestsSnapshot = await firestore()
                 .collection("Users")
@@ -37,8 +37,10 @@ const FriendRequests = ({blockedUsers}:any) => {
                 });
 
                 const requests = await Promise.all(friendRequestsPromises);
-               
-                setRequests(requests); // Assuming setRequests is a state setter function
+                const filteredFriends = requests.filter((friend:any) => 
+                    !blockedUsers.some((user:any) => user.userID === friend.userID)
+                );
+                setRequests(filteredFriends || []); // Assuming setRequests is a state setter function
             } 
         } catch (error) {
             // console.log("An error occurred", error);

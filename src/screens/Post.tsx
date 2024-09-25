@@ -102,6 +102,9 @@ export default function Post(navigation: any) {
         }
     }
 
+    console.log(postStatus);
+    
+
     return (
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical:25,paddingBottom:55}}style={[styles.container, { margin: 5 }]}>
             <View>
@@ -109,7 +112,7 @@ export default function Post(navigation: any) {
                 <View style={{ flexDirection: 'row', alignItems: 'center',justifyContent:'space-between', padding: 5 }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', padding: 5 }}>
                     <View style={styles.avatarSection}>
-                        {userProfilePic == " " ?
+                        {userProfilePic?.length<1 ?
                             <Icon name={'person'} size={45} color={Colors.primary} style={{ borderRadius: 50, padding: 5 }} /> :
                             <Image source={{ uri: userProfilePic }} style={[styles.avatarSection, { height: 50, width: 50 }]} />
                         }
@@ -117,12 +120,12 @@ export default function Post(navigation: any) {
                     <View style={[styles.adminSection, { marginTop: 10, flexDirection: 'column' }]}>
                         <Text style={{ fontSize: 20, textAlign: 'center' }}>{userName}</Text>
                         <View style={{ flexDirection: 'row', alignContent: 'center', alignItems: 'center' }}>
-                            <TouchableOpacity onPress={isPrivate === true ? () => setIsPrivate(false) : () => setIsPrivate(true)}>
-                                <View style={isPrivate === false ? styles.unFilledCircle : styles.filledCircle}>
+                            <TouchableOpacity onPress={postStatus === 'public' ? () => setPostStatus('private') : () => setPostStatus('public')}>
+                                <View style={postStatus === 'public' ? styles.unFilledCircle : styles.filledCircle}>
 
                                 </View>
                             </TouchableOpacity>
-                            <Text style={{ margin: 2, textAlign: 'center' }}>private</Text>
+                            <Text style={{ margin: 2, textAlign: 'center' }}>Do Not Show On Bulletin!</Text>
                         </View>
                     </View>
                     </View>
