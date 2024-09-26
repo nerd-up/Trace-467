@@ -139,7 +139,7 @@ const User = ({ navigation }: any) => {
             .then((profile: any) => setCurrentUser(profile))
             .catch(error => console.error('Error:', error));
         fetchRequests(userID);
-    }, []);
+    }, [userID]);
 
     useEffect(() => {
        setLoading(true);
@@ -227,11 +227,8 @@ const User = ({ navigation }: any) => {
                         <Text style={styles.bioHeading}>Game Types</Text>
                         <Text style={styles.bioText}>{currentUser.bio}</Text>
                     </View>
-
-                    {/* Friends List */}
                     <View style={styles.friendsSection}>
                         <Text style={styles.friendsHeading}>Friends</Text>
-                        {/* <Text style={styles.seeAllText}>See All</Text> */}
                     </View>
                     <View style={styles.friendBoxContainer}>
                         <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
