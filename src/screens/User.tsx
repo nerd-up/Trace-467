@@ -7,11 +7,11 @@
  */
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Image, ImageBackground, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { getPostLikes, fetchPosts } from '../services/DataService';
+import { getPostLikes, fetchPosts, unfriend } from '../services/DataService';
 import FeedBox from '../components/FeedBox';
 import Colors from '../theme/ScholarColors';
 import Divider from '../components/Divider';
-import { useIsFocused, useRoute } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused, useRoute } from '@react-navigation/native';
 import FriendBox from '../components/FriendBox';
 import MissionLine from '../components/MissionLine';
 import { getProfile } from '../services/DataService';
@@ -26,18 +26,20 @@ const User = ({ navigation }: any) => {
     const [currentUser, setCurrentUser] = useState<any>(null);
     const allPosts = usePostsStore(store => store.posts);
     const setPostsData = usePostsStore(store => store.setAllPosts);
-    const route=useRoute();
-    const {userID}=route?.params;
-    const [loading,setLoading]=useState(false);
+    const removeAllPosts = usePostsStore(store => store.removeAllPosts);
+    const route = useRoute();
+    const { userID } = route?.params;
+    const [loading, setLoading] = useState(false);
     const allLikes = useLikesStore(store => store.likes);
     const setAllLikes = useLikesStore(store => store.setAllLikes);
+    const removeAllLikes = useLikesStore(store => store.removeAllLikes);
     const [friends, setFriends] = useState<any[]>([]);
     const userProfile = useUserProfileStore(store => store);
     const [requests, setRequests]: any = useState([]);
     const fetchRequests = async (userID: string) => {
         const userId = userID;
         if (!userId) {
-            
+
             return;
         }
         try {
@@ -56,8 +58,9 @@ const User = ({ navigation }: any) => {
                 });
 
                 const requests = await Promise.all(friendRequestsPromises);
+
+                setRequests(requests);
                 
-                setRequests(requests); // Assuming setRequests is a state setter function
             }
         } catch (error) {
             console.log("An error occurred", error);
@@ -126,14 +129,14 @@ const User = ({ navigation }: any) => {
                 date: new Date().toISOString(),
             })
             .then((res) => {
-                
+
             })
             .catch((err) => {
                 console.log('an error occurred', err);
             });
     };
     useEffect(() => {
-      
+
         fetchAllFriends(userID);
         getProfile(userID)
             .then((profile: any) => setCurrentUser(profile))
@@ -142,7 +145,8 @@ const User = ({ navigation }: any) => {
     }, [userID]);
 
     useEffect(() => {
-       setLoading(true);
+        if(isFocused===true){
+        setLoading(true);
         fetchPosts(userID).then((posts: any) => {
             setLoading(false);
             const postsWithDateObjects = posts.map((post: any) => ({
@@ -151,14 +155,26 @@ const User = ({ navigation }: any) => {
             })).sort((a: any, b: any) => b.dateObject.getTime() - a.dateObject.getTime());
             setPostsData(postsWithDateObjects);
         }).catch((err: any) => console.log("No posts"));
+    }
+   
     }, [isFocused]);
 
-  
+    useFocusEffect(()=>{
+
+        return()=>{
+            console.log("is coming");
+        
+            removeAllLikes();
+           removeAllPosts();
+        }
+    })
+
+
     return (
         <View style={{ flex: 1, backgroundColor: Colors.background }}>
-            {loading === false && currentUser===undefined || currentUser===null  ? (
-                <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
-                <ActivityIndicator  size={35} />
+            {loading === false && currentUser === undefined || currentUser === null ? (
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <ActivityIndicator size={35} />
                 </View>
             ) : (
                 <ScrollView showsVerticalScrollIndicator={false}>
@@ -172,7 +188,7 @@ const User = ({ navigation }: any) => {
                         </TouchableOpacity>
                         <View style={styles.headerContent}>
                             <View style={styles.profilePicContainer}>
-                                {currentUser.profilePic !== " " ? (
+                                {currentUser.profilePic?.length > 1 ? (
                                     <Image source={{ uri: currentUser.profilePic }} style={styles.profilePic} />
                                 ) : (
                                     <Image source={require('../assets/icons/user.png')} style={styles.defaultProfilePic} />
@@ -199,33 +215,57 @@ const User = ({ navigation }: any) => {
                             </Menu>
                         </View>
                         <Text style={styles.residencyText}>{currentUser.residency}</Text>
-                        {requests.length > 0 && requests.find((user: any) => (user?.userID === auth().currentUser?.uid)) &&
-                            // <View style={{ flex: 1, width: '90%', borderRadius: 20, justifyContent: 'center', flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.primary }}>
-                            //     <Text style={styles.residencyText}>Friend Request Sent</Text>
-                                
-                            // </View> :
-                            (
-                                <View style={{ flex: 1, width: '90%', borderRadius: 20, justifyContent: 'center', flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.primary }}>
-                                    <Text style={styles.residencyText}>Send Request</Text>
-                                    <TouchableOpacity
-                                        onPress={() => sendRequest(currentUser.userID, auth().currentUser?.uid)}
-                                    >
-                                        <View style={styles.acceptButton}>
-                                            <Image
-                                                style={styles.icon}
-                                                source={
-                                                    require('../assets/icons/add-friend.png')
-                                                }
-                                            />
-                                        </View>
-                                    </TouchableOpacity>
-                                </View>
-                            )}
-                        {/* </View> */}
-                        {/* ) : null; */}
+                        {!friends.find(user => user?.userID === auth()?.currentUser?.uid) && requests.length > 0 && requests.find((user: any) => (user?.userID === auth().currentUser?.uid)) &&
+                            <View style={{ flex: 1, width: '90%', borderRadius: 20, justifyContent: 'center', flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.primary }}>
+                                <Text style={styles.residencyText}>Friend Request Sent</Text>
+                            </View>
+                        }
+                        {
+                           requests.length > 0 && !requests.find((user: any) => (user?.userID === auth().currentUser?.uid))
+                            && <View style={{ flex: 1, width: '90%', borderRadius: 20, justifyContent: 'center', flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.primary }}>
+                                <Text style={styles.residencyText}>Send Request</Text>
+                                <TouchableOpacity
+                                    onPress={() => sendRequest(currentUser.userID, auth().currentUser?.uid)}
+                                >
+                                    <View style={styles.acceptButton}>
+                                        <Image
+                                            style={styles.icon}
+                                            source={
+                                                require('../assets/icons/add-friend.png')
+                                            }
+                                        />
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                        }
+                        {
+                            friends.find(user => user?.userID === auth()?.currentUser?.uid)
+                           
+                            && <Menu>
+                                <MenuTrigger>
+
+                                    <View style={{ gap:10,width: '90%', borderRadius: 20, justifyContent: 'center', flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.primary }}>
+                                        <Text style={styles.residencyText}>See Friendship</Text>
+                                        <Image
+                                            style={styles.icon}
+                                            source={
+                                                require('../assets/icons/friends.png')
+                                            }
+                                        />
+                                    </View>
+
+                                </MenuTrigger>
+                                <MenuOptions>
+                                    <MenuOption onSelect={() => unfriend(currentUser?.userID)} text='Unfriend' />
+                                </MenuOptions>
+                            </Menu>
+
+
+                        }
+
                         <Divider />
                         <Text style={styles.bioHeading}>Game Types</Text>
-                        <Text style={styles.bioText}>{currentUser.bio}</Text>
+                        <Text style={styles.bioText}>{currentUser?.bio}</Text>
                     </View>
                     <View style={styles.friendsSection}>
                         <Text style={styles.friendsHeading}>Friends</Text>
@@ -234,27 +274,27 @@ const User = ({ navigation }: any) => {
                         <ScrollView showsHorizontalScrollIndicator={false} horizontal={true}>
                             <View style={styles.friendBoxes}>
                                 {friends.map((friend: any, index: any) => (
-                                    <FriendBox key={index} data={friend}  />
+                                    <FriendBox key={index} data={friend} />
                                 ))}
                             </View>
                         </ScrollView>
                     </View>
 
                     {/* Posts Feed */}
-                    <MissionLine text="The Sportsman's App" />
+                    <MissionLine text="The Outdoors App" />
                     <View style={styles.feedContainer}>
                         {allPosts.map((item: any, index: number) => (
                             <FeedBox
                                 key={index}
-                                admin={currentUser.usrName}
-                                avatar={currentUser.profilePic}
+                                admin={currentUser?.usrName}
+                                avatar={currentUser?.profilePic}
                                 time={item.time}
-                                picture={item.image}
-                                likes={allLikes.length}
+                                picture={item?.image}
+                                likes={allLikes?.length}
                                 contributes={0}
-                                description={item.description}
-                                postID={item.postId}
-                                userID={item.userID}
+                                description={item?.description}
+                                postID={item?.postId}
+                                userID={item?.userID}
                                 navigation={navigation}
                             />
                         ))}
@@ -280,9 +320,9 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: Platform.OS === 'ios' ? 50 : 20,
         left: 10,
-        backgroundColor:Colors.primary,
-        padding:5,
-        borderRadius:50
+        backgroundColor: Colors.primary,
+        padding: 5,
+        borderRadius: 50
     },
     backIcon: {
         height: 30,

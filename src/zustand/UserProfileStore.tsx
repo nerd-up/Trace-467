@@ -10,7 +10,10 @@ interface UserProfileLikeStore {
     likes: UserProfileLike[],
     addLike: (like: UserProfileLike) => void,
     removeLike: (likeId: string) => void,
-    setAllLikes: (likes: UserProfileLike[]) => void
+    setAllLikes: (likes: UserProfileLike[]) => void,
+    removeAllLikes:()=>void,
+
+    
 }
 
 interface UserProfilePost {
@@ -26,7 +29,10 @@ interface UserProfilePostStore {
     posts: UserProfilePost[],
     addPost: (post: UserProfilePost) => void,
     removePost: (postId: string) => void,
-    setAllPosts: (posts: UserProfilePost[]) => void
+    setAllPosts: (posts: UserProfilePost[]) => void,
+    removeAllPosts:()=>void,
+    
+    
 }
 
 interface UserProfileStore {
@@ -44,6 +50,8 @@ interface UserProfileStore {
     setSchoolName: (state: string) => void,
     setClass: (state: string) => void,
     setUsrName: (state: string) => void,
+    resetProfileData:()=>void,
+
 }
 
 const useUserProfileStore = create<UserProfileStore>((set) => ({
@@ -67,6 +75,16 @@ const useUserProfileStore = create<UserProfileStore>((set) => ({
             usrName: state.usrName
         }
     }),
+    resetProfileData: () => set(() => ({
+        userID: '',
+        bio: '',
+        profilePic: '',
+        coverPic: '',
+        residency: '',
+        signed: '',
+        treatyDate: '',
+        usrName: ''
+    })),
     setUserID: (state) => set(()=>({ userID: state })),
     setBio: (state: string) => set(()=>({ bio: state })),
     setProfilePic: (state: string) => set(()=>({ profilePic: state })),
@@ -89,7 +107,8 @@ const usePostsStore = create<UserProfilePostStore>((set) => ({
 
         return ({ posts: [ ...state.posts ] });
     }),
-    setAllPosts: posts => set(() => ({ posts }))
+    setAllPosts: posts => set(() => ({ posts })),
+    removeAllPosts: () => set(() => ({}))
 }))
 
 const useLikesStore = create<UserProfileLikeStore>((set) => ({
@@ -105,7 +124,8 @@ const useLikesStore = create<UserProfileLikeStore>((set) => ({
         
         return ({ likes: [ ...state.likes ] })
     }),
-    setAllLikes: likes => set(() => ({ likes }))
+    setAllLikes: likes => set(() => ({ likes })),
+    removeAllLikes: () => set(() => ({  }))
 }))
 
 export default useUserProfileStore

@@ -20,6 +20,7 @@ import FindFriends from '../components/FindFriends';
 import { useRoute } from '@react-navigation/native';
 import useUserProfileStore from '../zustand/UserProfileStore';
 import Toast from 'react-native-toast-message';
+import { getUserId } from '../utils/Auth';
 const Friends = ({ navigation}: any,props:any ) => {
     const router:any=useRoute();
     
@@ -38,31 +39,35 @@ const Friends = ({ navigation}: any,props:any ) => {
         }
     }
     const getBlockedUsers=async()=>{
-         await firestore()
+       const blockedUsers=  await firestore()
         .collection("Users")
-        
+        .doc(getUserId())
+        .collection('BlockedUsers')
         .get()
-        .then((snapshoot)=>{
             let users:any=[];
-         snapshoot?.docs.map(doc =>
-                
+         blockedUsers?.docs.map(doc =>
                 users.push(doc.data())
             );
-            setAllUsers(users);
-        })
-        .catch(()=>{
-            
-        });
+
+            const blockedByUsers=  await firestore()
+            .collection("Users")
+            .doc(getUserId())
+            .collection('BlockedByUsers')
+            .get()
+            blockedByUsers?.docs.map(doc =>
+                users.push(doc.data())
+            );
+
+            setAllUsers(users || []);
+     
     }
    
     useEffect(() =>{
         getBlockedUsers();
-        
       },[])
-    useEffect(() => {
-      
-    }, [popUpVisibility, search,selectedOption]);
 
+
+      
     return (
         <View style={styles.container}>
             
@@ -97,17 +102,18 @@ const Friends = ({ navigation}: any,props:any ) => {
                     </View>
                 </TouchableOpacity>
             </View>
+            
             {
                 selectedOption==="Your Friends"?
-                <AllFriends blockedUsers={allUsers}/>:null
+                <AllFriends getBlockedUsers={getBlockedUsers} blockedUsers={allUsers}/>:null
             }
             {
                 selectedOption==="Friend Requests"?
-                <FriendRequests blockedUsers={allUsers} />:null
+                <FriendRequests getBlockedUsers={getBlockedUsers} blockedUsers={allUsers} />:null
             }
             {
                 selectedOption==="Suggestions"?
-                <FindFriends blockedUsers={allUsers}/>:null
+                <FindFriends getBlockedUsers={getBlockedUsers} blockedUsers={allUsers}/>:null
             }
             <ImageBackground source={require('../assets/icons/all.png')} style={{ flex: 1,justifyContent:'center' ,}} resizeMode='cover'>
 

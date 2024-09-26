@@ -21,6 +21,7 @@ const formStyles = StyleSheet.create({
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
+        gap:10
     },
     btnText: {
         fontSize: 15,

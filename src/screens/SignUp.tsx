@@ -25,7 +25,7 @@ function SignUp({ navigation }: any) {
             {/* Form */}
             <View style={formStyles.container}>
                 <SignUpForm nav={navigation} />
-                <Divider text="John 3:16" />
+                <Divider text="Psalms 23" />
 
                 {/* Other Sign In Options */}
                 {/* <View>

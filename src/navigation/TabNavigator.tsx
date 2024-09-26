@@ -86,7 +86,7 @@ function ScholarTabs() {
             
             <Tab.Screen name="UserProfile" component={UserProfile}
                 options={({ navigation }) => ({
-                    title: 'Sportsman',
+                    title: 'Sport',
                     headerStyle: { backgroundColor: 'transparent' },
                     headerTintColor: Colors.linkColor,
                     headerRight: () => (

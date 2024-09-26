@@ -6,6 +6,7 @@ import { posts } from '../services/DataService';
 import Colors from '../theme/ScholarColors';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import { getUserId } from '../utils/Auth';
 type FeedProps = {
     scrollEnabled?: boolean,
     startReachedThreshold?: number,
@@ -19,6 +20,7 @@ const Feed = (props: FeedProps) => {
     const [loading, setLoading] = useState(true);
     const [limit,setLimit]=useState(20);
     const [refresh,setRefresh]=useState(false);
+    const [blockedUsers,setBlockedUsers]=useState<any>();
 
     function onStartReachedCallback() {
         if (props.onStartReached !== undefined)
@@ -44,7 +46,7 @@ const Feed = (props: FeedProps) => {
                 //.doc(userId)
                 //.collection("Friends")
                 .get();
-
+     
             const friends = friendSnapshot.docs.map(doc => doc.id);
             const allPostsPromises = friends.map(async friendId => {
                 const postsSnapshot = await firestore()
@@ -69,8 +71,11 @@ const Feed = (props: FeedProps) => {
             const allPostsArrays = await Promise.all(allPostsPromises);
             const allPosts:any = allPostsArrays.flat();
             allPosts.sort((a:any, b:any) => b.time - a.time); // Assuming `postdate` is a timestamp
-
-            setFeed(allPosts);
+            const publicPosts = allPosts?.length>0&& allPosts?.filter((post:any) => post.status === 'public');
+            const filteredPosts = publicPosts?.filter((item:any) => 
+            !blockedUsers.some((user:any) => user.userID === item.userID)
+        );
+            setFeed(filteredPosts || []);
         } catch (error) {
             // console.log("An error occurred", error);
         } finally {
@@ -84,8 +89,35 @@ const Feed = (props: FeedProps) => {
     }
     useEffect(() => {
         fetchFeeds();
-    }, []);
-   
+    }, [blockedUsers]);
+
+    const getBlockedUsers=async()=>{
+        const blockedUsers=  await firestore()
+         .collection("Users")
+         .doc(getUserId())
+         .collection('BlockedUsers')
+         .get()
+             let users:any=[];
+          blockedUsers?.docs.map(doc =>
+                 users.push(doc.data())
+             );
+ 
+             const blockedByUsers=  await firestore()
+             .collection("Users")
+             .doc(getUserId())
+             .collection('BlockedByUsers')
+             .get()
+             blockedByUsers?.docs.map(doc =>
+                 users.push(doc.data())
+             );
+ 
+             setBlockedUsers(users || []);
+      
+     } 
+
+   useEffect(()=>{
+    getBlockedUsers();
+   },[])
     return (
         <View style={{ marginBottom:'15%' ,alignItems:'center',justifyContent:'center'}}>
             {
@@ -95,7 +127,7 @@ const Feed = (props: FeedProps) => {
                 color={Colors.primary}
                 ></ActivityIndicator>:
                 <FlatList
-
+     
                 onStartReached={onStartReachedCallback}
                 onStartReachedThreshold={0.01}
 

@@ -65,10 +65,13 @@ export default function FeedBox(props: FeedBoxProps) {
                 setComments(commentsArray);
             });
     }
+    
     useEffect(() => {
+        
         fetchAllComments();
         fetchAllLikes();
-    }, []);
+        
+    }, [props]);
     return (
         <View style={styles.post} >
             <View style={styles.postAdmin}>
@@ -92,7 +95,7 @@ export default function FeedBox(props: FeedBoxProps) {
                 <TouchableOpacity onPress={() => navigation.navigate('User', { userID: props.userID })}>
                     <View style={styles.avatarSection}>
                         {
-                            props.avatar == null || props.avatar?.length < 1 ?
+                            props.avatar == null || props.avatar?.length < 2 ?
                                 <Image style={styles.postHeaderProfile} source={require('../assets/icons/user.png')} /> :
                                 <Image source={{ uri: props.avatar }} style={styles.postHeaderProfile} />
                         }
@@ -125,7 +128,7 @@ export default function FeedBox(props: FeedBoxProps) {
 
             <View style={styles.postDescription}>
                 <Text style={styles.postDescText}>
-                    {props.description}
+                    {props?.description}
                 </Text>
             </View>
             {
@@ -133,13 +136,13 @@ export default function FeedBox(props: FeedBoxProps) {
                     <View style={styles.postHolder}>
                         
                             
-                        <Image source={{ uri: props.picture }} style={{ resizeMode: 'cover', width: '100%', height: '100%' }} />
+                        <Image source={{ uri: props?.picture }} style={{ resizeMode: 'cover', width: '100%', height: '100%' }} />
 
                         
                     </View>
                     : null
             }
-            <PostBottom postID={props.postID} userID={props.userID} likes={likes} isLikedByCurrentUser={isLikedByCurrentUser} LikeIcon={LikeIcon} fetchAllLikes={fetchAllLikes} comments={comments} />
+            <PostBottom postID={props?.postID} userID={props?.userID} likes={likes} isLikedByCurrentUser={isLikedByCurrentUser} LikeIcon={LikeIcon} fetchAllLikes={fetchAllLikes} comments={comments} />
         </View>
     );
 }

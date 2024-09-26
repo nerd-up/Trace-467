@@ -166,7 +166,6 @@ const styles = StyleSheet.create({
         padding: 5,
     }
     ,
-
     post: {
         justifyContent: 'center',
         position: 'relative',
@@ -174,8 +173,9 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         backgroundColor: Colors.background,
         marginTop: 2,
+        borderBottomColor:'white',
+        borderBottomWidth:2
     },
-
     postHolder: {
         backgroundColor: 'gray',
         borderRadius: 5,

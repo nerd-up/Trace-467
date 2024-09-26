@@ -18,7 +18,7 @@ const Terms = () => {
           By creating an account on Trace 467, you agree to comply with and be bound by these Terms and Conditions. If you do not agree with these terms, you may not use our services.
         </Text>
 
-        <Text style={styles.heading}>2. Purpose of Unify</Text>
+        <Text style={styles.heading}>2. Purpose of Trace 467</Text>
         <Text style={styles.body}>
           Trace 467 is a social media platform intended for bringing the outdoor community together. Hate speech, harassment, or any form of harmful behavior is strictly prohibited.
         </Text>
@@ -66,7 +66,7 @@ const Terms = () => {
 
         <Text style={styles.heading}>10. Contact Us</Text>
         <Text style={styles.body}>
-          If you have any questions about these Terms and Conditions, please contact us at tracefoursixseven@gmail.com.
+          If you have any questions about these Terms and Conditions, please contact us at david@trace467.com
         </Text>
         <View>
             <TouchableOpacity onPress={()=>navigation.goBack()}  style={{alignContent:'center',padding:10,backgroundColor:Colors.primary,width:'100%',alignItems:'center',borderRadius:20,marginBottom:20}}>

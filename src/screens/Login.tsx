@@ -22,9 +22,9 @@ import { getProfile, setInProfile } from '../services/DataService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
 import { showSucess } from '../utils/utitlity';
-// import appleAuth, {
-//     AppleButton,
-// } from '@invertase/react-native-apple-authentication';
+import appleAuth, {
+    AppleButton,
+} from '@invertase/react-native-apple-authentication';
 import PopUpMessage from '../components/PopUpMessage';
 function Login({ navigation }: any) {
     const [visiblMsg,setvisibleMsg]=useState(false);
@@ -49,55 +49,53 @@ function Login({ navigation }: any) {
             webClientId: '739431608336-shl6v9uadplgsmg404oj29u6b34ee6s9.apps.googleusercontent.com',
         });
     }, [])
-    // const onAppleButtonPress = async () => {
-    //     try {
-    //         const appleAuthRequestResponse = await appleAuth.performRequest({
-    //             requestedOperation: appleAuth.Operation.LOGIN,
-    //             // Note: it appears putting FULL_NAME first is important, see issue #293
-    //             requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-    //         });
-    //         console.log("appleAuthRequestResponse:", appleAuthRequestResponse);
-    //         // get current authentication state for user
-    //         // /!\ This method must be tested on a real device. On the iOS simulator it always throws an error.
-    //         const credentialState = await appleAuth.getCredentialStateForUser(appleAuthRequestResponse.user);
-    //         const { identityToken, nonce } = appleAuthRequestResponse;
-    //         if (identityToken && credentialState === appleAuth.State.AUTHORIZED) {
-    //             const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
-    //             await auth().signInWithCredential(appleCredential)
-    //                 .then(async (res: any) => {
-    //                     const userID = res?.user?.uid;
+    const onAppleButtonPress = async () => {
+        try {
+            const appleAuthRequestResponse = await appleAuth.performRequest({
+                requestedOperation: appleAuth.Operation.LOGIN,
+                
+                requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+            });
+            console.log("appleAuthRequestResponse:", appleAuthRequestResponse);
+            const credentialState = await appleAuth.getCredentialStateForUser(appleAuthRequestResponse.user);
+            const { identityToken, nonce } = appleAuthRequestResponse;
+            if (identityToken && credentialState === appleAuth.State.AUTHORIZED) {
+                const appleCredential = auth.AppleAuthProvider.credential(identityToken, nonce);
+                await auth().signInWithCredential(appleCredential)
+                    .then(async (res: any) => {
+                        const userID = res?.user?.uid;
 
-    //                     const userDoc = await firestore().collection('Users').doc(userID).get();
+                        const userDoc = await firestore().collection('Users').doc(userID).get();
 
-    //                     if (!userDoc.exists) {
-    //                         // Prepare user data
-    //                         const userData = {
-    //                             userID,
-    //                             bio: 'no bio',
-    //                             profilePic: '',
-    //                             coverPic: '',
-    //                             residency: 'Sportsman',
-    //                             usrName: '',
-    //                             signed: '',
-    //                         };
-    //                         await firestore().collection('Users').doc(userID).set(userData, { merge: true });
-    //                         console.log('User data saved to Firestore:', userData);
-    //                     } else {
-    //                         console.log('User data already exists in Firestore.');
-    //                     }
+                        if (!userDoc.exists) {
+                            // Prepare user data
+                            const userData = {
+                                userID,
+                                bio: 'no bio',
+                                profilePic: '',
+                                coverPic: '',
+                                residency: 'Sportsman',
+                                usrName: '',
+                                signed: '',
+                            };
+                            await firestore().collection('Users').doc(userID).set(userData, { merge: true });
+                            console.log('User data saved to Firestore:', userData);
+                        } else {
+                            console.log('User data already exists in Firestore.');
+                        }
 
-    //                     // Save userID in AsyncStorage
-    //                     await AsyncStorage.setItem('userID', userID);
-    //                     navigation.navigate('Splash');
-    //                 }).catch((error: any) => {
-    //                     console.error('An error occurred during Firebase sign-in:', error);
-    //                 });
-    //         }
-    //     } catch (error) {
-    //         console.error(error.message);
+                        // Save userID in AsyncStorage
+                        await AsyncStorage.setItem('userID', userID);
+                        navigation.navigate('Splash');
+                    }).catch((error: any) => {
+                        console.log('An error occurred during Firebase sign-in:', error);
+                    });
+            }
+        } catch (error) {
+            console.log(error.message);
 
-    //     }
-    // };
+        }
+    };
 
     // async function onFacebookButtonPress() {
 
@@ -124,11 +122,11 @@ function Login({ navigation }: any) {
     // }
 
 
-    // useEffect(() => {
-    //     return appleAuth.onCredentialRevoked(async () => {
-    //         console.warn('If this function executes, User Credentials have been Revoked');
-    //     });
-    // }, []);
+    useEffect(() => {
+        return appleAuth.onCredentialRevoked(async () => {
+            console.warn('If this function executes, User Credentials have been Revoked');
+        });
+    }, []);
 
     return (
         <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
@@ -137,12 +135,17 @@ function Login({ navigation }: any) {
             {/* Form */}
             <View style={formStyles.container}>
                 <LoginForm nav={navigation} setVisibleMsg={setvisibleMsg}/>
-                <Divider text="OR" />
+                <Divider text="John 3:16" />
                 {/* Other Log In Options */}
-                <View>
-                    {
-                        Platform.OS === 'android' &&
-                        <TouchableOpacity
+                <View style={{alignItems:'center',justifyContent:'center'}}>
+                {Platform.OS === 'ios'&&<AppleButton
+                        buttonStyle={AppleButton.Style.BLACK}
+                        buttonType={AppleButton.Type.SIGN_IN}
+                        style={{ width: 300, height: 45, marginTop: 20 }} // Adjust as needed
+                        onPress={() => onAppleButtonPress()}
+                    />}
+
+                        {/* <TouchableOpacity
                             onPress={() => onGoogleButtonPress().then(async (res: any) => {
                                 // existing Google Sign-In code
                             })}
@@ -151,15 +154,10 @@ function Login({ navigation }: any) {
                             <Image source={require('../assets/icons/google.png')} style={{ height: 30, width: 30 }} />
                             <Text style={styles.btnText}>Sign In with Google</Text>
                         </TouchableOpacity>
-                    }
+                     */}
 
                     {/* Apple Sign-In Button */}
-                    {/* {Platform.OS === 'ios'&&<AppleButton
-                        buttonStyle={AppleButton.Style.BLACK}
-                        buttonType={AppleButton.Type.SIGN_IN}
-                        style={{ width: 300, height: 45, marginTop: 20 }} // Adjust as needed
-                        onPress={() => onAppleButtonPress()}
-                    />} */}
+                   
 
                 </View>
                 <MissionLine text="Sportsman's App" />

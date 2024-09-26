@@ -6,14 +6,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getUserId } from '../utils/Auth';
 import { showError, showSucess } from '../utils/utitlity';
 import useLoadingStore from '../zustand/UseLoadingStore';
-import useUserProfileStore from '../zustand/UserProfileStore';
+import useUserProfileStore, { useLikesStore, usePostsStore } from '../zustand/UserProfileStore';
 import Toast from 'react-native-toast-message';
 import PopUp from '../components/PopUp';
 import PopUpMessage from '../components/PopUpMessage';
 const Settings = ({navigation}:any) => {
     const { allowLoading,disableLoading} = useLoadingStore();
     const [visiblMsg,setvisibleMsg]=useState(false);
-    const userProfile: any = useUserProfileStore(store => store)
+    const resetProfileData = useUserProfileStore(store => store.resetProfileData);
+    const userProfile: any = useUserProfileStore(store => store);
+    const removeAllPosts = usePostsStore(store => store.removeAllPosts)
+    const removeAllLikes = useLikesStore(store => store.removeAllLikes)
     const signOut = () => {
         Alert.alert(
             "Logout Confirmation",
@@ -29,6 +32,9 @@ const Settings = ({navigation}:any) => {
                     onPress: () => {
                         auth().signOut().then(() => {
                             AsyncStorage.removeItem('userID');
+                            resetProfileData();
+                            removeAllLikes();
+                           removeAllPosts();
                             navigation.navigate('Login');
                         }).catch(error => {
                             console.error("Sign out error: ", error);
@@ -83,6 +89,9 @@ setTimeout(() => {
                                 .then((snapshot:any)=>{
                                     disableLoading();
                                      AsyncStorage.removeItem('userID');
+                                     resetProfileData();
+                            removeAllLikes();
+                           removeAllPosts();
                             navigation.navigate('Login');
                             showSucess('Account Deleted!');
                                     snapshot?._docs?.map((friend:any)=>{
