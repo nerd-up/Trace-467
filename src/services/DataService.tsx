@@ -138,11 +138,32 @@ export function setInProfile(
     coverPic:string,
     residency: string,
     usrName: string,
-    signed: string
+    signed: string,
+    update?:true
 ) {
    
-  
-    firestore()
+    if(update){
+        firestore()
+        .collection('Users')
+        .doc(getUserId())
+        .update(
+            {
+                bio: bio,
+                profilePic: profilePic,
+                coverPic: coverPic,
+                residency: residency,
+                usrName: usrName,
+                signed: signed
+            },
+        )
+        .then(() => {
+            showSucess('Sucess','Successfully updated Profile!');
+        })
+        .catch(err => {
+            showError('Error',err);
+        });
+    }else{
+        firestore()
         .collection('Users')
         .doc(getUserId())
         .set(
@@ -163,7 +184,10 @@ export function setInProfile(
         .catch(err => {
             showError('Error',err);
         });
+    }
+    
 }
+
 export const getUsers = async () => {
     try {
         const usersRef = firestore().collection('Users');

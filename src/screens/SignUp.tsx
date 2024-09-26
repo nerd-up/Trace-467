@@ -27,17 +27,7 @@ function SignUp({ navigation }: any) {
                 <SignUpForm nav={navigation} />
                 <Divider text="Psalms 23" />
 
-                {/* Other Sign In Options */}
-                {/* <View>
-                    <TouchableOpacity style={[formStyles.submitBtn, { backgroundColor: '#d00000', flexDirection: "row", justifyContent: "center", columnGap: 10 }]}>
-                        <Image source={require('../assets/icons/google.png')}   style={{height:30,width:30}}/>
-                        <Text style={styles.btnText}>Sign In with Google</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[formStyles.submitBtn, { backgroundColor: '#023e8a', flexDirection: "row", justifyContent: "center", columnGap: 10 }]}>
-                        <Image source={require('../assets/icons/facebook.png')}   style={{height:30,width:30}}/>
-                        <Text style={styles.btnText}>Sign In With Facebook</Text>
-                    </TouchableOpacity>
-                </View> */}
+               
             </View>
         </ScrollView>
     )
