@@ -25,9 +25,8 @@ function SignUp({ navigation }: any) {
             {/* Form */}
             <View style={formStyles.container}>
                 <SignUpForm nav={navigation} />
-                <Divider text="Psalms 23" />
+                <Divider text="Psalms 23 & ٱلْحَمْدُ لِلَّٰهِ رَبِّ ٱلْعَالَمِينَ" />
 
-               
             </View>
         </ScrollView>
     )

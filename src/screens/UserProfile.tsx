@@ -319,7 +319,7 @@ console.log(postsData);
                         {/* Other UI elements */}
                         <Divider />
                         <View style={{ marginLeft: 10 }}>
-                            <Text style={styles.headingStyle}>Game Types</Text>
+                            <Text style={styles.headingStyle}>Outdoor Activities</Text>
                             <View style={{ margin: 0 }}>
                                 <Text style={{ color: 'black' }}>{userProfile && userProfile.bio}</Text>
                             </View>
@@ -331,7 +331,7 @@ console.log(postsData);
 
                 {/* Friends List */}
                 <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between', padding: 10 }}>
-                    <Text style={styles.headingStyle}>Buddies</Text>
+                    <Text style={styles.headingStyle}>Crew</Text>
                     <TouchableOpacity onPress={() => navigation.navigate('Friends', { selectedOption: "Your Friends" })}>
                         <Text style={styles.linkStle}>See All</Text>
                     </TouchableOpacity>

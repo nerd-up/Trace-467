@@ -135,7 +135,7 @@ function Login({ navigation }: any) {
             {/* Form */}
             <View style={formStyles.container}>
                 <LoginForm nav={navigation} setVisibleMsg={setvisibleMsg}/>
-                <Divider text="John 3:16" />
+                <Divider text="John 3:16 & فَبِأَىِّءَالَآءِرَبِّكُمَاتُكَذِّبَانِ" />
                 {/* Other Log In Options */}
                 <View style={{alignItems:'center',justifyContent:'center'}}>
                 {Platform.OS === 'ios'&&<AppleButton
@@ -160,7 +160,7 @@ function Login({ navigation }: any) {
                    
 
                 </View>
-                <MissionLine text="Sportsman's App" />
+                <MissionLine text="Outdoors App" />
             </View>
         </ScrollView>
     );

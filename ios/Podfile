@@ -17,7 +17,7 @@ end
 target 'Trace467' do
   config = use_native_modules!
   use_frameworks! :linkage => :static
-  $RNFirebaseAsStaticFramework = true
+  $RNFirebaseAsStnaticFramework = true
 
   use_react_native!(
     :path => config[:reactNativePath],

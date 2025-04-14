@@ -30,9 +30,9 @@ const Tab = createBottomTabNavigator();
 const routeIconUrls: { [key: string]: any } = {
     'Home': require('../assets/icons/information.png'),
     'Friends': require('../assets/icons/head.png'),
-    'Trophies': require('../assets/icons/trophy.png'),
+    'Trophies': require('../assets/icons/gym.png'),
     'Notifications': require('../assets/icons/bell-ring.png'),
-    'UserProfile': require('../assets/icons/man.png'),
+    'UserProfile': require('../assets/icons/hiking.png'),
     'SignForPeace': require('../assets/icons/target.png'),
 };
 
@@ -80,8 +80,8 @@ function ScholarTabs() {
             }} 
             />
             
-            <Tab.Screen name="Trophies" component={Trophies} options={{ title: "Trophies", headerShown: false }} />
-            <Tab.Screen name="Friends" component={Friends} options={{ title: "Buddies", headerShown: false }} />
+            <Tab.Screen name="Trophies" component={Trophies} options={{ title: "Top Pics", headerShown: false }} />
+            <Tab.Screen name="Friends" component={Friends} options={{ title: "Crew", headerShown: false }} />
             {/* <Tab.Screen name="Notifications" component={Notifications} options={{ headerShown: false, tabBarShowLabel: false }} /> */}
             
             <Tab.Screen name="UserProfile" component={UserProfile}

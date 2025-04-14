@@ -113,14 +113,14 @@ export default function FeedBox(props: FeedBoxProps) {
                 props.index === 1 || props.index === 2 || props.index === 3 ?
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                         <Image
-                            source={require('../assets/icons/winner.png')}
+                            source={require('../assets/icons/gym.png')}
                             style={{ height: 25, width: 25 }}
                         />
                         <Text style={{ marginHorizontal: 10, fontSize: 16 }}>
-                            Trophy Picture
+                            Top Picture
                         </Text>
                         <Image
-                            source={require('../assets/icons/winner.png')}
+                            source={require('../assets/icons/gym.png')}
                             style={{ height: 25, width: 25 }}
                         />
                     </View> : null

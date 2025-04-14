@@ -109,7 +109,7 @@ const Trophies = () => {
     return (
         <View style={styles.container}>
             <View style={styles.bannerContainer}>
-                <ScholarMiniBanner text="Trophies" size={49} />
+                <ScholarMiniBanner text="Top Pics" size={49} />
             </View>
             <Divider />
             <FlatList
