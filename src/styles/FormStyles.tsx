@@ -5,6 +5,7 @@ import { Fonts } from "../theme/Fonts";
 const formStyles = StyleSheet.create({
     submitContainer: {
         flex: 1,
+        width:'100%',
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center"
@@ -12,16 +13,18 @@ const formStyles = StyleSheet.create({
     submitBtn: {
         backgroundColor: Colors.secondary,
         padding: 10,
-        width: 300,
+        
+        width: '90%',
         alignItems: 'center',
         borderRadius: 10,
-        margin: 10,
+        marginVertical: 10,
     },
     submitBtnContainer: {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        gap:10
+        gap:10,
+        width:'100%',
     },
     btnText: {
         fontSize: 15,
@@ -29,11 +32,11 @@ const formStyles = StyleSheet.create({
         fontFamily: Fonts.regular
     },
     container: {
-        margin: 10,
-        padding: 10,
+        // margin: 10,
+        // padding: 10,
         alignItems: 'center',
-        width: '90%',
-        height: 'auto',
+        justifyContent:'center',
+        width: '100%',
         borderRadius: 10,
         paddingBottom: 20,
     },

@@ -14,29 +14,27 @@ import Colors from '../theme/ScholarColors';
 import Toast from 'react-native-toast-message';
 import useUserProfileStore from '../zustand/UserProfileStore';
 import { showSucess } from '../utils/utitlity';
-
-
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { getProfile } from '../store/Dashboard/asynThunk';
+import Loader from '../components/loadings/Loader';
 
 
 const Home = ({ navigation }: any) => {
 	const userProfile: any = useUserProfileStore(store => store);
-
-	const displayWelcomeMessage = () => {
-		Toast.show({
-			type: 'success',
-			text1: "Congratulations!",
-			text2: "You're logged in successfully!"
-		});
-	};
-
+	const dispatch=useAppDispatch();
+    const {profileData,getAllPostsData}=useAppSelector(state=>state.dashboardData)
+    const {authData}=useAppSelector(state=>state.authData)
+    
 	useEffect(() => {
-		displayWelcomeMessage();
+		
+		dispatch(getProfile())
 	}, []);
+
 
 	return (
 		<View style={{ flex: 1, backgroundColor: Colors.background }}>
-			<ImageBackground source={require('../assets/icons/all.png')} style={{ flex: 1, justifyContent: 'center' }} resizeMode='cover' />
-			
+			<ImageBackground source={require('../assets/logoo.png')} style={{ flex: 1, justifyContent: 'center' }} resizeMode='cover' />
+			 <Loader loading={getAllPostsData?.loading} />
 			<View
 				style={{
 					margin: 5,

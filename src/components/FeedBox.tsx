@@ -104,7 +104,6 @@ export default function FeedBox(props: FeedBoxProps) {
                 <View style={styles.adminSection}>
                     <Text style={styles.postAdminName}>{props.admin}</Text>
                     <Text style={{ color: 'gray' }}>
-
                         {new Date(props.time).toLocaleDateString()}
                     </Text>
                 </View>

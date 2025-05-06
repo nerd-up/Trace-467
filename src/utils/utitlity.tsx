@@ -1,6 +1,10 @@
 import Toast from "react-native-toast-message";
 import { objectionableWords } from "./data"
+import { ALERT_TYPE, Dialog } from "react-native-alert-notification";
+import { Dimensions } from "react-native";
 
+export const screenWidth= Dimensions.get('window').width;
+export const screenHeight= Dimensions.get('window').height;
 export const checkAbusive=(sentence:string)=>{
     const sentenceWords = sentence.split(/\s+/);
     // Iterate through the wordsArray and check for matches
@@ -13,20 +17,22 @@ export const checkAbusive=(sentence:string)=>{
 }
 
 export const showError = (text1='',text2='') => {
-    // Alert.alert('leh')
-    Toast.show({
-      type:'error',
-      text1: text1,
-      text2: text2,
-    });
+  Dialog.show({
+    type: ALERT_TYPE.DANGER,
+    title: text1,
+    textBody:text2,
+    button: 'close',
+    autoClose: true,
+  })
   }
   export const showSucess = (text1='',text2='') => {
-    // Alert.alert('leh')
-    Toast.show({
-      type: 'success',
-      text1: text1,
-      text2: text2,
-    });
+    Dialog.show({
+      type: ALERT_TYPE.SUCCESS,
+      title: text1,
+      textBody:text2,
+      button: 'close',
+      autoClose: true,
+    })
   }
 
   export const limitText = (text: string,limit=12) =>{

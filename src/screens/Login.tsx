@@ -6,7 +6,7 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { Button, Image, Platform, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Button, Image, Platform, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 
 import Divider from '../components/Divider';
@@ -50,6 +50,10 @@ function Login({ navigation }: any) {
         });
     }, [])
     const onAppleButtonPress = async () => {
+        if (!appleAuth.isSupported) {
+            console.warn("Apple Sign-In is not supported on this device.");
+            return;
+        }
         try {
             const appleAuthRequestResponse = await appleAuth.performRequest({
                 requestedOperation: appleAuth.Operation.LOGIN,
@@ -64,9 +68,7 @@ function Login({ navigation }: any) {
                 await auth().signInWithCredential(appleCredential)
                     .then(async (res: any) => {
                         const userID = res?.user?.uid;
-
                         const userDoc = await firestore().collection('Users').doc(userID).get();
-
                         if (!userDoc.exists) {
                             // Prepare user data
                             const userData = {
@@ -123,14 +125,17 @@ function Login({ navigation }: any) {
 
 
     useEffect(() => {
-        return appleAuth.onCredentialRevoked(async () => {
-            console.warn('If this function executes, User Credentials have been Revoked');
-        });
+        if (appleAuth.isSupported) {
+            return appleAuth.onCredentialRevoked(async () => {
+                console.warn('User Credentials have been Revoked');
+            });
+        }
     }, []);
 
     return (
+        <SafeAreaView style={{flex:1}}>
         <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
-            <PopUpMessage  visible={visiblMsg} title='Email Sent' text='Reset password email sent successfully. Please check your inbox.' />
+        <PopUpMessage  visible={visiblMsg} title='Email Sent' text='Reset password email sent successfully. Please check your inbox.' />
             <ScholarBanner text="Login" />
             {/* Form */}
             <View style={formStyles.container}>
@@ -138,7 +143,7 @@ function Login({ navigation }: any) {
                 <Divider text="John 3:16 & فَبِأَىِّءَالَآءِرَبِّكُمَاتُكَذِّبَانِ" />
                 {/* Other Log In Options */}
                 <View style={{alignItems:'center',justifyContent:'center'}}>
-                {Platform.OS === 'ios'&&<AppleButton
+                {Platform.OS === 'ios'&& appleAuth.isSupported &&<AppleButton
                         buttonStyle={AppleButton.Style.BLACK}
                         buttonType={AppleButton.Type.SIGN_IN}
                         style={{ width: 300, height: 45, marginTop: 20 }} // Adjust as needed
@@ -163,6 +168,7 @@ function Login({ navigation }: any) {
                 <MissionLine text="Outdoors App" />
             </View>
         </ScrollView>
+        </SafeAreaView>
     );
 }
 export default Login;

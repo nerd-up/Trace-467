@@ -31,8 +31,6 @@ interface UserProfilePostStore {
     removePost: (postId: string) => void,
     setAllPosts: (posts: UserProfilePost[]) => void,
     removeAllPosts:()=>void,
-    
-    
 }
 
 interface UserProfileStore {

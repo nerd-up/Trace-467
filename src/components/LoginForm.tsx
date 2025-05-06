@@ -22,10 +22,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { showError, showSucess } from '../utils/utitlity';
 import PopUpMessage from './PopUpMessage';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { loginUser } from '../store/Auths/asyncThunk';
 
 type LoginFormProps = {
     nav: any,
-    setVisibleMsg:any,
+    setVisibleMsg:any;
 }
 
 /**
@@ -35,65 +37,16 @@ type LoginFormProps = {
 export default function LoginForm(props: LoginFormProps) {
 
     const [usrEmail, setUserEmail] = useState("");
+    const dispatch=useAppDispatch();
+    const {authData}=useAppSelector(state=>state.authData)
     const [usrPassword, setUserPassword] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
-    const [visiblMsg, setvisibleMsg] = useState(false);
     const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
     const { allowLoading, disableLoading } = useLoadingStore();
-    const userProfile = useUserProfileStore(store => store)
-
-    const setProfileData = useUserProfileStore(store => store.setProfileData)
-
-    // Log in anonymously
-    async function LoginAnonymously() {
-        // use the authentication login system
-        allowLoading();
-        auth().signInAnonymously()
-            // if login anonomous successful
-            .then(() => {
-                const user: any = auth().currentUser;
-                if (user.isEmailVerified()) {
-                    Alert.alert("Login successfull!");
-                    const userId = getUserId();
-                    props.nav.navigate('Splash', { userId });
-                    disableLoading();
-                    getProfile(userId)
-                        .then(async (profile: any) => {
-
-
-
-                            // if could not find a profile for anonomous
-                            if (profile === undefined) {
-
-                                setInProfile(userId, 'no bio', ' ', 'no Residency', ' ', ' ')
-                            }
-
-                            setProfileData({ userID: getUserId(), ...profile })
-
-                        })
-                        .catch((error) => {
-                            disableLoading();
-                            console.error(error);
-                        })
-                } else {
-                    disableLoading();
-                    Toast.show({
-                        type: 'info',
-                        text1: 'Please Verify Your Email'
-                    });
-                }
-            })
-            .catch(error => {
-                disableLoading();
-                console.error(error);
-            });
-    }
-
+    
     // Login with Form data
     function tryAndLogIn() {
-
         setIsSubmitDisabled(true);
-
         if (usrEmail.length === 0) {
             Toast.show({
                 type: 'error',
@@ -115,58 +68,8 @@ export default function LoginForm(props: LoginFormProps) {
             return;
         }
         allowLoading();
-        auth().signInWithEmailAndPassword(usrEmail, usrPassword)
-            .then(user => {
-                if (user?.user?.emailVerified === false) {
-                    showError('Failed, Email is not verified')
-                    user.user.sendEmailVerification()
-                        .then(() => {
-                            setTimeout(() => {
-                                props.setVisibleMsg(true);
-                                setTimeout(() => {
-                                    props.setVisibleMsg(false);
-                                }, 2000);
-                            }, 1000);
-                        })
-                        .catch((error) => {
-                            setTimeout(() => {
-
-                                showError('Error sending verification email: ' + error.message);
-                            }, 1000);
-                        });
-                    return;
-                }
-                if (auth().currentUser?.uid) {
-
-                    const userId = user.user.uid.toString();
-                    props.nav.navigate('Splash', { userId });
-                    disableLoading();
-                    getProfile(userId)
-                        .then(async (profile) => {
-
-                            await AsyncStorage.setItem('userID', auth().currentUser?.uid);
-                            setUserEmail('');
-                            setUserPassword('');
-                        })
-                        .catch((error) => {
-
-
-                        })
-                } else {
-                    disableLoading();
-                    Toast.show({
-                        type: 'error',
-                        text1: 'Attention',
-                        text2: "Please Verify Your Email"
-                    });
-                }
-            })
-            .catch(error => {
-                setErrorMsg(error.code);
-                disableLoading();
-                console.log(error);
-                setIsSubmitDisabled(false);
-            });
+        dispatch(loginUser({email:usrEmail,password:usrPassword}))
+       
     }
 
     const forgotPassword = async () => {
@@ -179,21 +82,20 @@ export default function LoginForm(props: LoginFormProps) {
             return;
         }
         auth().sendPasswordResetEmail(usrEmail)
-            .then((res) => {
-                setvisibleMsg(true);
-                setTimeout(() => {
-                    setvisibleMsg(false);
-                }, 2500);
-            })
-            .catch((error) => {
-                showError('Error sending email: ' + error?.code);
-            })
+        .then((res)=>{
+            props.setVisibleMsg(true);
+            setTimeout(() => {
+            props.setVisibleMsg(false);
+            }, 2000);
+        })
+        .catch((error) => {
+            showError('Error sending email: '+error?.code);
+        })
     }
 
     return (
         <View style={formStyles.submitContainer}>
-            <PopUpMessage visible={visiblMsg} title='Email Sent' text='Reset password email sent successfully. Please check your inbox.' />
-            <View>
+            <View style={{width:'100%',alignItems:'center'}}>
                 <TextInput autoCapitalize='none' keyboardType='default' style={styles.formField} placeholder='Enter email...' onChangeText={text => setUserEmail(text)}></TextInput>
                 <TextInput style={styles.formField} placeholder='Enter Password...' onChangeText={text => setUserPassword(text)} secureTextEntry={true}></TextInput>
             </View>

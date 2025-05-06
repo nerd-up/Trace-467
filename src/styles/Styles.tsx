@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
         margin: 10,
     },
     formField: {
-        width: 300,
+        width: '90%',
         borderWidth: .2,
         margin: 10,
         padding: 10,

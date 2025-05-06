@@ -115,7 +115,7 @@ const Friends = ({ navigation}: any,props:any ) => {
                 selectedOption==="Suggestions"?
                 <FindFriends getBlockedUsers={getBlockedUsers} blockedUsers={allUsers}/>:null
             }
-            <ImageBackground source={require('../assets/icons/all.png')} style={{ flex: 1,justifyContent:'center' ,}} resizeMode='cover'>
+            <ImageBackground source={require('../assets/logoo.png')} style={{ flex: 1,justifyContent:'center' ,}} resizeMode='cover'>
 
 </ImageBackground>
         </View>

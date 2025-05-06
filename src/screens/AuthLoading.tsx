@@ -3,13 +3,21 @@ import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import auth from '@react-native-firebase/auth';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { getAsync } from '../store/Auths/asyncThunk';
 
 const AuthLoading = () => {
     const navigation:any=useNavigation();
+    const dispatch=useAppDispatch();
+    const {authData}=useAppSelector(state=>state.authData)
+
     const checkUser = async () => {
         // const userID = await ;
-      
-        if (await AsyncStorage.getItem('userID')) {
+        const user= await AsyncStorage.getItem('user');
+        if (user) {
+            if(user){
+                dispatch(getAsync({user:JSON.parse(user)}))
+            }
             navigation.navigate('Splash');
         } else {
             navigation.navigate('Login');
@@ -18,7 +26,7 @@ const AuthLoading = () => {
 
     useEffect(() => {
         checkUser();
-    }, [navigation]);
+    }, [navigation,authData?.status]);
 
     return (
         <View style={styles.container}>

@@ -75,7 +75,7 @@ const EditProfile = () => {
                 <View style={{ flex: 1, alignContent: 'center', justifyContent: 'center' }}>
                     <View style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
                         {coverPic?.length === 0 ? (
-                            <Image style={styles.coverPhoto} source={require('../../assets/Trace467.jpg')} />
+                            <Image style={styles.coverPhoto} source={require('../../assets/logoo.png')} />
                         ) : (
                             <Image style={styles.coverPhoto} source={{ uri: coverPic }} />
                         )}

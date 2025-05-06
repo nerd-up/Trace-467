@@ -164,7 +164,6 @@ const UserProfile = ({ navigation }: any) => {
             setShowProfile(true);
         }
     }
-console.log(postsData);
 
     return ( 
         <ScrollView style={{
@@ -179,7 +178,7 @@ console.log(postsData);
                 showProfile && <ProfilePic profile={userProfile?.profilePic} onPress={toogleShowProfile} />
             }
             <View>
-                <Loading />
+                {/* <Loading /> */}
 
                 <View>
                     <View>
@@ -187,7 +186,8 @@ console.log(postsData);
                         <View>
                             <View style={{ justifyContent: 'center', width: '100%', position: 'relative' }}>
 
-                                <Image style={styles.coverPhoto} source={userProfile?.coverPic?.length > 1 ? { uri: userProfile?.coverPic } : require('../assets/Trace467.jpg')} />
+                                <Image style={styles.coverPhoto} source={userProfile?.coverPic?.length > 1 ? { uri: userProfile?.coverPic } : 
+                                require('../assets/logoo.png')} />
                                 <TouchableOpacity
                                     style={{
                                         position: 'absolute',
