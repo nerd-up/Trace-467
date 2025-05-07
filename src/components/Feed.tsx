@@ -35,8 +35,7 @@ const Feed = (props: FeedProps) => {
     const fetchFeeds = async () => {
         setLoading(true);
         const userId = auth().currentUser?.uid;
-        if (!userId) {
-           
+        if (!userId) { 
             return;
         }
 

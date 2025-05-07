@@ -10,9 +10,12 @@ import useUserProfileStore, { useLikesStore, usePostsStore } from '../zustand/Us
 import Toast from 'react-native-toast-message';
 import PopUp from '../components/PopUp';
 import PopUpMessage from '../components/PopUpMessage';
+import { loginUser } from '../store/Auths/asyncThunk';
+import { useAppDispatch } from '../store/hooks';
 const Settings = ({navigation}:any) => {
     const { allowLoading,disableLoading} = useLoadingStore();
     const [visiblMsg,setvisibleMsg]=useState(false);
+    const dispatch=useAppDispatch();
     const resetProfileData = useUserProfileStore(store => store.resetProfileData);
     const userProfile: any = useUserProfileStore(store => store);
     const removeAllPosts = usePostsStore(store => store.removeAllPosts)
@@ -30,9 +33,11 @@ const Settings = ({navigation}:any) => {
                 {
                     text: "Yes",
                     onPress: () => {
-                        auth().signOut().then(() => {
+                        auth().signOut().then(async() => {
                             AsyncStorage.removeItem('userID');
                             resetProfileData();
+                           dispatch(loginUser(null));
+                           await AsyncStorage.removeItem('user');
                             removeAllLikes();
                            removeAllPosts();
                             navigation.navigate('Login');

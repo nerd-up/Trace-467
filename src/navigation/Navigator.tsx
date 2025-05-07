@@ -27,6 +27,7 @@ import BlockedUsers from '../screens/BlockedUsers';
 import EditPost from '../screens/EditPost';
 import Terms from '../screens/Terms';
 import Settings from '../screens/Settings';
+import ForgotPassword from '../screens/ForgotPassword';
 
 const Stack = createNativeStackNavigator();
 
@@ -37,6 +38,7 @@ function ScholarStack() {
             <Stack.Screen name="AuthLoading" component={AuthLoading} options={{ headerShown: false }} />
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
             <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
+            <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
             <Stack.Screen name="Splash" component={Splash} options={{ headerShown: false }} />
             <Stack.Screen name="UserProfile" component={UserProfile} options={{ headerShown: false }} />
             <Stack.Screen name="EditProfile" component={EditProfile}  />

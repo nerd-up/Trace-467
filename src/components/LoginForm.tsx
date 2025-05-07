@@ -24,6 +24,7 @@ import { showError, showSucess } from '../utils/utitlity';
 import PopUpMessage from './PopUpMessage';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { loginUser } from '../store/Auths/asyncThunk';
+import { useNavigation } from '@react-navigation/native';
 
 type LoginFormProps = {
     nav: any,
@@ -38,6 +39,7 @@ export default function LoginForm(props: LoginFormProps) {
 
     const [usrEmail, setUserEmail] = useState("");
     const dispatch=useAppDispatch();
+    const navigation:any=useNavigation();
     const {authData}=useAppSelector(state=>state.authData)
     const [usrPassword, setUserPassword] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
@@ -72,27 +74,6 @@ export default function LoginForm(props: LoginFormProps) {
        
     }
 
-    const forgotPassword = async () => {
-        if (usrEmail.length === 0) {
-            Toast.show({
-                type: 'error',
-                text1: "Error!",
-                text2: "Email is Required!"
-            });
-            return;
-        }
-        auth().sendPasswordResetEmail(usrEmail)
-        .then((res)=>{
-            props.setVisibleMsg(true);
-            setTimeout(() => {
-            props.setVisibleMsg(false);
-            }, 2000);
-        })
-        .catch((error) => {
-            showError('Error sending email: '+error?.code);
-        })
-    }
-
     return (
         <View style={formStyles.submitContainer}>
             <View style={{width:'100%',alignItems:'center'}}>
@@ -105,7 +86,7 @@ export default function LoginForm(props: LoginFormProps) {
             {/* Submit Button */}
             <View style={formStyles.submitBtnContainer}>
                 <SButton text="Log in" action={() => tryAndLogIn()}></SButton>
-                <SButton styleType="Sentence" text="Forgot password" action={forgotPassword}></SButton>
+                <SButton styleType="Sentence" text="Forgot password" action={()=>navigation.navigate('ForgotPassword')}></SButton>
                 <SButton styleType="Sentence" text="Don't have an account? SignUp" action={() => props.nav.navigate('SignUp')}></SButton>
             </View>
 

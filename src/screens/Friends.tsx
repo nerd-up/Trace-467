@@ -23,13 +23,10 @@ import Toast from 'react-native-toast-message';
 import { getUserId } from '../utils/Auth';
 const Friends = ({ navigation}: any,props:any ) => {
     const router:any=useRoute();
-    
-  
     const userProfile: any = useUserProfileStore(store => store)
     const [selectedOption,setSelectedOption] =useState(router.params?.selectedOption==="Your Buddies"?router.params?.selectedOption:"Suggestions");
     const [search, setSearch] = useState('');
     const [allUsers,setAllUsers]=useState([]);
-
     const [popUpVisibility, setPopUpVisibility] = useState(false);
     const toggleVisibility = () => {
         if (popUpVisibility == false) {
@@ -59,13 +56,11 @@ const Friends = ({ navigation}: any,props:any ) => {
             );
 
             setAllUsers(users || []);
-     
     }
-   
+
     useEffect(() =>{
         getBlockedUsers();
       },[])
-
 
       
     return (
