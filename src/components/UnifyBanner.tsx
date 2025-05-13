@@ -38,6 +38,7 @@ const bannerStyles= StyleSheet.create({
     image:{
    width:screenWidth/2,
    height:screenHeight/3,
+   resizeMode:'contain',
     },
     miniHeaderText:{
         fontFamily: "JustAnotherHand-Regular",
