@@ -4,7 +4,7 @@ import { TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import { useNavigation } from '@react-navigation/native';
-
+import FastImage from "@d11/react-native-fast-image"
 import ScholarBanner from '../../components/UnifyBanner';
 import { posts, setInProfile } from '../../services/DataService';
 import { getUserId } from '../../utils/Auth';
@@ -75,9 +75,9 @@ const EditProfile = () => {
                 <View style={{ flex: 1, alignContent: 'center', justifyContent: 'center' }}>
                     <View style={{ justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
                         {coverPic?.length === 0 ? (
-                            <Image style={styles.coverPhoto} source={require('../../assets/logoo.png')} />
+                            <FastImage style={styles.coverPhoto} source={require('../../assets/logoo.png')} />
                         ) : (
-                            <Image style={styles.coverPhoto} source={{ uri: coverPic }} />
+                            <FastImage style={styles.coverPhoto} source={{ uri: coverPic }} />
                         )}
                         <TouchableOpacity
                             onPress={chooseCoverPic}
@@ -107,7 +107,7 @@ const EditProfile = () => {
                                     }}
                                 />
                             ) : (
-                                <Image style={styles.profilePictur} source={{ uri: profilePic }} />
+                                <FastImage style={styles.profilePictur} source={{ uri: profilePic }} />
                             )}
                         </View>
                     </View>

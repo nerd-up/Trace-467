@@ -9,6 +9,7 @@ import { checkAbusive } from '../utils/utitlity';
 import Toast from 'react-native-toast-message';
 import auth from '@react-native-firebase/auth';
 import { useNavigation } from '@react-navigation/native';
+import FastImage from "@d11/react-native-fast-image"
 
 type PostBottomProps = {
     postID: string,
@@ -79,7 +80,7 @@ const PostBottom = (props: PostBottomProps) => {
             <View style={styles.postBottom}>
                 <View style={{ width: '50%', alignItems: 'center', borderRightWidth: 1, borderColor: 'gray' }}>
                     <TouchableOpacity disabled={likeDisabled} style={styles.actionBtn} onPress={handleLikePost}>
-                        <Image source={LikeIcon} style={{
+                        <FastImage source={LikeIcon} style={{
                             height: 20, width: 20,
                             tintColor: Colors.primary,
                         }} />
@@ -87,7 +88,7 @@ const PostBottom = (props: PostBottomProps) => {
                 </View>
                 <View style={{ width: '50%', alignItems: 'center' }}>
                     <TouchableOpacity disabled={likeDisabled} style={styles.actionBtn} onPress={toggleShowComments}>
-                        <Image source={require('../assets/icons/speech-bubble.png')} style={{
+                        <FastImage source={require('../assets/icons/speech-bubble.png')} style={{
                             height: 20, width: 20,
                             tintColor: Colors.primary
                         }} />
@@ -119,9 +120,9 @@ const PostBottom = (props: PostBottomProps) => {
                                     <View style={{ padding: 5, flexDirection: 'row' }}>
                                         <TouchableOpacity onPress={()=>navigation.navigate('User',{userID:comment?.userID})}>
                                             {comment.profilePic.length > 1 ? (
-                                                <Image source={{ uri: comment?.profilePic }} style={{ height: 40, width: 40, borderRadius: 50 }} />
+                                                <FastImage source={{ uri: comment?.profilePic }} style={{ height: 40, width: 40, borderRadius: 50 }} />
                                             ) : (
-                                                <Image source={require('../assets/icons/user.png')} style={{ height: 40, width: 40, borderRadius: 50 }} />
+                                                <FastImage source={require('../assets/icons/user.png')} style={{ height: 40, width: 40, borderRadius: 50 }} />
                                             )}
                                         </TouchableOpacity>
                                         <View style={{ justifyContent: 'flex-start', marginLeft: 10, backgroundColor: Colors.lightBackground, flex: 1, padding: 10, borderRadius: 5 }}>

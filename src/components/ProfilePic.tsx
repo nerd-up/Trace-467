@@ -1,9 +1,10 @@
 import React from 'react'
 import { Image, Modal, StyleSheet, TouchableOpacity, View } from 'react-native'
 import Colors from '../theme/ScholarColors';
+import FastImage from "@d11/react-native-fast-image"
 
 const ProfilePic = ({ profile, onPress }: any) => {
-    console.log("profile:", profile);
+   
     return (
         <Modal
             transparent={true} // Ensures the modal has a transparent background
@@ -12,13 +13,13 @@ const ProfilePic = ({ profile, onPress }: any) => {
         >
             <View style={styles.container}>
                 <TouchableOpacity onPress={onPress} style={styles.cancelButton}>
-                    <Image source={require('../assets/icons/reject.png')} style={styles.cancelIconStyle} />
+                    <FastImage source={require('../assets/icons/reject.png')} style={styles.cancelIconStyle} />
                 </TouchableOpacity>
                 <View style={styles.profilePicContainer}>
                     {
                         profile.length > 1 ?
-                            <Image source={{ uri: profile }} style={styles.profilePicStyle} /> :
-                            <Image source={require('../assets/icons/user.png')} style={styles.profilePicStyle} />
+                            <FastImage source={{ uri: profile }} style={styles.profilePicStyle} /> :
+                            <FastImage source={require('../assets/icons/user.png')} style={styles.profilePicStyle} />
                     }
                 </View>
             </View>

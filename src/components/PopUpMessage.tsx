@@ -1,5 +1,6 @@
 import { Image, StyleSheet, Text, View, ViewStyle } from 'react-native'
 import React from 'react'
+import FastImage from "@d11/react-native-fast-image"
 
 interface Props{
     title?:string;
@@ -13,7 +14,7 @@ const PopUpMessage = ({text,title,style,visible}:Props) => {
         <View style={styles.popup}>
             <View style={styles.rowTitle}>
       <Text style={styles.title}>{title}</Text>
-      <Image style={{height:30,width:30,resizeMode:'contain'}} 
+      <FastImage style={{height:30,width:30,resizeMode:'contain'}} 
       source={require('../assets/icons/accept.png')} />
             </View>
       <Text style={styles.text}>{text}</Text>

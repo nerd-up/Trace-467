@@ -7,7 +7,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Button, Image, Platform, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
-
+import FastImage from "@d11/react-native-fast-image"
 
 import Divider from '../components/Divider';
 import LoginForm from '../components/LoginForm';
@@ -21,13 +21,18 @@ import useUserProfileStore from '../zustand/UserProfileStore';
 import { getProfile, setInProfile } from '../services/DataService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
-import { showSucess } from '../utils/utitlity';
+import { showError, showSucess } from '../utils/utitlity';
 import appleAuth, {
     AppleButton,
 } from '@invertase/react-native-apple-authentication';
 import PopUpMessage from '../components/PopUpMessage';
+import { loginUserGoogle } from '../store/Auths/asyncThunk';
+import { useAppDispatch } from '../store/hooks';
 function Login({ navigation }: any) {
     const [visiblMsg,setvisibleMsg]=useState(false);
+    const dispatch=useAppDispatch();
+    const [googleIn,setGoogleIn]=useState(false);
+    const [googleData,setGoogleData]=useState(null);
     const setProfileData = useUserProfileStore(store => store.setProfileData);
     async function onGoogleButtonPress() {
         // Check if your device supports Google Play
@@ -35,20 +40,42 @@ function Login({ navigation }: any) {
         // Get the users ID token
         const userInfo = await GoogleSignin.signIn();
         const { idToken }: any = userInfo?.data;
-
+        //   console.log(userInfo);
+          
         if (!idToken) {
+            showError('Failed','Please try again!')
             throw new Error("No idToken found");
         }
         // Create a Google credential with the token
         const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-        return auth().signInWithCredential(googleCredential);
+        
+        auth().signInWithCredential(googleCredential)
+        .then(async(res)=>{
+           const user=res?.user;
+           const currentUser= auth()?.currentUser;
+           if(currentUser){
+            setGoogleData(user);
+            setGoogleIn(true);
+            const doc = await firestore().collection('Users').doc(currentUser?.uid).get();
+            if(!doc.exists)
+           setInProfile(currentUser?.uid, 'no bio', user?.photoURL || '', '', 'Sportsman', user?.displayName, '')
+           
+        }
+        })
+        .catch((err)=>{
+            showError('Failed','Failed to sign in, \n'+err?.code);
+        })
     }
 
     useEffect(() => {
         GoogleSignin.configure({
             webClientId: '739431608336-shl6v9uadplgsmg404oj29u6b34ee6s9.apps.googleusercontent.com',
         });
-    }, [])
+        if(googleIn){
+            dispatch(loginUserGoogle(googleData));
+           setGoogleIn(false);
+        }
+    }, [googleIn])
     const onAppleButtonPress = async () => {
         if (!appleAuth.isSupported) {
             console.warn("Apple Sign-In is not supported on this device.");
@@ -57,7 +84,6 @@ function Login({ navigation }: any) {
         try {
             const appleAuthRequestResponse = await appleAuth.performRequest({
                 requestedOperation: appleAuth.Operation.LOGIN,
-                
                 requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
             });
             console.log("appleAuthRequestResponse:", appleAuthRequestResponse);
@@ -136,11 +162,11 @@ function Login({ navigation }: any) {
         <SafeAreaView style={{flex:1}}>
         <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
         <PopUpMessage  visible={visiblMsg} title='Email Sent' text='Reset password email sent successfully. Please check your inbox.' />
-            <ScholarBanner text="Login" />
+            <ScholarBanner style={{height:250}}  text="Login" />
             {/* Form */}
             <View style={formStyles.container}>
                 <LoginForm nav={navigation} setVisibleMsg={setvisibleMsg}/>
-                <Divider text="John 3:16 & فَبِأَىِّءَالَآءِرَبِّكُمَاتُكَذِّبَانِ" />
+                {/* <Divider text="John 3:16 & فَبِأَىِّءَالَآءِرَبِّكُمَاتُكَذِّبَانِ" /> */}
                 {/* Other Log In Options */}
                 <View style={{alignItems:'center',justifyContent:'center'}}>
                 {Platform.OS === 'ios'&& appleAuth.isSupported &&<AppleButton
@@ -150,21 +176,26 @@ function Login({ navigation }: any) {
                         onPress={() => onAppleButtonPress()}
                     />}
 
-                        {/* <TouchableOpacity
-                            onPress={() => onGoogleButtonPress().then(async (res: any) => {
-                                // existing Google Sign-In code
-                            })}
-                            style={[formStyles.submitBtn, { backgroundColor: '#d00000', flexDirection: "row", justifyContent: "center", columnGap: 10 }]}
-                        >
-                            <Image source={require('../assets/icons/google.png')} style={{ height: 30, width: 30 }} />
-                            <Text style={styles.btnText}>Sign In with Google</Text>
-                        </TouchableOpacity>
+
+                        {
+                        /* 
                      */}
 
                     {/* Apple Sign-In Button */}
                    
 
                 </View>
+               { Platform.OS === 'android' && <TouchableOpacity
+    onPress={() => onGoogleButtonPress().then(async (res: any) => {
+        // existing Google Sign-In code
+    })}
+    style={[formStyles.submitBtn, { backgroundColor: '#d00000', 
+    flexDirection: "row", justifyContent: "center",alignItems:'center', gap:10 }]}
+>   
+    <FastImage source={require('../assets/icons/google.png')} style={{ height: 30, width: 30 }} />
+    <Text style={styles.btnText}>Sign In with Google</Text>
+</TouchableOpacity>
+}
                 <MissionLine text="Outdoors App" />
             </View>
         </ScrollView>

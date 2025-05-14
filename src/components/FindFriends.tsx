@@ -8,6 +8,7 @@ import { limitText, showSucess } from '../utils/utitlity';
 import useUserProfileStore from '../zustand/UserProfileStore';
 import { getAllUsers } from '../services/DataService';
 import { getUserId } from '../utils/Auth';
+import FastImage from "@d11/react-native-fast-image"
 
 const FindFriends = ({ blockedUsers ,getBlockedUsers}: any) => {
     const navigation: any = useNavigation();
@@ -176,12 +177,12 @@ const FindFriends = ({ blockedUsers ,getBlockedUsers}: any) => {
                                         <View style={{ flexDirection: 'row' }}>
                                             <View style={stylings.classmateIcon}>
                                                 {user.profilePic?.length>1 ? (
-                                                    <Image
+                                                    <FastImage
                                                         source={{ uri: user?.profilePic }}
                                                         style={{ height: 60, width: 60, borderRadius: 50 }}
                                                     />
                                                 ) : (
-                                                    <Image
+                                                    <FastImage
                                                         source={require('../assets/icons/user.png')}
                                                         style={{ height: 60, width: 60, borderRadius: 50 }}
                                                     />
@@ -205,7 +206,7 @@ const FindFriends = ({ blockedUsers ,getBlockedUsers}: any) => {
                                         >
                                             <View style={stylings.acceptButton}>
                                                 {
-                                                    <Image
+                                                    <FastImage
                                                             style={stylings.icon}
                                                             source={
                                                              user.icon

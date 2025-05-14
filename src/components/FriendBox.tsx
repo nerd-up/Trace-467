@@ -5,6 +5,7 @@ import styles from '../styles/Styles';
 import Colors from '../theme/ScholarColors';
 import { useNavigation } from '@react-navigation/native';
 import { limitText } from '../utils/utitlity';
+import FastImage from "@d11/react-native-fast-image"
 
 type FriendBoxProps = {
     data?: any,
@@ -17,7 +18,7 @@ const FriendBox = ({ data, profilePic }: FriendBoxProps) => {
     return (
         <TouchableOpacity onPress={() => navigation.navigate('User', { userID: data?.userID })} style={styles.friendBoxStyle}>
 
-            <Image source={data?.profilePic?.length > 1 ? { uri: data?.profilePic } :
+            <FastImage source={data?.profilePic?.length > 1 ? { uri: data?.profilePic } :
                 require('../assets/icons/user.png')
             } style={{
                 height: 80, width

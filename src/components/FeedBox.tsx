@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-menu';
 import useUserProfileStore from '../zustand/UserProfileStore';
 import { deletePost } from '../services/DataService';
+import FastImage from "@d11/react-native-fast-image"
 
 type FeedBoxProps = {
     key: number,
@@ -78,7 +79,7 @@ export default function FeedBox(props: FeedBoxProps) {
                 <View style={{ top: 10, right: 0, zIndex: 2, position: 'absolute' }}>
                     <Menu>
                         <MenuTrigger>
-                            <Image source={require('../assets/icons/dots.png')} style={{ height: 20, width: 20, tintColor: 'black' }} />
+                            <FastImage source={require('../assets/icons/dots.png')} style={{ height: 20, width: 20, tintColor: 'black' }} />
                         </MenuTrigger>
                         <MenuOptions>
                             {auth().currentUser?.uid === props?.userID ?
@@ -96,8 +97,8 @@ export default function FeedBox(props: FeedBoxProps) {
                     <View style={styles.avatarSection}>
                         {
                             props.avatar == null || props.avatar?.length < 2 ?
-                                <Image style={styles.postHeaderProfile} source={require('../assets/icons/user.png')} /> :
-                                <Image source={{ uri: props.avatar }} style={styles.postHeaderProfile} />
+                                <FastImage style={styles.postHeaderProfile} source={require('../assets/icons/user.png')} /> :
+                                <FastImage source={{ uri: props.avatar }} style={styles.postHeaderProfile} />
                         }
                     </View>
                 </TouchableOpacity>
@@ -111,14 +112,14 @@ export default function FeedBox(props: FeedBoxProps) {
             {
                 props.index === 1 || props.index === 2 || props.index === 3 ?
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                        <Image
+                        <FastImage
                             source={require('../assets/icons/gym.png')}
                             style={{ height: 25, width: 25 }}
                         />
                         <Text style={{ marginHorizontal: 10, fontSize: 16 }}>
                             Top Picture
                         </Text>
-                        <Image
+                        <FastImage
                             source={require('../assets/icons/gym.png')}
                             style={{ height: 25, width: 25 }}
                         />
@@ -135,7 +136,7 @@ export default function FeedBox(props: FeedBoxProps) {
                     <View style={styles.postHolder}>
                         
                             
-                        <Image source={{ uri: props?.picture }} style={{ resizeMode: 'cover', width: '100%', height: '100%' }} />
+                        <FastImage source={{ uri: props?.picture }} style={{ resizeMode: 'cover', width: '100%', height: '100%' }} />
 
                         
                     </View>

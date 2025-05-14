@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { View, TextInput, ScrollView, StyleSheet, Text, TouchableOpacity, Image, Alert, TouchableHighlight, RefreshControl } from 'react-native'
+import { View, TextInput, ScrollView, StyleSheet, Text, TouchableOpacity, Alert, TouchableHighlight, RefreshControl } from 'react-native'
 // import Icon from 'react-native-vector-icons/Ionicons'
+import FastImage from "@d11/react-native-fast-image"
 import Colors from '../theme/ScholarColors'
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
@@ -90,9 +91,9 @@ const AllFriends = ({ blockedUsers,getBlockedUsers }: any) => {
                                                 <View style={stylings.classmateIcon}>
                                                     {
                                                         friend.profilePic?.length > 1 ?
-                                                            <Image source={{ uri: friend.profilePic }} style={{ height: 60, width: 60, borderRadius: 50 }}></Image>
+                                                            <FastImage source={{ uri: friend.profilePic }} style={{ height: 60, width: 60, borderRadius: 50 }}></FastImage>
                                                             :
-                                                            <Image source={require('../assets/icons/user.png')} style={{ height: 60, width: 60, borderRadius: 50 }}></Image>
+                                                            <FastImage source={require('../assets/icons/user.png')} style={{ height: 60, width: 60, borderRadius: 50 }}></FastImage>
                                                     }
                                                 </View>
                                                 <View style={stylings.classmateTexts}>

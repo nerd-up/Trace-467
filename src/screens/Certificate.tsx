@@ -4,6 +4,7 @@ import Colors from '../theme/ScholarColors';
 import useUserProfileStore from '../zustand/UserProfileStore';
 import { useNavigation } from '@react-navigation/native';
 // import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import FastImage from "@d11/react-native-fast-image"
 
 const Certificate = () => {
     const navigation: any = useNavigation();
@@ -91,7 +92,7 @@ const Certificate = () => {
         <View style={{ flex: 1, padding: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: Colors.background }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                 <View>
-                    <Image source={require('../assets/icons/Trace467.jpg')} style={{ height: 150, width: 150 }} />
+                    <FastImage source={require('../assets/icons/Trace467.jpg')} style={{ height: 150, width: 150 }} />
                 </View>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     <Text style={{ fontSize: 32, color: Colors.linkColor }}>The</Text>

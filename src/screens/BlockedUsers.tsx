@@ -6,6 +6,7 @@ import auth from '@react-native-firebase/auth'
 import useUserProfileStore from '../zustand/UserProfileStore';
 import Toast from 'react-native-toast-message';
 import Colors from '../theme/ScholarColors';
+import FastImage from "@d11/react-native-fast-image"
 
 const BlockedUsers = ({ navigation }: any) => {
     const route = useRoute();
@@ -72,7 +73,7 @@ const BlockedUsers = ({ navigation }: any) => {
                         <View style={styles.left}>
                             {
                                 item.profilePic !== " " ?
-                                    <Image source={{ uri: item.profilePic }} style={{
+                                    <FastImage source={{ uri: item.profilePic }} style={{
                                         height: 45, width
                                             : 45,
                                         borderRadius: 60,
@@ -80,7 +81,7 @@ const BlockedUsers = ({ navigation }: any) => {
                                         borderColor: Colors.primary
 
                                     }} /> :
-                                    <Image source={require('../assets/icons/user.png')} style={{
+                                    <FastImage source={require('../assets/icons/user.png')} style={{
                                         height: 45, width
                                             : 45,
                                         tintColor: 'black',

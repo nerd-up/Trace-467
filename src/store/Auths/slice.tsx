@@ -1,7 +1,7 @@
 // store/slices/dataSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 import { initialState } from './initialState';
-import {deleteUser, getAsync, loginUser, logoutUser, signupUser } from './asyncThunk';
+import {deleteUser, getAsync, loginUser, loginUserGoogle, logoutUser, signupUser } from './asyncThunk';
 import { showError, showSucess } from '../../utils/utitlity';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const authSlice = createSlice({
@@ -58,7 +58,30 @@ const authSlice = createSlice({
         state.authData.loading = false;
       })
 
-       // Login
+      // Login with google
+      .addCase(loginUserGoogle.pending, (state) => {
+        state.authData.loading = true;
+        state.authData.message = null;
+      })
+      .addCase(loginUserGoogle.fulfilled, (state, action:any) => {
+        if(action?.payload===null){
+          state.authData=initialState.authData;
+          return;
+        }
+        state.authData.response = action.payload;
+        AsyncStorage.setItem('user',JSON.stringify( action.payload))
+        showSucess('Success','Successfully Logged in!');
+        state.signupData.message ='Successfully Logged in!';
+        state.authData.loading = false;
+        state.authData.status=true;
+      })
+      .addCase(loginUserGoogle.rejected, (state, action:any) => {
+        showError('Failed', action.payload?? 'Failed to log in');
+        state.authData.message = action.payload ?? 'Failed to log in';
+        state.authData.loading = false;
+      })
+
+       // Login async storage
        .addCase(getAsync.pending, (state) => {
         state.authData.loading = true;
         state.authData.message = null;

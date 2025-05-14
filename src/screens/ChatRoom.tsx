@@ -3,6 +3,7 @@ import { Bubble, GiftedChat, QuickReplies, User } from 'react-native-gifted-chat
 import { SafeAreaView, StyleSheet, Platform, KeyboardAvoidingView, Image, Text, TouchableOpacity, View } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
+import FastImage from "@d11/react-native-fast-image"
 // import Icon from 'react-native-vector-icons/Ionicons';
 import Colors from '../theme/ScholarColors';
 import auth from '@react-native-firebase/auth';
@@ -78,14 +79,14 @@ const ChatRoom = () => {
             onPress={() => navigation.goBack()}>
           </TouchableOpacity>
           {userProfile.profilePic?.length>1?
-          <Image source={{ uri: userProfile.profilePic }} style={style.avatar} />:
-          <Image source={ require('../assets/icons/user.png')} style={style.avatar} />}
+          <FastImage source={{ uri: userProfile.profilePic }} style={style.avatar} />:
+          <FastImage source={ require('../assets/icons/user.png')} style={style.avatar} />}
         </View>
       ),
       headerTitle: () => <Text style={style.username}>{userProfile.usrName}</Text>,
       headerRight: () => (
         <TouchableOpacity >
-          <Image source={require('../assets/icons/dots.png')} style={{ height: 30, width: 30 }} />
+          <FastImage source={require('../assets/icons/dots.png')} style={{ height: 30, width: 30 }} />
         </TouchableOpacity>
       ),
     });
@@ -107,7 +108,7 @@ const ChatRoom = () => {
           renderAvatarOnTop={true}
           scrollToBottom={true}
           renderBubble={renderBubble}
-          renderAvatar={() => <Image source={{ uri: userProfile.profilePic }} style={style.chatAvatar} />
+          renderAvatar={() => <FastImage source={{ uri: userProfile.profilePic }} style={style.chatAvatar} />
           }
         />
       </KeyboardAvoidingView>

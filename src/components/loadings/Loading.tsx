@@ -3,6 +3,8 @@ import React from 'react'
 import { ActivityIndicator } from 'react-native-paper'
 import Colors from '../../theme/ScholarColors'
 import useLoadingStore from '../../zustand/UseLoadingStore'
+import FastImage from "@d11/react-native-fast-image"
+
 interface Props{
     loading?:boolean,
     
@@ -13,7 +15,7 @@ const Loading = ({loading}:Props) => {
     <>{ (loading===true || isLoading===true)&&
     <View style={styles.loadingContainer}>
         <ActivityIndicator style={styles.loader} animating color={Colors.primary}  size={65} />
-      <Image style={styles.loadingImage} source={require('../../assets/Trace467.jpg')} />
+      <FastImage style={styles.loadingImage} source={require('../../assets/Trace467.jpg')} />
     </View>
 }
     </>

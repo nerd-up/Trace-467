@@ -6,6 +6,9 @@ import Colors from '../theme/ScholarColors'
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
+import FastImage from "@d11/react-native-fast-image"
+
+
 const FriendRequests = ({blockedUsers,getBlockedUsers}:any) => {
     const navigation: any = useNavigation();
     const [requests, setRequests]: any = useState([]);
@@ -152,7 +155,7 @@ const FriendRequests = ({blockedUsers,getBlockedUsers}:any) => {
                                                 <View style={stylings.classmateIcon}>
                                                     {
                                                         friend?.profilePic.length>1 ?
-                                                            <Image source={{ uri: friend?.profilePic }} style={{ height: 60, width: 60, borderRadius: 50 }}></Image> :                             <Image style={{ height: 60, width: 60, borderRadius: 50 }} source={require('../assets/icons/user.png')}  /> 
+                                                            <FastImage source={{ uri: friend?.profilePic }} style={{ height: 60, width: 60, borderRadius: 50 }}></FastImage> :                             <FastImage style={{ height: 60, width: 60, borderRadius: 50 }} source={require('../assets/icons/user.png')}  /> 
                                                     }
                                                 </View>
                                                 <View style={stylings.classmateTexts}>
@@ -171,7 +174,7 @@ const FriendRequests = ({blockedUsers,getBlockedUsers}:any) => {
                                         <View>
                                             <TouchableOpacity onPress={() => acceptRequest(friend?.userID)}>
                                                 <View style={stylings.acceptButton}>
-                                                    <Image source={require('../assets/icons/accept.png')} style={{height:30,width:30}}></Image>
+                                                    <FastImage source={require('../assets/icons/accept.png')} style={{height:30,width:30}}></FastImage>
                                                     {/* <Text style={stylings.acceptButtonText}>Accept</Text> */}
                                                 </View>
                                             </TouchableOpacity>
@@ -179,7 +182,7 @@ const FriendRequests = ({blockedUsers,getBlockedUsers}:any) => {
                                         <View>
                                             <TouchableOpacity onPress={() => acceptRequest(friend?.userID)}>
                                                 <View style={stylings.acceptButton}>
-                                                    <Image source={require('../assets/icons/reject.png')} style={{height:30,width:30}}></Image>
+                                                    <FastImage source={require('../assets/icons/reject.png')} style={{height:30,width:30}}></FastImage>
 
                                                     {/* <Text style={stylings.acceptButtonText}>Remove</Text> */}
                                                 </View>

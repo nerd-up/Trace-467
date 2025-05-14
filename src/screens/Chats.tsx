@@ -6,6 +6,8 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 import { QuickReplies, User } from 'react-native-gifted-chat';
+import FastImage from "@d11/react-native-fast-image"
+
 interface IMessage {
   _id: string | number;
   text: string;
@@ -81,9 +83,9 @@ const Chats = () => {
                         <View style={stylings.classmateIcon}>
                           {
                             friend.profilePic.length>1 ?
-                              <Image source={{ uri: friend.profilePic }} style={{ height: 50, width: 50, borderRadius: 50 }}></Image>
+                              <FastImage source={{ uri: friend.profilePic }} style={{ height: 50, width: 50, borderRadius: 50 }}></FastImage>
                               :
-                              <Image source={require('../assets/icons/user.png')} style={{ height: 50, width: 50, borderRadius: 50 }}></Image>
+                              <FastImage source={require('../assets/icons/user.png')} style={{ height: 50, width: 50, borderRadius: 50 }}></FastImage>
                           }
                         </View>
                         <View style={stylings.classmateTexts}>

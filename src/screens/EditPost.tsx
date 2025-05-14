@@ -6,6 +6,7 @@ import { ActivityIndicator, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons'
 import useUserProfileStore from '../zustand/UserProfileStore';
 import { getUserId } from '../utils/Auth';
+import FastImage from "@d11/react-native-fast-image"
 import firestore from '@react-native-firebase/firestore';
 import Colors from '../theme/ScholarColors';
 import { launchImageLibrary } from 'react-native-image-picker';
@@ -165,7 +166,7 @@ useEffect(()=>{
             <View style={styles.avatarSection}>
                 {userProfilePic == " " ?
                     <Icon name={'person'} size={45} color={Colors.primary} style={{ borderRadius: 50, padding: 5 }} /> :
-                    <Image source={{ uri: userProfilePic }} style={[styles.avatarSection, { height: 50, width: 50 }]} />
+                    <FastImage source={{ uri: userProfilePic }} style={[styles.avatarSection, { height: 50, width: 50 }]} />
                 }
             </View>
             <View style={[styles.adminSection, { marginTop: 10, flexDirection: 'column' }]}>
@@ -196,7 +197,7 @@ useEffect(()=>{
                         <TouchableOpacity style={styles.cancelButtonStyle} onPress={() => setSelectedImage('')}>
                             <Icon name="close-outline" color={'red'} size={40} />
                         </TouchableOpacity>
-                        <Image source={{ uri: selectedImage || currentPost?.image }} style={styles.selectedImageStyle}></Image>
+                        <FastImage source={{ uri: selectedImage || currentPost?.image }} style={styles.selectedImageStyle}></FastImage>
                     </View>
             }
         </View>

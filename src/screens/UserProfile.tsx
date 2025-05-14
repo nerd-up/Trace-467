@@ -25,6 +25,7 @@ import { Menu, MenuOption, MenuOptions, MenuTrigger } from 'react-native-popup-m
 import FriendBox from '../components/FriendBox';
 import Loading from '../components/loadings/Loading';
 import ProfilePic from '../components/ProfilePic';
+import FastImage from "@d11/react-native-fast-image"
 
 const UserProfile = ({ navigation }: any) => {
     const [friends, setFriends]: any = useState([]);
@@ -53,7 +54,6 @@ const UserProfile = ({ navigation }: any) => {
     const fetchAllFriends = async () => {
         const userId = auth().currentUser?.uid;
         if (!userId) {
-
             return;
         }
         try {
@@ -71,7 +71,6 @@ const UserProfile = ({ navigation }: any) => {
                     return senderDoc.data();
                 });
                 const requests: any = await Promise.all(friendRequestsPromises);
-
                 setFriends(requests);
             }
         } catch (error) {
@@ -186,7 +185,7 @@ const UserProfile = ({ navigation }: any) => {
                         <View>
                             <View style={{ justifyContent: 'center', width: '100%', position: 'relative' }}>
 
-                                <Image style={styles.coverPhoto} source={userProfile?.coverPic?.length > 1 ? { uri: userProfile?.coverPic } : 
+                                <FastImage style={styles.coverPhoto} source={userProfile?.coverPic?.length > 1 ? { uri: userProfile?.coverPic } : 
                                 require('../assets/logoo.png')} />
                                 <TouchableOpacity
                                     style={{
@@ -203,7 +202,7 @@ const UserProfile = ({ navigation }: any) => {
                                     }}
                                     onPress={() => navigation.push('EditProfile', { userProfile })}
                                 >
-                                    <Image
+                                    <FastImage
                                         source={require('../assets/icons/image-editing.png')}
                                         style={{
                                             tintColor: Colors.primary,
@@ -233,7 +232,7 @@ const UserProfile = ({ navigation }: any) => {
                                                 height: 120,
                                                 width: 120,
                                             }} onPress={toogleShowProfile}>
-                                                <Image source={{ uri: userProfile.profilePic }} style={{
+                                                <FastImage source={{ uri: userProfile.profilePic }} style={{
                                                     height: '100%',
                                                     width: '100%',
                                                     borderRadius: 60,
@@ -245,7 +244,7 @@ const UserProfile = ({ navigation }: any) => {
                                                 height: 120,
                                                 width: 120,
                                             }} onPress={toogleShowProfile}>
-                                                <Image source={require('../assets/icons/user.png')} style={{
+                                                <FastImage source={require('../assets/icons/user.png')} style={{
                                                     height: 80,
                                                     width: 80,
                                                     tintColor: 'black',
@@ -269,7 +268,7 @@ const UserProfile = ({ navigation }: any) => {
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     <Menu>
                                         <MenuTrigger>
-                                            <Image source={require('../assets/icons/dots.png')} style={{
+                                            <FastImage source={require('../assets/icons/dots.png')} style={{
                                                 height: 20,
                                                 width: 20,
                                                 tintColor: Colors.primary,
@@ -284,7 +283,7 @@ const UserProfile = ({ navigation }: any) => {
                                     <Text style={[styles.headingStyle]}>{userProfile.usrName}</Text>
 
                                     {userProfile.signed &&
-                                        <Image source={require('../assets/icons/checkmark.png')} style={{
+                                        <FastImage source={require('../assets/icons/checkmark.png')} style={{
                                             height: 20,
                                             width: 20,
                                             tintColor: Colors.forrestGreen,
@@ -364,7 +363,7 @@ const UserProfile = ({ navigation }: any) => {
                         borderRadius: 10,
                     }} onPress={() => navigation.push('Post', { userProfile })}>
                         <View>
-                            <Image source={require('../assets/icons/user.png')} style={{
+                            <FastImage source={require('../assets/icons/user.png')} style={{
                                 tintColor: Colors.primary, height: 30, width: 30
                             }} />
                         </View>

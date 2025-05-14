@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Image, ImageBackground, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { getPostLikes, fetchPosts, unfriend } from '../services/DataService';
 import FeedBox from '../components/FeedBox';
+import FastImage from "@d11/react-native-fast-image"
 import Colors from '../theme/ScholarColors';
 import Divider from '../components/Divider';
 import { useFocusEffect, useIsFocused, useRoute } from '@react-navigation/native';
@@ -184,14 +185,14 @@ const User = ({ navigation }: any) => {
                         style={styles.backgroundImage}
                     >
                         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-                            <Image source={require('../assets/icons/back.png')} style={styles.backIcon} />
+                            <FastImage source={require('../assets/icons/back.png')} style={styles.backIcon} />
                         </TouchableOpacity>
                         <View style={styles.headerContent}>
                             <View style={styles.profilePicContainer}>
                                 {currentUser.profilePic?.length > 1 ? (
-                                    <Image source={{ uri: currentUser.profilePic }} style={styles.profilePic} />
+                                    <FastImage source={{ uri: currentUser.profilePic }} style={styles.profilePic} />
                                 ) : (
-                                    <Image source={require('../assets/icons/user.png')} style={styles.defaultProfilePic} />
+                                    <FastImage source={require('../assets/icons/user.png')} style={styles.defaultProfilePic} />
                                 )}
                             </View>
                         </View>
@@ -202,11 +203,11 @@ const User = ({ navigation }: any) => {
                         <View style={styles.userInfo}>
                             <Text style={styles.userName}>{currentUser.usrName}</Text>
                             {currentUser.signed && (
-                                <Image source={require('../assets/icons/checkmark.png')} style={styles.checkmarkIcon} />
+                                <FastImage source={require('../assets/icons/checkmark.png')} style={styles.checkmarkIcon} />
                             )}
                             <Menu>
                                 <MenuTrigger>
-                                    <Image source={require('../assets/icons/dots.png')} style={styles.menuIcon} />
+                                    <FastImage source={require('../assets/icons/dots.png')} style={styles.menuIcon} />
                                 </MenuTrigger>
                                 <MenuOptions>
                                     <MenuOption onSelect={() => navigation.navigate('ReportUser', { user: currentUser })} text='Report User' />
@@ -228,7 +229,7 @@ const User = ({ navigation }: any) => {
                                     onPress={() => sendRequest(currentUser.userID, auth().currentUser?.uid)}
                                 >
                                     <View style={styles.acceptButton}>
-                                        <Image
+                                        <FastImage
                                             style={styles.icon}
                                             source={
                                                 require('../assets/icons/add-friend.png')
@@ -246,7 +247,7 @@ const User = ({ navigation }: any) => {
 
                                     <View style={{ gap:10,width: '90%', borderRadius: 20, justifyContent: 'center', flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.primary }}>
                                         <Text style={styles.residencyText}>See Friendship</Text>
-                                        <Image
+                                        <FastImage
                                             style={styles.icon}
                                             source={
                                                 require('../assets/icons/friends.png')

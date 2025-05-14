@@ -10,9 +10,9 @@ import { launchImageLibrary } from 'react-native-image-picker'
 import { setInPost } from '../services/DataService'
 import { getUserId } from '../utils/Auth'
 import useUserProfileStore from '../zustand/UserProfileStore'
-import { checkAbusive, showError } from '../utils/utitlity'
-import Toast from 'react-native-toast-message'
-import { Button } from 'react-native-paper'
+import { checkAbusive, chooseFileAndCrop, getFileName, showError } from '../utils/utitlity'
+import FastImage from "@d11/react-native-fast-image"
+import ImagePicker from 'react-native-image-crop-picker';
 
 export default function Post(navigation: any) {
     const userName = useUserProfileStore(store => store.usrName)
@@ -28,35 +28,54 @@ export default function Post(navigation: any) {
     const [isPrivate, setIsPrivate] = useState(false);
     navigation = useNavigation();
 
-    const openImagePicker = () => {
-        const options: any = {
-            title: 'Select Image',
-            storageOptions: {
-                skipBackup: true,
-                path: 'images',
-            },
-        };
-
-        launchImageLibrary(options, (response: any) => {
-            if (response.didCancel) {
-                console.log('Image picker was canceled');
-            } else if (response.error) {
-                console.error('Image picker error:', response.error);
-            } else {
-                // Handle the selected image here
-                const asset: any = response.assets[0].uri;
-
-                const uri: any = Platform.OS === 'ios' ? asset.replace('file://', '') : asset;
-
-                // setSelectedImage(response.assets[0].uri);
-                setSelectedImage(response.assets[0].uri);
-                const fName = response.assets[0].fileName;
+    const openImagePicker = async() => {
+        // const options: any = {
+        //     title: 'Select Image',
+        //     storageOptions: {
+        //         skipBackup: true,
+        //         path: 'images',
+        //     },
+        // };
+        await chooseFileAndCrop()
+        .then((res:any)=>{
+          if(res){
+            const pic={
+                name: getFileName(res?.path),
+                type:res?.mime ?? 'image/jpeg',
+                uri:res?.path
+               }
+               setSelectedImage(pic?.uri);
+        //         setSelectedImage(response.assets[0].uri);
+                const fName = pic?.name;
                 const path = `images/users/${adminId}/Posts/${fName}`.toString();
                 setFilePath(path);
-                setPicName(uri);
+                setPicName(pic?.uri);
+            
+          }
+         return;
+        }) 
+      
+
+        // launchImageLibrary(options, (response: any) => {
+        //     if (response.didCancel) {
+        //         console.log('Image picker was canceled');
+        //     } else if (response.error) {
+        //         console.error('Image picker error:', response.error);
+        //     } else {
+        //         // Handle the selected image here
+        //         const asset: any = response.assets[0].uri;
+
+        //         const uri: any = Platform.OS === 'ios' ? asset.replace('file://', '') : asset;
+
+        //         // setSelectedImage(response.assets[0].uri);
+        //         setSelectedImage(response.assets[0].uri);
+        //         const fName = response.assets[0].fileName;
+        //         const path = `images/users/${adminId}/Posts/${fName}`.toString();
+        //         setFilePath(path);
+        //         setPicName(uri);
                
-            }
-        });
+        //     }
+        // });
     }
 
     const getCurrentTime = () => {
@@ -114,7 +133,7 @@ export default function Post(navigation: any) {
                     <View style={styles.avatarSection}>
                         {userProfilePic?.length<1 ?
                             <Icon name={'person'} size={45} color={Colors.primary} style={{ borderRadius: 50, padding: 5 }} /> :
-                            <Image source={{ uri: userProfilePic }} style={[styles.avatarSection, { height: 50, width: 50 }]} />
+                            <FastImage source={{ uri: userProfilePic }} style={[styles.avatarSection, { height: 50, width: 50 }]} />
                         }
                     </View>
                     <View style={[styles.adminSection, { marginTop: 10, flexDirection: 'column' }]}>
@@ -150,7 +169,7 @@ export default function Post(navigation: any) {
                                 <TouchableOpacity style={styles.cancelButtonStyle} onPress={() => setSelectedImage('')}>
                                     <Icon name="close-outline" color={'red'} size={40} />
                                 </TouchableOpacity>
-                                <Image source={{ uri: selectedImage }} style={styles.selectedImageStyle}></Image>
+                                <FastImage source={{ uri: selectedImage }} style={styles.selectedImageStyle}></FastImage>
                             </View>
                     }
                 </View>

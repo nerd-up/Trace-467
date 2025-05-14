@@ -1,7 +1,8 @@
-import { Image, Platform, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
+import { Platform, StyleSheet,Image, Text, TouchableOpacity, View, ViewStyle } from 'react-native'
 import React from 'react'
 import { GestureResponderEvent } from 'react-native-modal';
 import { useNavigation } from '@react-navigation/native';
+import FastImage  from 'react-native-fast-image';
 
 interface Props{
     style?:ViewStyle;

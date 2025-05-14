@@ -17,6 +17,7 @@ import { showSucess } from '../utils/utitlity';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { getProfile } from '../store/Dashboard/asynThunk';
 import Loader from '../components/loadings/Loader';
+import FastImage from '@d11/react-native-fast-image';
 
 
 const Home = ({ navigation }: any) => {
@@ -46,7 +47,7 @@ const Home = ({ navigation }: any) => {
 					borderRadius: 10,
 				}}>
 				<View>
-					<Image source={require('../assets/icons/user.png')} style={{ tintColor: Colors.primary, height: 30, width: 30 }} />
+					<FastImage source={require('../assets/icons/user.png')} style={{ tintColor: Colors.primary, height: 30, width: 30 }} />
 				</View>
 				
 				<TouchableOpacity style={{ flex: 1 }} onPress={() => navigation.push('Post', { userProfile })}>
@@ -57,7 +58,7 @@ const Home = ({ navigation }: any) => {
 				
 				<View style={{ marginLeft: 5 }}>
 					<TouchableOpacity>
-						<Image source={require('../assets/icons/images.png')} style={{ height: 30, width: 30, tintColor: Colors.primary }} />
+						<FastImage source={require('../assets/icons/images.png')} style={{ height: 30, width: 30, tintColor: Colors.primary }} />
 					</TouchableOpacity>
 				</View>
 			</View>

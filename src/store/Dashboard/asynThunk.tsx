@@ -10,7 +10,7 @@ export const getProfile = createAsyncThunk(
       if(ref!==null) {
     const response=  await getFromFirebase(ref);
       return response; 
-    }
+    } 
       return null;
     } catch (error: any) {
       return rejectWithValue(error.message);

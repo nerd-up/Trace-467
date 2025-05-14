@@ -24,6 +24,7 @@ import Trophies from '../screens/Trophies';
 import { getUserId } from '../utils/Auth';
 import useLoadingStore from '../zustand/UseLoadingStore';
 import { showSucess } from '../utils/utitlity';
+import FastImage from '@d11/react-native-fast-image';
 
 const Tab = createBottomTabNavigator();
 
@@ -75,7 +76,7 @@ function ScholarTabs() {
                 , 
                 headerRight: () =>
                     <TouchableOpacity onPress={() => navigation.navigate('Chats')}>
-                        <Image style={{ height: 40, width: 40, marginRight: 10, tintColor: Colors.primary }} source={require('../assets/icons/chat.png')}></Image>
+                        <FastImage style={{ height: 40, width: 40, marginRight: 10, tintColor: Colors.primary }} source={require('../assets/icons/chat.png')}></FastImage>
                     </TouchableOpacity>
             }} 
             />
@@ -92,13 +93,13 @@ function ScholarTabs() {
                     headerRight: () => (
                         <View style={{flexDirection:'row'}}>
                         <TouchableOpacity onPress={()=>navigation.navigate('Friends')}>
-                        <Image
+                        <FastImage
                             source={require('../assets/icons/search.png')}
                             style={{ marginRight: 15, height: 20, width: 20, tintColor: Colors.primary }}
                         />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={()=>navigation.navigate('Settings')}>
-                            <Image style={{height:20,width:20,tintColor:Colors.primary,marginRight:'5%'}} source={require('../assets/icons/settings.png')} />
+                            <FastImage style={{height:20,width:20,tintColor:Colors.primary,marginRight:'5%'}} source={require('../assets/icons/settings.png')} />
                         </TouchableOpacity>
                     </View>
                     )

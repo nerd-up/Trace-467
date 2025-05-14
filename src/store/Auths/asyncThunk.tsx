@@ -42,6 +42,17 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const loginUserGoogle = createAsyncThunk(
+  'auth/loginUserGoogle',
+  async (data: any, { rejectWithValue }) => {
+    try { 
+      return data
+    } catch (error: any) {
+      return rejectWithValue(error.toString());
+    }
+  }
+);
+
 export const getAsync = createAsyncThunk(
   'auth/getAsync',
   async (user:any, { rejectWithValue }) => {

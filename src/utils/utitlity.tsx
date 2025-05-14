@@ -2,7 +2,7 @@ import Toast from "react-native-toast-message";
 import { objectionableWords } from "./data"
 import { ALERT_TYPE, Dialog } from "react-native-alert-notification";
 import { Dimensions } from "react-native";
-
+import ImagePicker from 'react-native-image-crop-picker';
 export const screenWidth= Dimensions.get('window').width;
 export const screenHeight= Dimensions.get('window').height;
 export const checkAbusive=(sentence:string)=>{
@@ -38,3 +38,25 @@ export const showError = (text1='',text2='') => {
   export const limitText = (text: string,limit=12) =>{
   return text?.length > limit? text?.substring(0, limit) + '...' : text;
   }
+  export const getFileName = (path:string) => {
+    return path.substring(path.lastIndexOf('/') + 1);
+  };
+  export const chooseFileAndCrop=async ()=>{
+    return new Promise((resolve, reject) => {
+      ImagePicker.openPicker({
+        cropping: true,
+        mediaType: 'photo',
+    }).then((image) => {
+      resolve(image); // Return the image object (contains path, etc.)
+    })
+    .catch((error) => {
+      if (error.code === 'E_PICKER_CANCELLED') {
+        // Handle cancellation case
+        reject('User cancelled the image picker');
+      } else {
+        // Handle other errors (e.g., permission issues, invalid image formats, etc.)
+        reject(error.message || 'An error occurred while picking the image');
+      }
+    });
+     })  
+    }
