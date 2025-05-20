@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "739431608336-e72fiacqiofuaqilo1d4kt656reacbgh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.trace467",
+            "certificate_hash": "10e9936b1ab9a87a277453d53df5a51024dd8818"
+          }
+        },
+        {
           "client_id": "739431608336-shl6v9uadplgsmg404oj29u6b34ee6s9.apps.googleusercontent.com",
           "client_type": 3
         }

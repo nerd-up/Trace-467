@@ -69,7 +69,6 @@ const authSlice = createSlice({
           return;
         }
         state.authData.response = action.payload;
-        AsyncStorage.setItem('user',JSON.stringify( action.payload))
         showSucess('Success','Successfully Logged in!');
         state.signupData.message ='Successfully Logged in!';
         state.authData.loading = false;

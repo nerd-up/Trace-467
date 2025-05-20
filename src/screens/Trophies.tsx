@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, StyleSheet, ScrollView, RefreshControl, Platform, FlatList, Button } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, RefreshControl, Platform, FlatList, Button, SafeAreaView } from 'react-native';
 import { ScholarMiniBanner } from '../components/UnifyBanner';
 import Divider from '../components/Divider';
 import FeedBox from '../components/FeedBox';
@@ -107,7 +107,7 @@ const Trophies = () => {
         getAllPostsWithImages();
     }, [blockedUsers,limit]); // Re-fetch posts whenever the limit changes
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <View style={styles.bannerContainer}>
                 <ScholarMiniBanner text="Top Pics" size={49} />
             </View>
@@ -144,15 +144,13 @@ const Trophies = () => {
                     />
                 )}
             />
-        </View>
+        </SafeAreaView>
     );
 };
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        
         justifyContent: 'center',
-        
         backgroundColor:Colors.background
     },
     bannerContainer: {

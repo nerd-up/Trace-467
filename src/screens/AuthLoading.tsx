@@ -9,7 +9,7 @@ import { getAsync } from '../store/Auths/asyncThunk';
 const AuthLoading = () => {
     const navigation:any=useNavigation();
     const dispatch=useAppDispatch();
-    const {authData}=useAppSelector(state=>state.authData)
+    const {authData,googleAuthData}=useAppSelector(state=>state.authData)
 
     const checkUser = async () => {
         // const userID = await ;

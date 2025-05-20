@@ -27,12 +27,14 @@ import appleAuth, {
 } from '@invertase/react-native-apple-authentication';
 import PopUpMessage from '../components/PopUpMessage';
 import { loginUserGoogle } from '../store/Auths/asyncThunk';
-import { useAppDispatch } from '../store/hooks';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import Loading from '../components/loadings/Loading';
+import Loader from '../components/loadings/Loader';
 function Login({ navigation }: any) {
     const [visiblMsg,setvisibleMsg]=useState(false);
     const dispatch=useAppDispatch();
-    const [googleIn,setGoogleIn]=useState(false);
-    const [googleData,setGoogleData]=useState(null);
+    const {authData,googleAuthData}=useAppSelector(state=>state.authData)
+    
     const setProfileData = useUserProfileStore(store => store.setProfileData);
     async function onGoogleButtonPress() {
         // Check if your device supports Google Play
@@ -54,12 +56,15 @@ function Login({ navigation }: any) {
            const user=res?.user;
            const currentUser= auth()?.currentUser;
            if(currentUser){
-            setGoogleData(user);
-            setGoogleIn(true);
+         
             const doc = await firestore().collection('Users').doc(currentUser?.uid).get();
-            if(!doc.exists)
-           setInProfile(currentUser?.uid, 'no bio', user?.photoURL || '', '', 'Sportsman', user?.displayName, '')
+            if(!doc.exists){
+        
+                setInProfile(currentUser?.uid, 'no bio', user?.photoURL || '', '', 'Sportsman', user?.displayName, '')
            
+        }
+          await  dispatch(loginUserGoogle(user));
+
         }
         })
         .catch((err)=>{
@@ -71,11 +76,8 @@ function Login({ navigation }: any) {
         GoogleSignin.configure({
             webClientId: '739431608336-shl6v9uadplgsmg404oj29u6b34ee6s9.apps.googleusercontent.com',
         });
-        if(googleIn){
-            dispatch(loginUserGoogle(googleData));
-           setGoogleIn(false);
-        }
-    }, [googleIn])
+        
+    }, [])
     const onAppleButtonPress = async () => {
         if (!appleAuth.isSupported) {
             console.warn("Apple Sign-In is not supported on this device.");
@@ -161,6 +163,7 @@ function Login({ navigation }: any) {
     return (
         <SafeAreaView style={{flex:1}}>
         <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+      <Loader loading={authData.loading || googleAuthData.loading} />
         <PopUpMessage  visible={visiblMsg} title='Email Sent' text='Reset password email sent successfully. Please check your inbox.' />
             <ScholarBanner style={{height:250}}  text="Login" />
             {/* Form */}

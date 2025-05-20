@@ -37,9 +37,9 @@ const EditProfile = () => {
 
     const openPicker = () => {
         ImageCropPicker.openPicker({
-            width: 300,
-            height: 400,
+            mediaType:'photo',
             cropping: true,
+            compressImageQuality:1,
         }).then(image => {
             const uri = image.path;
             const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;

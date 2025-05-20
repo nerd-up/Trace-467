@@ -46,6 +46,7 @@ export const showError = (text1='',text2='') => {
       ImagePicker.openPicker({
         cropping: true,
         mediaType: 'photo',
+        compressImageQuality:1,
     }).then((image) => {
       resolve(image); // Return the image object (contains path, etc.)
     })

@@ -5,7 +5,7 @@
  * @last modified 9/20/2023
  */
 import React, { Component, useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TextInput, ScrollView, TouchableOpacity, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, TextInput, ScrollView, TouchableOpacity, ImageBackground, SafeAreaView } from 'react-native';
 
 import styles from '../styles/Styles';
 import { ScholarMiniBanner } from '../components/UnifyBanner';
@@ -64,7 +64,7 @@ const Friends = ({ navigation}: any,props:any ) => {
 
       
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             
             { 
                 popUpVisibility ? <PopUp func={toggleVisibility}/>
@@ -113,7 +113,7 @@ const Friends = ({ navigation}: any,props:any ) => {
             <ImageBackground source={require('../assets/logoo.png')} style={{ flex: 1,justifyContent:'center' ,}} resizeMode='cover'>
 
 </ImageBackground>
-        </View>
+        </SafeAreaView>
     )
 
 }

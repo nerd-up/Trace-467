@@ -45,7 +45,8 @@ export const loginUser = createAsyncThunk(
 export const loginUserGoogle = createAsyncThunk(
   'auth/loginUserGoogle',
   async (data: any, { rejectWithValue }) => {
-    try { 
+    try {
+      await  AsyncStorage.setItem('user',JSON.stringify(data))
       return data
     } catch (error: any) {
       return rejectWithValue(error.toString());
