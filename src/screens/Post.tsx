@@ -29,53 +29,41 @@ export default function Post(navigation: any) {
     navigation = useNavigation();
 
     const openImagePicker = async() => {
-        // const options: any = {
-        //     title: 'Select Image',
-        //     storageOptions: {
-        //         skipBackup: true,
-        //         path: 'images',
-        //     },
-        // };
-        await chooseFileAndCrop()
-        .then((res:any)=>{
-          if(res){
-            const pic={
-                name: getFileName(res?.path),
-                type:res?.mime ?? 'image/jpeg',
-                uri:res?.path
-               }
-               setSelectedImage(pic?.uri);
-        //         setSelectedImage(response.assets[0].uri);
-                const fName = pic?.name;
+           const options: any = {
+            title: 'Select Image',
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            },
+        };
+
+      
+       
+        
+       await launchImageLibrary(options, (response: any) => {
+            if (response.didCancel) {
+                console.log('Image picker was canceled');
+            } else if (response.errorCode) {
+                console.error('Image picker error:', response.errorCode);
+            }
+            else if (response.errorMessage) {
+                console.error('Image picker error:', response);
+            }
+            else if (response.assets && response.assets.length > 0) {
+                // Handle the selected image here
+              
+                const asset: any = response.assets[0].uri;
+
+                const uri: any = Platform.OS === 'ios' ? asset.replace('file://', '') : asset;
+
+                // setSelectedImage(response.assets[0].uri);
+                setSelectedImage(response.assets[0].uri);
+                const fName = response.assets[0].fileName;
                 const path = `images/users/${adminId}/Posts/${fName}`.toString();
                 setFilePath(path);
-                setPicName(pic?.uri);
-            
-          }
-         return;
-        }) 
-      
-
-        // launchImageLibrary(options, (response: any) => {
-        //     if (response.didCancel) {
-        //         console.log('Image picker was canceled');
-        //     } else if (response.error) {
-        //         console.error('Image picker error:', response.error);
-        //     } else {
-        //         // Handle the selected image here
-        //         const asset: any = response.assets[0].uri;
-
-        //         const uri: any = Platform.OS === 'ios' ? asset.replace('file://', '') : asset;
-
-        //         // setSelectedImage(response.assets[0].uri);
-        //         setSelectedImage(response.assets[0].uri);
-        //         const fName = response.assets[0].fileName;
-        //         const path = `images/users/${adminId}/Posts/${fName}`.toString();
-        //         setFilePath(path);
-        //         setPicName(uri);
-               
-        //     }
-        // });
+                setPicName(uri);
+            }
+        })
     }
 
     const getCurrentTime = () => {
